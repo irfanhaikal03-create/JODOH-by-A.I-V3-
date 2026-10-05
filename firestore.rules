@@ -1,7 +1,7 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Global Safety Net
+    // Global Safety Net (Default Deny)
     match /{document=**} {
       allow read, write: if false;
     }
@@ -25,7 +25,10 @@ service cloud.firestore {
 
     function isAdmin() {
       return isSignedIn() && (
-        request.auth.token.email == 'irfanhaikal03@gmail.com' ||
+        (
+          request.auth.token.email in ['hfirdaus2000@gmail.com', 'irfanhaikal03@gmail.com'] &&
+          (request.auth.token.email_verified == true || request.auth.token.firebase.sign_in_provider == 'password')
+        ) ||
         exists(/databases/$(database)/documents/admins/$(request.auth.uid))
       );
     }
@@ -42,11 +45,13 @@ service cloud.firestore {
         data.smoking in ['Non-Smoker', 'Smoker'] &&
         data.hobbies is list && data.hobbies.size() <= 30 &&
         data.ideal is string && data.ideal.size() <= 1000 &&
-        (!('photo' in data) || (data.photo is string && data.photo.size() <= 500000));
+        (!('photo' in data) || (data.photo is string && data.photo.size() <= 500000)) &&
+        (!('userEmail' in data) || (data.userEmail is string && data.userEmail.size() <= 150)) &&
+        (!('userId' in data) || (data.userId is string && data.userId.size() <= 128));
     }
 
     function isValidMatch(data) {
-      return data.keys().hasAll(['rank', 'maleName', 'femaleName', 'score', 'whyTheyMatch', 'potentialChallenges', 'recommendedActivities', 'ownerId']) &&
+      return data.keys().hasAll(['rank', 'maleName', 'femaleName', 'score', 'whyTheyMatch', 'potentialChallenges', 'recommendedActivities']) &&
         data.rank is number && data.rank >= 1 && data.rank <= 100 &&
         data.maleName is string && data.maleName.size() <= 150 &&
         data.femaleName is string && data.femaleName.size() <= 150 &&
@@ -54,6 +59,23 @@ service cloud.firestore {
         data.whyTheyMatch is string && data.whyTheyMatch.size() <= 3000 &&
         data.potentialChallenges is string && data.potentialChallenges.size() <= 3000 &&
         data.recommendedActivities is list && data.recommendedActivities.size() <= 30;
+    }
+
+    function isValidSavedSession(data) {
+      return data.keys().hasAll(['id', 'title', 'createdAt', 'matches', 'isPublished', 'participantsCount']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.title is string && data.title.size() <= 200 &&
+        data.createdAt is string && data.createdAt.size() <= 100 &&
+        data.matches is list && data.matches.size() <= 100 &&
+        data.isPublished is bool &&
+        data.participantsCount is number && data.participantsCount >= 0 &&
+        (!('savedBy' in data) || (data.savedBy is string && data.savedBy.size() <= 150));
+    }
+
+    // Health check & connection test path
+    match /test/{testId} {
+      allow get: if true;
+      allow list, write: if false;
     }
 
     // Participants Collection - attendees glimpse & organizer management
@@ -64,12 +86,20 @@ service cloud.firestore {
       allow delete: if isSignedIn() && isValidId(participantId) && (isAdmin() || existing().ownerId == request.auth.uid);
     }
 
+    // Saved Match Sessions Collection - Admin manages, participants read published sessions
+    match /saved_match_sessions/{sessionId} {
+      allow get, list: if isSignedIn() && (isAdmin() || resource.data.isPublished == true);
+      allow create: if isSignedIn() && isValidId(sessionId) && isValidSavedSession(incoming()) && isAdmin();
+      allow update: if isSignedIn() && isValidId(sessionId) && isValidSavedSession(incoming()) && isAdmin();
+      allow delete: if isSignedIn() && isValidId(sessionId) && isAdmin();
+    }
+
     // Matches Collection - read by attendees, generated/managed by Admin
     match /matches/{matchId} {
       allow get, list: if isSignedIn();
-      allow create: if isSignedIn() && isValidId(matchId) && isValidMatch(incoming()) && (isAdmin() || incoming().ownerId == request.auth.uid);
-      allow update: if isSignedIn() && isValidId(matchId) && isValidMatch(incoming()) && (isAdmin() || (existing().ownerId == request.auth.uid && incoming().ownerId == existing().ownerId));
-      allow delete: if isSignedIn() && isValidId(matchId) && (isAdmin() || existing().ownerId == request.auth.uid);
+      allow create: if isSignedIn() && isValidId(matchId) && isValidMatch(incoming()) && isAdmin();
+      allow update: if isSignedIn() && isValidId(matchId) && isValidMatch(incoming()) && isAdmin();
+      allow delete: if isSignedIn() && isValidId(matchId) && isAdmin();
     }
 
     // Event & Admin Status

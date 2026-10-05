@@ -27,7 +27,7 @@ import firebaseConfig from '../firebase-applet-config.json';
 // Initialize Firebase App
 const app = initializeApp(firebaseConfig);
 
-// CRITICAL: The app will break without providing firestoreDatabaseId
+// CRITICAL: Must specify firestoreDatabaseId for custom provisioned databases
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
@@ -42,8 +42,17 @@ export {
   type User,
 } from 'firebase/auth';
 
-export const ADMIN_EMAIL = 'irfanhaikal03@gmail.com';
+export const ADMIN_EMAILS = [
+  'hfirdaus2000@gmail.com',
+  'irfanhaikal03@gmail.com',
+];
+export const ADMIN_EMAIL = 'hfirdaus2000@gmail.com';
 export const ADMIN_PASSCODE = 'JODOH2026';
+
+export function isAdminEmail(email?: string | null): boolean {
+  if (!email) return false;
+  return ADMIN_EMAILS.includes(email.trim().toLowerCase());
+}
 
 export enum OperationType {
   CREATE = 'create',

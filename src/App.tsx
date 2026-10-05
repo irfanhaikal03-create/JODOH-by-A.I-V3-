@@ -17,6 +17,8 @@ import { SavedSessionsModal } from './components/SavedSessionsModal';
 import { AdminResetModal } from './components/AdminResetModal';
 import { AuthView } from './components/AuthView';
 import { Toast } from './components/Toast';
+import { LanguageModal } from './components/LanguageModal';
+import { useLanguage } from './context/LanguageContext';
 import {
   auth,
   db,
@@ -29,6 +31,7 @@ import {
   handleFirestoreError,
   OperationType,
   ADMIN_EMAIL,
+  isAdminEmail,
 } from './firebase';
 import {
   collection,
@@ -45,6 +48,8 @@ const STORAGE_MATCHES_PUBLISHED = 'jodoh_matches_published';
 const STORAGE_SAVED_SESSIONS = 'jodoh_saved_match_sessions';
 
 export default function App() {
+  const { t } = useLanguage();
+
   // Authentication & Role State
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<AppUser | null>(() => {
@@ -147,7 +152,7 @@ export default function App() {
 
   // Check if current authenticated user has verified administrator role
   const activeUserEmail = (userProfile?.email || currentUser?.email || '').trim().toLowerCase();
-  const isOfficialAdmin = activeUserEmail === ADMIN_EMAIL.toLowerCase() || userProfile?.role === 'admin';
+  const isOfficialAdmin = isAdminEmail(activeUserEmail) || userProfile?.role === 'admin';
 
   // Effective role: Administrator for verified admins, otherwise strictly participant
   const effectiveRole: UserRole = isOfficialAdmin ? (userProfile?.role || 'admin') : 'participant';
@@ -159,7 +164,7 @@ export default function App() {
       setCurrentUser(user);
       if (user) {
         const userEmail = (user.email || '').toLowerCase();
-        const isOfficialAdmin = userEmail === ADMIN_EMAIL.toLowerCase();
+        const isOfficialAdmin = isAdminEmail(userEmail);
 
         setUserProfile(prev => {
           if (prev && prev.uid === user.uid) return prev;
@@ -444,14 +449,14 @@ export default function App() {
   const femaleCount = participants.filter(p => p.gender === 'Female').length;
   const isEligible = maleCount >= 1 && femaleCount >= 1;
 
-  // Toggle user role preview (Strictly allowed for irfanhaikal03@gmail.com only)
+  // Toggle user role preview (Allowed for authorized administrators)
   const handleToggleRole = isOfficialAdmin
     ? () => {
         const newRole: UserRole = effectiveRole === 'admin' ? 'participant' : 'admin';
         const updatedProfile: AppUser = {
           uid: userProfile?.uid || currentUser?.uid || `user-${Date.now()}`,
-          email: ADMIN_EMAIL,
-          displayName: userProfile?.displayName || (newRole === 'admin' ? 'Irfan Haikal (Administrator)' : 'Irfan Haikal (Peserta)'),
+          email: activeUserEmail || ADMIN_EMAIL,
+          displayName: userProfile?.displayName || (newRole === 'admin' ? 'Administrator' : 'Peserta'),
           role: newRole,
           participantId: userProfile?.participantId || participants[0]?.id,
         };
@@ -476,12 +481,12 @@ export default function App() {
         const adminProfile: AppUser = {
           uid: `admin-${Date.now()}`,
           email: ADMIN_EMAIL,
-          displayName: 'Irfan Haikal (Admin)',
+          displayName: 'Administrator',
           role: 'admin',
         };
         setUserProfile(adminProfile);
         localStorage.setItem(STORAGE_USER_SESSION, JSON.stringify(adminProfile));
-        showToast('Log masuk sebagai Administrator (irfanhaikal03@gmail.com).');
+        showToast(`Log masuk sebagai Administrator (${ADMIN_EMAIL}).`);
         return;
       }
       showToast(err.message || 'Log masuk dibatalkan', true);
@@ -666,6 +671,7 @@ export default function App() {
     return (
       <div className="bg-background min-h-screen text-on-surface antialiased font-sans">
         <Toast message={toastMessage} isError={isToastError} />
+        <LanguageModal />
         <AuthView
           onAuthSuccess={profile => {
             setUserProfile(profile);
@@ -693,6 +699,9 @@ export default function App() {
     <div className="bg-background min-h-screen text-on-surface antialiased font-sans">
       {/* Toast Notification */}
       <Toast message={toastMessage} isError={isToastError} />
+
+      {/* Global Language Selection Modal */}
+      <LanguageModal />
 
       {/* Global Header */}
       <Header

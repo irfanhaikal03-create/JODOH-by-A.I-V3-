@@ -1,5 +1,6 @@
 import React from 'react';
 import { UserRole } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface SidebarProps {
   activeTab: 'participants-pool' | 'top-10-ai-matches';
@@ -30,6 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenResetModal,
   savedSessionsCount = 0,
 }) => {
+  const { t, languageInfo, openLanguageModal } = useLanguage();
   const isAdmin = userRole === 'admin';
 
   const handleNavClick = (callback: () => void) => {
@@ -52,15 +54,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Aside Bar */}
       <aside
-        className={`fixed left-0 top-0 lg:top-20 bottom-0 w-72 lg:w-64 bg-surface-container-lowest shadow-2xl lg:shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 lg:z-40 flex flex-col justify-between py-space-lg px-space-md border-r border-outline-variant/20 transition-transform duration-300 ease-in-out ${
+        className={`fixed left-0 top-0 lg:top-20 bottom-0 w-72 lg:w-64 bg-surface-container-lowest shadow-2xl lg:shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 lg:z-40 flex flex-col justify-between py-4 px-3 border-r border-outline-variant/20 transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        <div className="flex flex-col gap-space-lg">
+        <div className="flex flex-col gap-4">
           {/* Header Row with Close Button for Mobile */}
-          <div className="flex items-center justify-between px-space-sm">
-            <span className="font-label-sm text-label-sm text-outline tracking-wider uppercase font-bold">
-              {isAdmin ? 'Papan Kawalan Penganjur' : 'Portal Suai Kenal'}
+          <div className="flex items-center justify-between px-2 pt-2 lg:pt-0">
+            <span className="text-[11px] text-outline tracking-wider uppercase font-bold">
+              {isAdmin ? t('adminSuite', 'Papan Kawalan Penganjur') : t('participantPortal', 'Portal Suai Kenal')}
             </span>
 
             {/* Close Button on Smartphone / Tablet */}
@@ -75,33 +77,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
           </div>
 
-          <nav className="flex flex-col gap-space-xs">
+          <nav className="flex flex-col gap-1">
             <button
               type="button"
               onClick={() => handleNavClick(() => onTabChange('participants-pool'))}
-              className={`flex items-center gap-space-sm px-space-md py-space-sm rounded-lg font-label-md text-label-md transition-all text-left cursor-pointer ${
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left cursor-pointer ${
                 activeTab === 'participants-pool'
-                  ? 'bg-primary-container text-on-primary font-bold shadow-sm'
-                  : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                  ? 'bg-primary-container text-on-primary font-bold shadow-xs'
+                  : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
               }`}
             >
               <span className="material-symbols-outlined text-xl">
                 {isAdmin ? 'groups' : 'person_search'}
               </span>
-              <span>{isAdmin ? 'Participants Pool' : 'Direktori Peserta'}</span>
+              <span>{isAdmin ? t('participantsPool', 'Direktori Calon') : t('participantsPool', 'Direktori Peserta')}</span>
             </button>
 
             <button
               type="button"
               onClick={() => handleNavClick(() => onTabChange('top-10-ai-matches'))}
-              className={`flex items-center gap-space-sm px-space-md py-space-sm rounded-lg font-label-md text-label-md transition-all text-left cursor-pointer ${
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left cursor-pointer ${
                 activeTab === 'top-10-ai-matches'
-                  ? 'bg-primary-container text-on-primary font-bold shadow-sm'
-                  : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                  ? 'bg-primary-container text-on-primary font-bold shadow-xs'
+                  : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
               }`}
             >
               <span className="material-symbols-outlined text-xl">favorite</span>
-              <span>{isAdmin ? 'AI Pairing Matrix' : 'Keputusan AI'}</span>
+              <span>{isAdmin ? t('topMatches', 'Top 10 Padanan AI') : t('topMatches', 'Keputusan AI')}</span>
             </button>
 
             {isAdmin && (
@@ -109,19 +111,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <button
                   type="button"
                   onClick={() => handleNavClick(onOpenAffinityVectors)}
-                  className="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-all text-left cursor-pointer"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all text-left cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-xl">analytics</span>
-                  <span>Vektor Keserasian</span>
+                  <span>{t('affinityVectors', 'Vektor Keserasian')}</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleNavClick(onOpenMatchingRules)}
-                  className="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-all text-left cursor-pointer"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all text-left cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-xl">tune</span>
-                  <span>Peraturan Algoritma</span>
+                  <span>{t('matchingRules', 'Peraturan Algoritma')}</span>
                 </button>
               </>
             )}
@@ -131,30 +133,46 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 type="button"
                 onClick={() => handleNavClick(onOpenSavedSessions)}
-                className="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high hover:text-on-surface transition-all text-left cursor-pointer"
+                className="flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all text-left cursor-pointer"
               >
-                <div className="flex items-center gap-space-sm">
+                <div className="flex items-center gap-2.5">
                   <span className="material-symbols-outlined text-xl text-primary">folder_managed</span>
-                  <span>{isAdmin ? 'Arkib Keputusan AI' : 'Sejarah Rekod Rasmi'}</span>
+                  <span>{isAdmin ? t('savedSessions', 'Arkib Keputusan AI') : t('savedSessions', 'Sejarah Rekod Rasmi')}</span>
                 </div>
                 {savedSessionsCount > 0 && (
-                  <span className="px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
+                  <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
                     {savedSessionsCount}
                   </span>
                 )}
               </button>
             )}
 
+            {/* Dedicated Translation Language Button */}
+            <button
+              type="button"
+              onClick={() => handleNavClick(openLanguageModal)}
+              className="flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all text-left cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <span className="material-symbols-outlined text-xl text-primary">translate</span>
+                <span>{t('translateApp', 'Terjemah Aplikasi')}</span>
+              </div>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-bold flex items-center gap-1">
+                <span>{languageInfo.flag}</span>
+                <span className="uppercase">{languageInfo.code}</span>
+              </span>
+            </button>
+
             {/* Exclusive Administrator Reset Button */}
             {isAdmin && onOpenResetModal && (
               <button
                 type="button"
                 onClick={() => handleNavClick(onOpenResetModal)}
-                className="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-error font-label-md text-label-md hover:bg-error/10 transition-all text-left cursor-pointer mt-1"
-                title="Pusat set semula data (Khas Administrator)"
+                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium text-error hover:bg-error-container/30 transition-all text-left cursor-pointer mt-1"
+                title={t('systemReset', 'Pusat Set Semula')}
               >
                 <span className="material-symbols-outlined text-xl">restart_alt</span>
-                <span>Pusat Reset (Admin)</span>
+                <span>{t('systemReset', 'Pusat Reset (Admin)')}</span>
               </button>
             )}
           </nav>
@@ -167,7 +185,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-col gap-2">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-on-surface">
-                  Penerbitan Keputusan
+                  {t('published', 'Penerbitan Keputusan')}
                 </span>
                 <span
                   className={`w-2 h-2 rounded-full ${
@@ -177,8 +195,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
               <p className="text-[11px] text-on-surface-variant leading-tight">
                 {matchesPublished
-                  ? 'Peserta kini boleh melihat keputusan pemadanan.'
-                  : 'Keputusan belum diterbitkan kepada peserta.'}
+                  ? (t('published', 'Diterbitkan') + ' - Peserta boleh melihat keputusan.')
+                  : (t('draft', 'Draf') + ' - Belum diterbitkan kepada peserta.')}
               </p>
               <button
                 type="button"
@@ -195,16 +213,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
 
           {/* Discreet Security Module */}
-          <div className="p-space-md rounded-xl bg-surface-container-low flex flex-col gap-space-xs border border-outline-variant/15">
-            <div className="flex items-center gap-space-xs text-primary">
-              <span className="material-symbols-outlined text-sm">lock_reset</span>
-              <span className="font-label-sm text-label-sm font-bold uppercase tracking-wider">
+          <div className="p-3 rounded-xl bg-surface-container-low flex flex-col gap-1 border border-outline-variant/15">
+            <div className="flex items-center gap-1.5 text-primary">
+              <span className="material-symbols-outlined text-sm">lock</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider">
                 Privasi Terjamin
               </span>
             </div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            <p className="text-[11px] text-on-surface-variant leading-relaxed">
               {isAdmin
-                ? 'Sistem penganjur berkuasa AI dengan enkripsi data dan perlindungan penuh calon.'
+                ? 'Sistem penganjur berkuasa AI dengan perlindungan penuh kerahsiaan acara.'
                 : 'Data anda dilindungi dan diproses mengikut piawaian kerahsiaan acara.'}
             </p>
           </div>

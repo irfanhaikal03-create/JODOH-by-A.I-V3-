@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { jsPDF } from 'jspdf';
 import { MatchResult, Participant } from '../types';
 import { DossierPreviewModal } from './DossierPreviewModal';
+import { useLanguage } from '../context/LanguageContext';
 
 // Clean Unicode and non-WinAnsi characters to prevent jsPDF encoding errors
 function cleanPdfText(text: string | undefined | null): string {
@@ -55,6 +56,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
   savedSessionsCount = 0,
   activeSessionTitle,
 }) => {
+  const { t, translateSmoking } = useLanguage();
   const isAdmin = userRole === 'admin';
   const [expandedCards, setExpandedCards] = useState<Record<number, boolean>>({});
   const [isDossierPreviewOpen, setIsDossierPreviewOpen] = useState(false);

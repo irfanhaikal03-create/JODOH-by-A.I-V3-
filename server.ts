@@ -386,6 +386,53 @@ Return valid JSON matching the schema.`;
   }
 });
 
+// Dynamic Translation Endpoint for Any Language
+app.post('/api/translate', async (req, res) => {
+  try {
+    const { targetLanguage, texts } = req.body as {
+      targetLanguage: string;
+      texts: Record<string, string>;
+    };
+
+    if (!targetLanguage || !texts || typeof texts !== 'object') {
+      return res.status(400).json({ error: 'targetLanguage and texts map are required.' });
+    }
+
+    if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'MY_GEMINI_API_KEY') {
+      try {
+        const prompt = `Translate the following JSON object key-value pairs into the target language: "${targetLanguage}".
+Keep the exact same keys. Translate ONLY the string values faithfully and naturally for a luxury matchmaking platform.
+Ensure the translation sounds professional, respectful, and native.
+
+JSON to translate:
+${JSON.stringify(texts, null, 2)}`;
+
+        const response = await ai.models.generateContent({
+          model: 'gemini-3.1-flash-lite',
+          contents: prompt,
+          config: {
+            systemInstruction: `You are an expert native translator. Translate JSON text accurately into "${targetLanguage}". Return ONLY valid JSON with identical keys.`,
+            responseMimeType: 'application/json',
+          },
+        });
+
+        const raw = response.text ? response.text.trim() : '';
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          return res.json({ translated: parsed, source: 'gemini' });
+        }
+      } catch (geminiErr) {
+        console.warn('Gemini translation error, returning original texts:', geminiErr);
+      }
+    }
+
+    return res.json({ translated: texts, source: 'original' });
+  } catch (err: any) {
+    console.error('Translation route error:', err);
+    return res.status(500).json({ error: 'Translation failed.' });
+  }
+});
+
 async function main() {
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, 'dist')));

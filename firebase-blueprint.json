@@ -16,8 +16,8 @@
         "hobbies": { "type": "array" },
         "ideal": { "type": "string", "maxLength": 1000 },
         "photo": { "type": "string", "maxLength": 500000 },
-        "createdAt": { "type": "string" },
-        "updatedAt": { "type": "string" },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "updatedAt": { "type": "string", "maxLength": 100 },
         "ownerId": { "type": "string", "maxLength": 128 },
         "userId": { "type": "string", "maxLength": 128 },
         "userEmail": { "type": "string", "maxLength": 150 }
@@ -42,19 +42,21 @@
       "type": "object",
       "properties": {
         "rank": { "type": "number" },
+        "maleId": { "type": "string", "maxLength": 128 },
+        "femaleId": { "type": "string", "maxLength": 128 },
         "maleName": { "type": "string", "maxLength": 150 },
-        "maleAge": { "type": "number" },
-        "maleOccupation": { "type": "string", "maxLength": 150 },
-        "maleLocation": { "type": "string", "maxLength": 150 },
-        "maleSmoking": { "type": "string", "maxLength": 50 },
-        "maleHobbies": { "type": "array" },
-        "malePhoto": { "type": "string", "maxLength": 500000 },
         "femaleName": { "type": "string", "maxLength": 150 },
+        "maleAge": { "type": "number" },
         "femaleAge": { "type": "number" },
+        "maleOccupation": { "type": "string", "maxLength": 150 },
         "femaleOccupation": { "type": "string", "maxLength": 150 },
+        "maleLocation": { "type": "string", "maxLength": 150 },
         "femaleLocation": { "type": "string", "maxLength": 150 },
+        "maleSmoking": { "type": "string", "maxLength": 50 },
         "femaleSmoking": { "type": "string", "maxLength": 50 },
+        "maleHobbies": { "type": "array" },
         "femaleHobbies": { "type": "array" },
+        "malePhoto": { "type": "string", "maxLength": 500000 },
         "femalePhoto": { "type": "string", "maxLength": 500000 },
         "score": { "type": "number" },
         "whyTheyMatch": { "type": "string", "maxLength": 3000 },
@@ -63,7 +65,7 @@
         "valueSynthesisPercent": { "type": "number" },
         "frictionProbabilityPercent": { "type": "number" },
         "crossCheckedTraits": { "type": "array" },
-        "createdAt": { "type": "string" },
+        "createdAt": { "type": "string", "maxLength": 100 },
         "ownerId": { "type": "string", "maxLength": 128 }
       },
       "required": [
@@ -73,19 +75,44 @@
         "score",
         "whyTheyMatch",
         "potentialChallenges",
-        "recommendedActivities",
-        "ownerId"
+        "recommendedActivities"
+      ]
+    },
+    "SavedMatchSession": {
+      "title": "SavedMatchSession",
+      "description": "An archived session containing top AI matches and publish status.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "matches": { "type": "array" },
+        "isPublished": { "type": "boolean" },
+        "savedBy": { "type": "string", "maxLength": 150 },
+        "participantsCount": { "type": "number" }
+      },
+      "required": [
+        "id",
+        "title",
+        "createdAt",
+        "matches",
+        "isPublished",
+        "participantsCount"
       ]
     }
   },
   "firestore": {
     "/participants/{participantId}": {
       "schema": { "$ref": "#/entities/Participant" },
-      "description": "Collection of attendee candidate profiles stored by event organizers."
+      "description": "Collection of attendee candidate profiles stored by organizers and attendees."
     },
     "/matches/{matchId}": {
       "schema": { "$ref": "#/entities/MatchResult" },
-      "description": "Collection of saved top compatibility matches."
+      "description": "Collection of individual compatibility match records."
+    },
+    "/saved_match_sessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/SavedMatchSession" },
+      "description": "Collection of saved AI matchmaking sessions and publish state."
     }
   }
 }

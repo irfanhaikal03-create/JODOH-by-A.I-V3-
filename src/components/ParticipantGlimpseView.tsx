@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Participant, MatchResult } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ParticipantGlimpseViewProps {
   participants: Participant[];
@@ -22,6 +23,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
   onOpenSavedSessions,
   savedSessionsCount = 0,
 }) => {
+  const { t, translateGender, translateMarital, translateSmoking } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [genderFilter, setGenderFilter] = useState<'ALL' | 'MALE' | 'FEMALE'>('ALL');
   const [locationFilter, setLocationFilter] = useState('ALL');
@@ -379,10 +381,10 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                               isMale ? 'bg-tertiary-fixed text-on-tertiary-fixed' : 'bg-secondary-fixed text-secondary'
                             }`}
                           >
-                            {part.gender === 'Male' ? 'Lelaki' : 'Perempuan'}
+                            {translateGender(part.gender)}
                           </span>
                           <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface text-[10px] font-semibold">
-                            {part.marital}
+                            {translateMarital(part.marital)}
                           </span>
                           {isSelf && (
                             <span className="px-2 py-0.5 rounded-full bg-primary-container text-on-primary text-[10px] font-bold">

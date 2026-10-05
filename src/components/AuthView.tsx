@@ -10,8 +10,10 @@ import {
   updateProfile,
   ADMIN_EMAIL,
   ADMIN_PASSCODE,
+  isAdminEmail,
 } from '../firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import { useLanguage } from '../context/LanguageContext';
 
 interface AuthViewProps {
   onAuthSuccess: (userProfile: {
@@ -33,6 +35,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
   onAddParticipant,
   showToast,
 }) => {
+  const { t, languageInfo, openLanguageModal } = useLanguage();
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
   const [selectedRole, setSelectedRole] = useState<UserRole>('participant');
 
@@ -127,7 +130,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
       const userEmail = (user.email || '').trim().toLowerCase();
 
       // Check if user is known admin email or previously verified
-      const isAutoAdmin = userEmail === ADMIN_EMAIL.toLowerCase();
+      const isAutoAdmin = isAdminEmail(userEmail);
       const role: UserRole = isAutoAdmin ? 'admin' : 'participant';
 
       // Find if already linked to a participant
@@ -186,7 +189,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
         err.code === 'auth/internal-error';
 
       if (isIdentityToolkitErr) {
-        const isAutoAdmin = (email.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase()) || (selectedRole === 'admin' && adminCode.trim() === ADMIN_PASSCODE);
+        const isAutoAdmin = isAdminEmail(email) || (selectedRole === 'admin' && adminCode.trim() === ADMIN_PASSCODE);
         const targetEmail = isAutoAdmin ? (email.trim() || ADMIN_EMAIL) : (email.trim() || 'peserta@gmail.com');
         const targetName = isAutoAdmin ? (fullName.trim() || 'Administrator') : (fullName.trim() || 'Peserta');
         const role: UserRole = isAutoAdmin ? 'admin' : 'participant';
@@ -268,7 +271,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
           authError.code === 'auth/invalid-credential' ||
           authError.code === 'auth/user-not-found'
         ) {
-          const isAdminAcc = email.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase();
+          const isAdminAcc = isAdminEmail(email);
           userObj = {
             uid: `local-${email.replace(/[^a-zA-Z0-9]/g, '')}`,
             email: email.trim(),
@@ -281,7 +284,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
       const lowerEmail = email.trim().toLowerCase();
       // Check if user is known admin email or registered admin
-      const isAdminUser = lowerEmail === ADMIN_EMAIL.toLowerCase();
+      const isAdminUser = isAdminEmail(lowerEmail);
       const role: UserRole = isAdminUser ? 'admin' : 'participant';
 
       // Check linked participant
@@ -321,7 +324,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
     // If registering as Administrator, require verified authorization passcode!
     if (selectedRole === 'admin') {
       const isPasscodeValid = adminCode.trim() === ADMIN_PASSCODE;
-      const isKnownAdminEmail = cleanEmail === ADMIN_EMAIL.toLowerCase();
+      const isKnownAdminEmail = isAdminEmail(cleanEmail);
 
       if (!isPasscodeValid && !isKnownAdminEmail) {
         showToast(
@@ -409,6 +412,20 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
   return (
     <div className="min-h-screen bg-background text-on-surface flex flex-col justify-center items-center px-4 py-8 sm:py-12">
+      {/* Top Bar with Language Selector */}
+      <div className="w-full max-w-xl flex justify-end mb-4">
+        <button
+          type="button"
+          onClick={openLanguageModal}
+          title={`${t('translateApp', 'Terjemah Aplikasi')} (${languageInfo.name})`}
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 text-on-surface shadow-xs cursor-pointer transition-all active:scale-95"
+        >
+          <span className="text-base">{languageInfo.flag}</span>
+          <span className="font-semibold">{languageInfo.name}</span>
+          <span className="material-symbols-outlined text-xs text-outline">translate</span>
+        </button>
+      </div>
+
       {/* Brand Header */}
       <div className="w-full max-w-xl text-center mb-6">
         <div className="inline-flex items-center justify-center gap-2 mb-3">
