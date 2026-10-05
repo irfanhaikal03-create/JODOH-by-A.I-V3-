@@ -365,6 +365,9 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
                   src={partnerInfo.partnerPhoto}
                   alt={partnerInfo.partnerName}
                   className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover ring-2 ring-primary/40 shadow-xs"
+                  onError={e => {
+                    (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
+                  }}
                 />
                 <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white flex items-center justify-center">
                   <span className="w-1.5 h-1.5 rounded-full bg-white"></span>

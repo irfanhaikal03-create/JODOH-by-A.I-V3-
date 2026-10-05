@@ -442,12 +442,22 @@ export default function App() {
   };
 
   const handleResetParticipantsToDefault = async () => {
-    setParticipants(DEFAULT_PARTICIPANTS);
-    localStorage.setItem(STORAGE_PARTICIPANTS, JSON.stringify(DEFAULT_PARTICIPANTS));
-    for (const p of DEFAULT_PARTICIPANTS) {
+    const adminUid = currentUser?.uid || userProfile?.uid || 'admin-system';
+    const seededParticipants: Participant[] = DEFAULT_PARTICIPANTS.map(p => ({
+      ...p,
+      ownerId: adminUid,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }));
+
+    setParticipants(seededParticipants);
+    localStorage.setItem(STORAGE_PARTICIPANTS, JSON.stringify(seededParticipants));
+    for (const p of seededParticipants) {
       try {
         await setDoc(doc(db, 'participants', p.id), p);
-      } catch (e) {}
+      } catch (e) {
+        console.warn('Seeding participant notice:', e);
+      }
     }
     showToast('Senarai calon peserta telah dikembalikan ke senarai asal.');
   };

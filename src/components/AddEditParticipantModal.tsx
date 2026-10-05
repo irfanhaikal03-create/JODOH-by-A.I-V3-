@@ -137,7 +137,8 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
       .filter(Boolean);
 
     const savedParticipant: Participant = {
-      id: participantToEdit ? participantToEdit.id : `p-${Date.now().toString().slice(-4)}`,
+      ...(participantToEdit || {}),
+      id: participantToEdit ? participantToEdit.id : `p-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
       name: name.trim(),
       gender,
       age: Number(age),
@@ -148,6 +149,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
       photo: photo.trim() || undefined,
       hobbies: hobbiesArray,
       ideal: ideal.trim(),
+      updatedAt: new Date().toISOString(),
     };
 
     onSave(savedParticipant);

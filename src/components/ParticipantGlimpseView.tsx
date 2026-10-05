@@ -179,12 +179,20 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   src={myProfile.photo}
                   alt={myProfile.name}
                   className="w-14 h-14 rounded-2xl object-cover ring-2 ring-primary/40 shadow-sm"
+                  onError={e => {
+                    (e.currentTarget as HTMLElement).style.display = 'none';
+                    const sibling = e.currentTarget.parentElement?.querySelector('.my-monogram-fallback') as HTMLElement;
+                    if (sibling) sibling.style.display = 'flex';
+                  }}
                 />
-              ) : (
-                <div className="w-14 h-14 rounded-2xl bg-primary-container text-on-primary font-bold text-lg flex items-center justify-center shadow-sm">
-                  {myProfile.name.slice(0, 2).toUpperCase()}
-                </div>
-              )}
+              ) : null}
+              <div
+                className={`my-monogram-fallback w-14 h-14 rounded-2xl bg-primary-container text-on-primary font-bold text-lg flex items-center justify-center shadow-sm ${
+                  myProfile.photo ? 'hidden' : ''
+                }`}
+              >
+                {myProfile.name.slice(0, 2).toUpperCase()}
+              </div>
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs uppercase font-bold text-primary tracking-wider">
@@ -407,16 +415,21 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                           src={part.photo}
                           alt={part.name}
                           className="w-12 h-12 rounded-2xl object-cover shadow-xs ring-1 ring-outline-variant/20"
+                          onError={e => {
+                            (e.currentTarget as HTMLElement).style.display = 'none';
+                            const sibling = e.currentTarget.parentElement?.querySelector('.monogram-fallback') as HTMLElement;
+                            if (sibling) sibling.style.display = 'flex';
+                          }}
                         />
-                      ) : (
-                        <div
-                          className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm tracking-wider shadow-xs ${
-                            isMale ? 'bg-tertiary-fixed text-on-tertiary-fixed' : 'bg-secondary-fixed text-secondary'
-                          }`}
-                        >
-                          {part.name.slice(0, 2).toUpperCase()}
-                        </div>
-                      )}
+                      ) : null}
+
+                      <div
+                        className={`monogram-fallback w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm tracking-wider shadow-xs ${
+                          isMale ? 'bg-tertiary-fixed text-on-tertiary-fixed' : 'bg-secondary-fixed text-secondary'
+                        } ${part.photo ? 'hidden' : ''}`}
+                      >
+                        {part.name.slice(0, 2).toUpperCase()}
+                      </div>
 
                       <div>
                         <div className="flex items-center gap-1.5">

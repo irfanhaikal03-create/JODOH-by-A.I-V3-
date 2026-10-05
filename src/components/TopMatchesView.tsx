@@ -1092,6 +1092,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                             match.malePhoto ||
                             'https://lh3.googleusercontent.com/aida-public/AB6AXuAwOqlCtrC7wUSP62ZrSTKwVCa18SwrN7yEN_VPoHM2eSuDPcJfp2ajgyFTZGe8jYhs-pjTpYDHoVr9EmRpV5SWHTzwr86XN9LWOjKGAaW8Y645slcvdlLU6XHML39LTJ2GE6h_tHpGUdI9uAWjj2Nmd8jBqgASdPQb5tSDd6nrQ-1epJ-tTyAbMOq82GyTIGsKQ2wIt9wARh3wzv9slVcX1Bs1EeV4X_FSDBgFacd4Awfg2SNqGg84'
                           }
+                          onError={e => {
+                            (e.currentTarget as HTMLImageElement).src =
+                              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80';
+                          }}
                         />
                         <img
                           className="inline-block h-10 w-10 sm:h-12 sm:w-12 rounded-full ring-2 ring-surface-container-lowest object-cover"
@@ -1100,6 +1104,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                             match.femalePhoto ||
                             'https://lh3.googleusercontent.com/aida-public/AB6AXuBnSwa8m2QElUYk3cXu4-FBt_8BOb2uaCzu0RaP20Z8W8f9OyyFFt-M8Ddcrjlbz9ZWLIBS9S1-S8l5kwB63LxCDVKYKXvnIQMm04_EtdQNvScW8NXkWUG7eU4kHrqW6BXdCj5qZraQVlIWGf1UMJkgP2t2g-S3BKHRRvuEECoRtGipu0KtT_DV859ZTflCMruAR-kJpFFIHeLYNQH88pCAuN6DEi-i9oUCgua6mK2ONxwVzqS7PV3i'
                           }
+                          onError={e => {
+                            (e.currentTarget as HTMLImageElement).src =
+                              'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
+                          }}
                         />
                       </div>
 

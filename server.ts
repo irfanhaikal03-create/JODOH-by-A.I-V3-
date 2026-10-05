@@ -191,7 +191,7 @@ function fallbackAlgorithmicMatching(males: Participant[], females: Participant[
       femaleSmoking: p.female.smoking,
       maleHobbies: mHobbies,
       femaleHobbies: fHobbies,
-      score: p.score - idx * 2, // Slight natural gradation
+      score: Math.max(68, Math.min(99, p.score - idx * 2)), // Slight natural gradation, clamped between 68 and 99
       whyTheyMatch: p.why,
       potentialChallenges: p.challenges,
       recommendedActivities: p.dates,
@@ -247,7 +247,7 @@ Rank matches in descending order by score (highest compatibility first, rank 1 t
 Return valid JSON matching the schema.`;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-3.1-flash-lite',
+          model: 'gemini-3.8-flash',
           contents: prompt,
           config: {
             systemInstruction: 'You are an executive matchmaking analytical engine. Provide insightful, realistic, respectful, and sophisticated psychological and lifestyle evaluations for matchmaking couples. Enforce strict 1-to-1 uniqueness: no individual can be paired more than once.',
@@ -408,7 +408,7 @@ JSON to translate:
 ${JSON.stringify(texts, null, 2)}`;
 
         const response = await ai.models.generateContent({
-          model: 'gemini-3.1-flash-lite',
+          model: 'gemini-3.8-flash',
           contents: prompt,
           config: {
             systemInstruction: `You are an expert native translator. Translate JSON text accurately into "${targetLanguage}". Return ONLY valid JSON with identical keys.`,

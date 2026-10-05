@@ -75,6 +75,9 @@ export const Header: React.FC<HeaderProps> = ({
             alt="JODOH by A.I Brandmark"
             className="h-7 sm:h-8 w-auto object-contain shrink-0"
             src="https://lh3.googleusercontent.com/aida/AEtjO1VoFLL6PMuoTOKgVSCpLzUMnlZyTQA4E_UYhGM9U8V8FpBdFxu0BzwDFStd-XbBcC8sSE0xn1hIo_mg1mmR22sjvveERNM-rb9AlOtCyZ68-4GwaVELEHouNtRtVhCjV_47Da6rOkBc9sq1z_ppc-K_x4dHn2eI2Ny1m56p3c93pPVPVwP4-J2JaHJqkSNZp353ig9gtoeYUjACf1ghaeQ1aOJOGgXojHKL2ErYCxJv6hyGRVDdKmWWXh4"
+            onError={e => {
+              (e.currentTarget as HTMLElement).style.display = 'none';
+            }}
           />
           <div className="flex flex-col shrink-0">
             <span className="text-base sm:text-lg font-serif font-bold text-primary tracking-tight leading-none whitespace-nowrap">

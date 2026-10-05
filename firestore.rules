@@ -34,7 +34,7 @@ service cloud.firestore {
     }
 
     function isValidParticipant(data) {
-      return data.keys().hasAll(['id', 'name', 'gender', 'age', 'occupation', 'location', 'marital', 'smoking', 'hobbies', 'ideal', 'ownerId']) &&
+      return data.keys().hasAll(['id', 'name', 'gender', 'age', 'occupation', 'location', 'marital', 'smoking', 'hobbies', 'ideal']) &&
         data.id is string && data.id.size() <= 128 &&
         data.name is string && data.name.size() > 0 && data.name.size() <= 150 &&
         data.gender in ['Male', 'Female'] &&
@@ -46,6 +46,7 @@ service cloud.firestore {
         data.hobbies is list && data.hobbies.size() <= 30 &&
         data.ideal is string && data.ideal.size() <= 1000 &&
         (!('photo' in data) || (data.photo is string && data.photo.size() <= 500000)) &&
+        (!('ownerId' in data) || (data.ownerId is string && data.ownerId.size() <= 128)) &&
         (!('userEmail' in data) || (data.userEmail is string && data.userEmail.size() <= 150)) &&
         (!('userId' in data) || (data.userId is string && data.userId.size() <= 128));
     }
@@ -81,9 +82,9 @@ service cloud.firestore {
     // Participants Collection - attendees glimpse & organizer management
     match /participants/{participantId} {
       allow get, list: if isSignedIn();
-      allow create: if isSignedIn() && isValidId(participantId) && isValidParticipant(incoming()) && (isAdmin() || incoming().ownerId == request.auth.uid);
-      allow update: if isSignedIn() && isValidId(participantId) && isValidParticipant(incoming()) && (isAdmin() || (existing().ownerId == request.auth.uid && incoming().ownerId == existing().ownerId));
-      allow delete: if isSignedIn() && isValidId(participantId) && (isAdmin() || existing().ownerId == request.auth.uid);
+      allow create: if isSignedIn() && isValidId(participantId) && isValidParticipant(incoming()) && (isAdmin() || (('ownerId' in incoming()) && incoming().ownerId == request.auth.uid));
+      allow update: if isSignedIn() && isValidId(participantId) && isValidParticipant(incoming()) && (isAdmin() || (('ownerId' in existing()) && existing().ownerId == request.auth.uid && (!('ownerId' in incoming()) || incoming().ownerId == existing().ownerId)));
+      allow delete: if isSignedIn() && isValidId(participantId) && (isAdmin() || (('ownerId' in existing()) && existing().ownerId == request.auth.uid));
     }
 
     // Saved Match Sessions Collection - Admin manages, participants read published sessions
