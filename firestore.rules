@@ -1,0 +1,81 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'irfanhaikal03@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidParticipant(data) {
+      return data.keys().hasAll(['id', 'name', 'gender', 'age', 'occupation', 'location', 'marital', 'smoking', 'hobbies', 'ideal', 'ownerId']) &&
+        data.id is string && data.id.size() <= 128 &&
+        data.name is string && data.name.size() > 0 && data.name.size() <= 150 &&
+        data.gender in ['Male', 'Female'] &&
+        data.age is number && data.age >= 18 && data.age <= 120 &&
+        data.occupation is string && data.occupation.size() <= 150 &&
+        data.location is string && data.location.size() <= 150 &&
+        data.marital in ['Single', 'Divorced', 'Widowed'] &&
+        data.smoking in ['Non-Smoker', 'Smoker'] &&
+        data.hobbies is list && data.hobbies.size() <= 30 &&
+        data.ideal is string && data.ideal.size() <= 1000 &&
+        (!('photo' in data) || (data.photo is string && data.photo.size() <= 500000));
+    }
+
+    function isValidMatch(data) {
+      return data.keys().hasAll(['rank', 'maleName', 'femaleName', 'score', 'whyTheyMatch', 'potentialChallenges', 'recommendedActivities', 'ownerId']) &&
+        data.rank is number && data.rank >= 1 && data.rank <= 100 &&
+        data.maleName is string && data.maleName.size() <= 150 &&
+        data.femaleName is string && data.femaleName.size() <= 150 &&
+        data.score is number && data.score >= 0 && data.score <= 100 &&
+        data.whyTheyMatch is string && data.whyTheyMatch.size() <= 3000 &&
+        data.potentialChallenges is string && data.potentialChallenges.size() <= 3000 &&
+        data.recommendedActivities is list && data.recommendedActivities.size() <= 30;
+    }
+
+    // Participants Collection - attendees glimpse & organizer management
+    match /participants/{participantId} {
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(participantId) && isValidParticipant(incoming()) && (isAdmin() || incoming().ownerId == request.auth.uid);
+      allow update: if isSignedIn() && isValidId(participantId) && isValidParticipant(incoming()) && (isAdmin() || (existing().ownerId == request.auth.uid && incoming().ownerId == existing().ownerId));
+      allow delete: if isSignedIn() && isValidId(participantId) && (isAdmin() || existing().ownerId == request.auth.uid);
+    }
+
+    // Matches Collection - read by attendees, generated/managed by Admin
+    match /matches/{matchId} {
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(matchId) && isValidMatch(incoming()) && (isAdmin() || incoming().ownerId == request.auth.uid);
+      allow update: if isSignedIn() && isValidId(matchId) && isValidMatch(incoming()) && (isAdmin() || (existing().ownerId == request.auth.uid && incoming().ownerId == existing().ownerId));
+      allow delete: if isSignedIn() && isValidId(matchId) && (isAdmin() || existing().ownerId == request.auth.uid);
+    }
+
+    // Event & Admin Status
+    match /admins/{adminId} {
+      allow get, list: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

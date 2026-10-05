@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #62002d;
+  --color-primary-container: #831843;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #ff91b0;
+  --color-primary-fixed: #ffd9e1;
+  --color-primary-fixed-dim: #ffb1c5;
+  --color-on-primary-fixed: #3f001a;
+  --color-on-primary-fixed-variant: #861a45;
+  
+  --color-secondary: #b81059;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #fd4e8a;
+  --color-on-secondary-container: #590027;
+  --color-secondary-fixed: #ffd9e0;
+  --color-secondary-fixed-dim: #ffb1c3;
+  --color-on-secondary-fixed: #3f0019;
+  --color-on-secondary-fixed-variant: #8f0042;
+
+  --color-tertiary: #1c00a0;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #311fca;
+  --color-on-tertiary-container: #acaaff;
+  --color-tertiary-fixed: #e2dfff;
+  --color-tertiary-fixed-dim: #c3c0ff;
+  --color-on-tertiary-fixed: #0f0069;
+  --color-on-tertiary-fixed-variant: #3323cc;
+
+  --color-background: #faf8ff;
+  --color-on-background: #131b2e;
+  --color-surface: #faf8ff;
+  --color-surface-dim: #d2d9f4;
+  --color-surface-bright: #faf8ff;
+  --color-surface-tint: #a5345d;
+  --color-surface-variant: #dae2fd;
+  
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f2f3ff;
+  --color-surface-container: #eaedff;
+  --color-surface-container-high: #e2e7ff;
+  --color-surface-container-highest: #dae2fd;
+
+  --color-on-surface: #131b2e;
+  --color-on-surface-variant: #564146;
+  --color-inverse-surface: #283044;
+  --color-inverse-on-surface: #eef0ff;
+  --color-inverse-primary: #ffb1c5;
+
+  --color-outline: #897176;
+  --color-outline-variant: #dcc0c5;
+  
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --spacing-space-xs: 0.25rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-md: 1rem;
+  --spacing-space-lg: 1.5rem;
+  --spacing-space-xl: 2.5rem;
+  --spacing-margin: 2rem;
+  --spacing-margin-sm: 1rem;
+  --spacing-gutter: 1.5rem;
+  --spacing-gutter-sm: 1rem;
+}
+
+/* Material Symbols Helper */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+}
+
+/* Typography Utility Classes matching PRD and Provided HTML */
+.font-display-lg {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(26px, 5vw, 48px);
+  line-height: clamp(32px, 6vw, 56px);
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.font-headline-lg {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(20px, 4vw, 32px);
+  line-height: clamp(26px, 5vw, 40px);
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.font-headline-md {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(17px, 3.5vw, 24px);
+  line-height: clamp(22px, 4.5vw, 32px);
+  font-weight: 500;
+}
+
+.font-headline-sm {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(14px, 2.5vw, 18px);
+  line-height: clamp(20px, 3.5vw, 26px);
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.font-body-lg {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(14px, 2vw, 16px);
+  line-height: clamp(20px, 2.5vw, 24px);
+  font-weight: 400;
+}
+
+.font-body-md {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(12px, 1.8vw, 14px);
+  line-height: clamp(17px, 2.3vw, 20px);
+  font-weight: 400;
+}
+
+.font-body-sm {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(11px, 1.5vw, 12px);
+  line-height: clamp(15px, 2vw, 18px);
+  font-weight: 400;
+}
+
+.font-label-lg {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(12px, 1.8vw, 14px);
+  line-height: clamp(17px, 2.3vw, 20px);
+  letter-spacing: 0.01em;
+  font-weight: 600;
+}
+
+.font-label-md {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(11px, 1.5vw, 12px);
+  line-height: clamp(15px, 2vw, 16px);
+  letter-spacing: 0.02em;
+  font-weight: 600;
+}
+
+.font-label-sm {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 10px;
+  line-height: 13px;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+@media (min-width: 640px) {
+  .font-label-sm {
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: 0.04em;
+  }
+}
+
+/* Print Styles for Export Summary */
+@media print {
+  header, aside, .no-print, button {
+    display: none !important;
+  }
+  .pl-64 {
+    padding-left: 0 !important;
+  }
+  main {
+    padding-top: 0 !important;
+    background: white !important;
+  }
+  .card-details {
+    display: block !important;
+  }
+}

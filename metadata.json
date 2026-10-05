@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Jodoh by AI",
+  "description": "Executive-tier matchmaking suite for event organizers. Manually enter attendee profiles and generate AI-powered Top 10 compatibility matches with detailed rationale, challenges, and tailored date ideas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
