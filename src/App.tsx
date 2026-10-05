@@ -18,6 +18,7 @@ import { AdminResetModal } from './components/AdminResetModal';
 import { AuthView } from './components/AuthView';
 import { Toast } from './components/Toast';
 import { LanguageModal } from './components/LanguageModal';
+import { AiConciergeModal } from './components/AiConciergeModal';
 import { useLanguage } from './context/LanguageContext';
 import {
   auth,
@@ -141,6 +142,19 @@ export default function App() {
   const [activeSessionTitle, setActiveSessionTitle] = useState<string | undefined>(undefined);
   const [isSavedSessionsModalOpen, setIsSavedSessionsModalOpen] = useState(false);
   const [isAdminResetModalOpen, setIsAdminResetModalOpen] = useState(false);
+
+  // AI Concierge & Relationship Advisor State
+  const [isAiConciergeOpen, setIsAiConciergeOpen] = useState(false);
+  const [conciergeSelectedRank, setConciergeSelectedRank] = useState<number | 'ALL'>('ALL');
+
+  const handleOpenConcierge = (rank?: number) => {
+    if (rank !== undefined) {
+      setConciergeSelectedRank(rank);
+    } else {
+      setConciergeSelectedRank('ALL');
+    }
+    setIsAiConciergeOpen(true);
+  };
 
   const showToast = (msg: string, error = false) => {
     setToastMessage(msg);
@@ -718,6 +732,7 @@ export default function App() {
         onSignOut={handleSignOut}
         isCloudSyncing={isCloudSyncing}
         onToggleRole={handleToggleRole}
+        onOpenConcierge={() => handleOpenConcierge()}
       />
 
       {/* Fixed Left Navigation Rail */}
@@ -739,6 +754,7 @@ export default function App() {
         onOpenSavedSessions={() => setIsSavedSessionsModalOpen(true)}
         onOpenResetModal={isAdmin ? () => setIsAdminResetModalOpen(true) : undefined}
         savedSessionsCount={savedSessions.length}
+        onOpenConcierge={() => handleOpenConcierge()}
       />
 
       {/* Main Content Area */}
@@ -776,6 +792,7 @@ export default function App() {
                   onViewMatches={() => setActiveTab('top-10-ai-matches')}
                   onOpenSavedSessions={() => setIsSavedSessionsModalOpen(true)}
                   savedSessionsCount={savedSessions.filter(s => s.isPublished).length}
+                  onOpenConcierge={() => handleOpenConcierge()}
                 />
               )
             ) : (
@@ -803,10 +820,38 @@ export default function App() {
                 onOpenResetModal={isAdmin ? () => setIsAdminResetModalOpen(true) : undefined}
                 savedSessionsCount={savedSessions.length}
                 activeSessionTitle={activeSessionTitle}
+                onOpenConcierge={handleOpenConcierge}
               />
             )}
           </div>
         </main>
+      </div>
+
+      {/* Floating AI Concierge / Dating Advisor Trigger Button (FAB) */}
+      <div className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40">
+        <button
+          type="button"
+          onClick={() => handleOpenConcierge()}
+          className="group flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer border border-white/25 select-none"
+          title={isAdmin ? 'AI Matchmaking Concierge (Full Cohort Access)' : 'AI Dating Advisor (Official Partner)'}
+          aria-label="Buka AI Concierge"
+        >
+          <div className="relative flex items-center justify-center">
+            <span className="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform duration-300">
+              psychology
+            </span>
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-primary animate-pulse"></span>
+          </div>
+
+          <div className="flex flex-col text-left pr-1">
+            <span className="font-serif font-bold text-xs sm:text-sm leading-tight text-white whitespace-nowrap">
+              {isAdmin ? 'AI Concierge' : 'AI Dating Advisor'}
+            </span>
+            <span className="text-[10px] text-white/80 font-semibold tracking-tight whitespace-nowrap">
+              {isAdmin ? 'Full Access' : (currentParticipantProfile ? 'Official Partner' : 'Smart Advisor')}
+            </span>
+          </div>
+        </button>
       </div>
 
       {/* MODALS */}
@@ -896,6 +941,19 @@ export default function App() {
       <MatchingRulesModal
         isOpen={isMatchingRulesOpen}
         onClose={() => setIsMatchingRulesOpen(false)}
+      />
+
+      {/* AI Concierge & Relationship Advisor Modal */}
+      <AiConciergeModal
+        isOpen={isAiConciergeOpen}
+        onClose={() => setIsAiConciergeOpen(false)}
+        userRole={effectiveRole}
+        currentUser={userProfile}
+        participants={participants}
+        matches={matches}
+        matchesPublished={matchesPublished}
+        currentParticipantProfile={currentParticipantProfile}
+        initialCoupleRank={conciergeSelectedRank}
       />
     </div>
   );

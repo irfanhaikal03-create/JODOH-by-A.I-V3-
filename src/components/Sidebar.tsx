@@ -15,6 +15,7 @@ interface SidebarProps {
   onOpenSavedSessions?: () => void;
   onOpenResetModal?: () => void;
   savedSessionsCount?: number;
+  onOpenConcierge?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -30,6 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenSavedSessions,
   onOpenResetModal,
   savedSessionsCount = 0,
+  onOpenConcierge,
 }) => {
   const { t, languageInfo, openLanguageModal } = useLanguage();
   const isAdmin = userRole === 'admin';
@@ -144,6 +146,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     {savedSessionsCount}
                   </span>
                 )}
+              </button>
+            )}
+
+            {/* AI Concierge Chat Drawer Button */}
+            {onOpenConcierge && (
+              <button
+                type="button"
+                onClick={() => handleNavClick(onOpenConcierge)}
+                className="flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-primary bg-primary/10 hover:bg-primary/20 transition-all text-left cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="material-symbols-outlined text-xl text-primary">psychology</span>
+                  <span>AI Concierge</span>
+                </div>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary text-on-primary font-bold">
+                  {isAdmin ? 'Full Access' : 'Partner Advisor'}
+                </span>
               </button>
             )}
 

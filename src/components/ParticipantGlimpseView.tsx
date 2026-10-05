@@ -11,6 +11,7 @@ interface ParticipantGlimpseViewProps {
   onViewMatches: () => void;
   onOpenSavedSessions?: () => void;
   savedSessionsCount?: number;
+  onOpenConcierge?: () => void;
 }
 
 export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
@@ -22,6 +23,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
   onViewMatches,
   onOpenSavedSessions,
   savedSessionsCount = 0,
+  onOpenConcierge,
 }) => {
   const { t, translateGender, translateMarital, translateSmoking } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
@@ -98,7 +100,17 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   : 'Pihak penganjur telah memuktamadkan senarai pasangan serasi bagi kohort acara ini.'}
               </p>
             </div>
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-2 shrink-0 flex-wrap">
+              {onOpenConcierge && myMatch && (
+                <button
+                  type="button"
+                  onClick={onOpenConcierge}
+                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-xl bg-white/20 text-white font-bold text-xs hover:bg-white/30 transition-all cursor-pointer backdrop-blur-xs border border-white/30 active:scale-95 shadow-sm"
+                >
+                  <span className="material-symbols-outlined text-base">psychology</span>
+                  <span>Tanya AI Concierge Pasangan</span>
+                </button>
+              )}
               {onOpenSavedSessions && (
                 <button
                   type="button"
@@ -220,6 +232,44 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
               </p>
             </div>
           </div>
+
+          {/* OFFICIAL PARTNER SPOTLIGHT BOX */}
+          {myMatch && (
+            <div className="mt-4 p-4 rounded-xl bg-primary/10 border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-xl bg-primary text-on-primary flex items-center justify-center text-xl shrink-0 shadow-xs ring-2 ring-primary/20">
+                  💍
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] uppercase font-bold text-primary tracking-wider">
+                      Pasangan Rasmi Anda • Padanan #{myMatch.rank}
+                    </span>
+                    <span className="px-1.5 py-0.2 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold">
+                      {myMatch.score}% Keserasian
+                    </span>
+                  </div>
+                  <h3 className="text-base font-serif font-bold text-on-surface">
+                    {myProfile.gender === 'Male' ? myMatch.femaleName : myMatch.maleName}
+                  </h3>
+                  <p className="text-xs text-on-surface-variant">
+                    {myProfile.gender === 'Male' ? myMatch.femaleOccupation : myMatch.maleOccupation} • {myProfile.gender === 'Male' ? myMatch.femaleLocation : myMatch.maleLocation}
+                  </p>
+                </div>
+              </div>
+
+              {onOpenConcierge && (
+                <button
+                  type="button"
+                  onClick={onOpenConcierge}
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-xs hover:bg-primary/90 transition-all cursor-pointer shrink-0 active:scale-95"
+                >
+                  <span className="material-symbols-outlined text-base">psychology</span>
+                  <span>Tanya AI Dating Advisor (Recap & Dates)</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
 

@@ -17,6 +17,7 @@ interface HeaderProps {
   onSignOut?: () => void;
   isCloudSyncing?: boolean;
   onToggleRole?: () => void;
+  onOpenConcierge?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -33,6 +34,7 @@ export const Header: React.FC<HeaderProps> = ({
   onSignOut,
   isCloudSyncing,
   onToggleRole,
+  onOpenConcierge,
 }) => {
   const { t, languageInfo, openLanguageModal } = useLanguage();
   const isAdmin = userRole === 'admin';
@@ -133,6 +135,24 @@ export const Header: React.FC<HeaderProps> = ({
             translate
           </span>
         </button>
+
+        {/* AI Concierge Chat Trigger Button */}
+        {onOpenConcierge && (
+          <button
+            type="button"
+            onClick={onOpenConcierge}
+            title={isAdmin ? 'AI Matchmaking Concierge (Full Access)' : 'AI Relationship Advisor (Official Partner)'}
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 h-8 sm:h-9 rounded-full text-xs font-bold transition-all shadow-xs border border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary cursor-pointer shrink-0 whitespace-nowrap active:scale-95"
+            aria-label="AI Concierge"
+          >
+            <span className="material-symbols-outlined text-sm sm:text-base text-primary leading-none">
+              psychology
+            </span>
+            <span className="hidden md:inline font-bold text-xs">
+              AI Concierge
+            </span>
+          </button>
+        )}
 
         {isAuthenticated ? (
           <div className="flex items-center gap-2 sm:gap-3 shrink-0 flex-nowrap">

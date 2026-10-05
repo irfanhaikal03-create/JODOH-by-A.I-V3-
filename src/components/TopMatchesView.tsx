@@ -35,6 +35,7 @@ interface TopMatchesViewProps {
   onOpenResetModal?: () => void;
   savedSessionsCount?: number;
   activeSessionTitle?: string;
+  onOpenConcierge?: (rank?: number) => void;
 }
 
 export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
@@ -55,6 +56,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
   onOpenResetModal,
   savedSessionsCount = 0,
   activeSessionTitle,
+  onOpenConcierge,
 }) => {
   const { t, translateSmoking } = useLanguage();
   const isAdmin = userRole === 'admin';
@@ -421,17 +423,29 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => {
-              setExpandedCards(prev => ({ ...prev, [myMatch.rank]: true }));
-              const el = document.getElementById(`match-card-${myMatch.rank}`);
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="px-4 py-2.5 rounded-xl bg-white text-primary text-xs font-bold shadow-md hover:bg-surface-container-lowest transition-all shrink-0 cursor-pointer"
-          >
-            Lihat Butiran Padanan
-          </button>
+          <div className="flex items-center gap-2 flex-wrap shrink-0">
+            {onOpenConcierge && (
+              <button
+                type="button"
+                onClick={() => onOpenConcierge(myMatch.rank)}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-bold transition-all shrink-0 cursor-pointer backdrop-blur-xs border border-white/30 active:scale-95 shadow-sm"
+              >
+                <span className="material-symbols-outlined text-base">psychology</span>
+                <span>Tanya AI Dating Advisor</span>
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                setExpandedCards(prev => ({ ...prev, [myMatch.rank]: true }));
+                const el = document.getElementById(`match-card-${myMatch.rank}`);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="px-4 py-2.5 rounded-xl bg-white text-primary text-xs font-bold shadow-md hover:bg-surface-container-lowest transition-all shrink-0 cursor-pointer active:scale-95"
+            >
+              Lihat Butiran Padanan
+            </button>
+          </div>
         </div>
       )}
 
@@ -533,6 +547,19 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
               </div>
             </div>
 
+            {/* AI Concierge Chat Trigger Button */}
+            {onOpenConcierge && (
+              <button
+                type="button"
+                onClick={() => onOpenConcierge()}
+                className="flex items-center gap-1.5 px-3 py-2 sm:px-space-md sm:py-space-sm rounded-lg bg-primary/10 hover:bg-primary/20 text-primary border border-primary/25 transition-all text-xs sm:text-label-lg font-bold shadow-xs cursor-pointer"
+                title={isAdmin ? 'AI Matchmaking Concierge (Full Cohort Access)' : 'AI Dating Advisor'}
+              >
+                <span className="material-symbols-outlined text-base sm:text-lg">psychology</span>
+                <span>{isAdmin ? 'AI Concierge' : 'Tanya AI'}</span>
+              </button>
+            )}
+
             {isAdmin ? (
               <>
                 {/* 1. Save directly into App Archive (Draf Dalam Aplikasi) */}
@@ -612,6 +639,17 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
               </>
             ) : (
               <div className="flex items-center gap-2">
+                {onOpenConcierge && (
+                  <button
+                    type="button"
+                    onClick={() => onOpenConcierge()}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold border border-primary/25 cursor-pointer shadow-xs"
+                    title="Tanya AI Dating Advisor"
+                  >
+                    <span className="material-symbols-outlined text-base">psychology</span>
+                    <span>Tanya AI Dating Advisor</span>
+                  </button>
+                )}
                 {onOpenSavedSessions && (
                   <button
                     type="button"
@@ -979,6 +1017,28 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   ))}
                 </ul>
               </div>
+
+              {/* Bottom Action Bar for Match #1 */}
+              {onOpenConcierge && (isAdmin || (myMatch && myMatch.rank === 1)) && (
+                <div className="col-span-1 md:col-span-3 mt-3 pt-3 border-t border-outline-variant/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                  <div className="flex items-center gap-2 text-xs text-on-surface-variant font-medium">
+                    <span className="material-symbols-outlined text-base text-primary">psychology</span>
+                    <span>
+                      {isAdmin
+                        ? 'AI Concierge: Analisis mendalam kekuatan nilai & cadangan aktiviti Pasangan #1'
+                        : 'AI Dating Advisor: Bincang idea temu janji & pengukuhan hubungan'}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onOpenConcierge(1)}
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold shadow-xs hover:bg-primary/90 transition-all cursor-pointer self-start sm:self-auto active:scale-95"
+                  >
+                    <span className="material-symbols-outlined text-sm">chat</span>
+                    <span>{isAdmin ? 'Analisis Pasangan #1 dengan AI' : 'Tanya AI Mengenai Pasangan Ini'}</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1126,6 +1186,24 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                           ))}
                         </ul>
                       </div>
+
+                      {/* Secondary Match Card Concierge Action */}
+                      {onOpenConcierge && (isAdmin || (myMatch && myMatch.rank === match.rank)) && (
+                        <div className="mt-3 pt-3 border-t border-outline-variant/15 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <div className="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+                            <span className="material-symbols-outlined text-base text-primary">psychology</span>
+                            <span>{isAdmin ? `AI Analysis untuk Pasangan #${match.rank}` : 'Personal AI Dating Advisor'}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => onOpenConcierge(match.rank)}
+                            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold transition-all cursor-pointer self-start sm:self-auto active:scale-95"
+                          >
+                            <span className="material-symbols-outlined text-sm">chat</span>
+                            <span>{isAdmin ? `Bincang Pasangan #${match.rank} dengan AI` : 'Tanya AI Mengenai Pasangan Ini'}</span>
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
