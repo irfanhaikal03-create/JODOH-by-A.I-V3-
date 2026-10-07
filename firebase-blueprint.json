@@ -99,6 +99,47 @@
         "isPublished",
         "participantsCount"
       ]
+    },
+    "AiChatSession": {
+      "title": "AiChatSession",
+      "description": "Conversation log between a participant and AI Dating Advisor about their official partner.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "participantId": { "type": "string", "maxLength": 128 },
+        "participantName": { "type": "string", "maxLength": 150 },
+        "participantEmail": { "type": "string", "maxLength": 150 },
+        "partnerId": { "type": "string", "maxLength": 128 },
+        "partnerName": { "type": "string", "maxLength": 150 },
+        "coupleRank": { "type": "number" },
+        "messages": { "type": "array" },
+        "lastMessage": { "type": "string", "maxLength": 2000 },
+        "lastUpdated": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": [
+        "id",
+        "participantId",
+        "participantName",
+        "partnerName",
+        "messages"
+      ]
+    },
+    "SystemSetting": {
+      "title": "SystemSetting",
+      "description": "Real-time global event state such as active matches and publication status.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "matches": { "type": "array" },
+        "matchesPublished": { "type": "boolean" },
+        "activeSessionId": { "type": "string", "maxLength": 128 },
+        "updatedAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": [
+        "id",
+        "matchesPublished"
+      ]
     }
   },
   "firestore": {
@@ -113,6 +154,14 @@
     "/saved_match_sessions/{sessionId}": {
       "schema": { "$ref": "#/entities/SavedMatchSession" },
       "description": "Collection of saved AI matchmaking sessions and publish state."
+    },
+    "/ai_chats/{chatId}": {
+      "schema": { "$ref": "#/entities/AiChatSession" },
+      "description": "Collection of participant AI chat conversations accessible by participants and organizers."
+    },
+    "/system_settings/{settingId}": {
+      "schema": { "$ref": "#/entities/SystemSetting" },
+      "description": "Global synchronized application settings and published matching state."
     }
   }
 }

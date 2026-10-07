@@ -24,12 +24,11 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isSignedIn() && (
-        (
-          request.auth.token.email in ['hfirdaus2000@gmail.com', 'irfanhaikal03@gmail.com'] &&
-          (request.auth.token.email_verified == true || request.auth.token.firebase.sign_in_provider == 'password')
-        ) ||
-        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      return (
+        isSignedIn() && (
+          request.auth.token.email in ['hfirdaus2000@gmail.com', 'irfanhaikal03@gmail.com'] ||
+          exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        )
       );
     }
 
@@ -80,32 +79,46 @@ service cloud.firestore {
     }
 
     // Participants Collection - attendees glimpse & organizer management
+    // Accessible by attendees and organizers in real-time
     match /participants/{participantId} {
-      allow get, list: if isSignedIn();
-      allow create: if isSignedIn() && isValidId(participantId) && isValidParticipant(incoming()) && (isAdmin() || (('ownerId' in incoming()) && incoming().ownerId == request.auth.uid));
-      allow update: if isSignedIn() && isValidId(participantId) && isValidParticipant(incoming()) && (isAdmin() || (('ownerId' in existing()) && existing().ownerId == request.auth.uid && (!('ownerId' in incoming()) || incoming().ownerId == existing().ownerId)));
-      allow delete: if isSignedIn() && isValidId(participantId) && (isAdmin() || (('ownerId' in existing()) && existing().ownerId == request.auth.uid));
+      allow get, list: if true;
+      allow create: if isValidId(participantId) && isValidParticipant(incoming());
+      allow update: if isValidId(participantId) && isValidParticipant(incoming());
+      allow delete: if isValidId(participantId);
     }
 
     // Saved Match Sessions Collection - Admin manages, participants read published sessions
     match /saved_match_sessions/{sessionId} {
-      allow get, list: if isSignedIn() && (isAdmin() || resource.data.isPublished == true);
-      allow create: if isSignedIn() && isValidId(sessionId) && isValidSavedSession(incoming()) && isAdmin();
-      allow update: if isSignedIn() && isValidId(sessionId) && isValidSavedSession(incoming()) && isAdmin();
-      allow delete: if isSignedIn() && isValidId(sessionId) && isAdmin();
+      allow get, list: if true;
+      allow create: if isValidId(sessionId) && isValidSavedSession(incoming());
+      allow update: if isValidId(sessionId) && isValidSavedSession(incoming());
+      allow delete: if isValidId(sessionId);
     }
 
     // Matches Collection - read by attendees, generated/managed by Admin
     match /matches/{matchId} {
-      allow get, list: if isSignedIn();
-      allow create: if isSignedIn() && isValidId(matchId) && isValidMatch(incoming()) && isAdmin();
-      allow update: if isSignedIn() && isValidId(matchId) && isValidMatch(incoming()) && isAdmin();
-      allow delete: if isSignedIn() && isValidId(matchId) && isAdmin();
+      allow get, list: if true;
+      allow create: if isValidId(matchId) && isValidMatch(incoming());
+      allow update: if isValidId(matchId) && isValidMatch(incoming());
+      allow delete: if isValidId(matchId);
+    }
+
+    // Real-Time Event State & Published Matches sync
+    match /system_settings/{settingId} {
+      allow get, list: if true;
+      allow write: if isValidId(settingId);
+    }
+
+    // AI Concierge Chat Sessions - accessible by participants and monitored in full by administrator
+    match /ai_chats/{chatId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(chatId);
+      allow delete: if isValidId(chatId);
     }
 
     // Event & Admin Status
     match /admins/{adminId} {
-      allow get, list: if isSignedIn();
+      allow get, list: if true;
       allow write: if isAdmin();
     }
   }

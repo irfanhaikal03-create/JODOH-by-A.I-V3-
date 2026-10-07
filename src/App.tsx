@@ -40,6 +40,7 @@ import {
   setDoc,
   deleteDoc,
   onSnapshot,
+  getDocs,
 } from 'firebase/firestore';
 
 const STORAGE_PARTICIPANTS = 'jodoh_organizer_participants';
@@ -199,52 +200,19 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // Real-time Firestore sync for Participants when user is logged in
+  // Real-time Firestore sync for Participants across all devices
   useEffect(() => {
-    if (!currentUser && !userProfile) return;
-
-    const path = 'participants';
-    const participantsCol = collection(db, path);
+    const participantsCol = collection(db, 'participants');
 
     const unsubscribe = onSnapshot(
       participantsCol,
       snapshot => {
-        if (!snapshot.empty) {
-          const remoteParticipants: Participant[] = [];
-          snapshot.forEach(docSnap => {
-            const data = docSnap.data() as Participant;
-            remoteParticipants.push(data);
-          });
-          setParticipants(remoteParticipants);
-        } else if (participants.length > 0 && isAdmin) {
-          // If remote is empty, seed with current cohort by Administrator
-          setIsCloudSyncing(true);
-          Promise.all(
-            participants.map(p =>
-              setDoc(doc(db, 'participants', p.id), {
-                id: p.id,
-                name: p.name,
-                gender: p.gender,
-                age: p.age,
-                occupation: p.occupation,
-                location: p.location,
-                marital: p.marital,
-                smoking: p.smoking,
-                hobbies: p.hobbies || [],
-                ideal: p.ideal || '',
-                photo: p.photo || '',
-                createdAt: p.createdAt || new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                ownerId: p.ownerId || currentUser?.uid || 'admin',
-              })
-            )
-          )
-            .then(() => setIsCloudSyncing(false))
-            .catch(err => {
-              setIsCloudSyncing(false);
-              console.warn('Initial seeding Firestore notice:', err);
-            });
-        }
+        const remoteParticipants: Participant[] = [];
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data() as Participant;
+          remoteParticipants.push(data);
+        });
+        setParticipants(remoteParticipants);
       },
       error => {
         console.warn('Firestore snapshot error:', error.message);
@@ -252,7 +220,37 @@ export default function App() {
     );
 
     return () => unsubscribe();
-  }, [currentUser, userProfile]);
+  }, []);
+
+  // Real-time Firestore sync for Active Matches & Publication state
+  useEffect(() => {
+    const docRef = doc(db, 'system_settings', 'active_matches');
+    const unsubscribe = onSnapshot(
+      docRef,
+      docSnap => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (Array.isArray(data.matches)) {
+            setMatches(data.matches);
+          }
+          if (typeof data.matchesPublished === 'boolean') {
+            setMatchesPublished(data.matchesPublished);
+          }
+          if (data.activeSessionId !== undefined) {
+            setActiveSessionId(data.activeSessionId || undefined);
+          }
+          if (data.activeSessionTitle !== undefined) {
+            setActiveSessionTitle(data.activeSessionTitle || undefined);
+          }
+        }
+      },
+      error => {
+        console.warn('Firestore active_matches snapshot notice:', error.message);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
 
   // Sync participants to Local Storage
   useEffect(() => {
@@ -416,27 +414,59 @@ export default function App() {
   };
 
   // Admin Reset Actions
-  const handleResetActiveMatches = () => {
+  const handleResetActiveMatches = async () => {
     setMatches([]);
     setMatchesPublished(false);
     setActiveSessionId(undefined);
     setActiveSessionTitle(undefined);
     localStorage.removeItem(STORAGE_MATCHES);
     localStorage.setItem(STORAGE_MATCHES_PUBLISHED, JSON.stringify(false));
-    showToast('Keputusan pemadanan AI semasa telah dikosongkan.');
+
+    try {
+      await setDoc(doc(db, 'system_settings', 'active_matches'), {
+        matches: [],
+        matchesPublished: false,
+        activeSessionId: null,
+        activeSessionTitle: null,
+        updatedAt: new Date().toISOString(),
+      });
+      const matchDocs = await getDocs(collection(db, 'matches'));
+      for (const d of matchDocs.docs) {
+        await deleteDoc(d.ref);
+      }
+    } catch (e) {
+      console.warn('Cloud reset active matches notice:', e);
+    }
+    showToast('Keputusan pemadanan AI semasa telah dikosongkan dan disegerakkan ke Cloud.');
+  };
+
+  const handleClearAllParticipants = async () => {
+    setParticipants([]);
+    localStorage.removeItem(STORAGE_PARTICIPANTS);
+    try {
+      const snap = await getDocs(collection(db, 'participants'));
+      for (const d of snap.docs) {
+        await deleteDoc(d.ref);
+      }
+    } catch (e) {
+      console.warn('Cloud clear participants notice:', e);
+    }
+    showToast('Semua calon peserta telah dipadamkan (Senarai kini kosong).');
   };
 
   const handleResetSavedSessions = async () => {
-    const sessionIds = savedSessions.map(s => s.id);
     setSavedSessions([]);
     setActiveSessionId(undefined);
     setActiveSessionTitle(undefined);
     localStorage.removeItem(STORAGE_SAVED_SESSIONS);
 
-    for (const id of sessionIds) {
-      try {
-        await deleteDoc(doc(db, 'saved_match_sessions', id));
-      } catch (e) {}
+    try {
+      const snap = await getDocs(collection(db, 'saved_match_sessions'));
+      for (const d of snap.docs) {
+        await deleteDoc(d.ref);
+      }
+    } catch (e) {
+      console.warn('Cloud clear sessions notice:', e);
     }
     showToast('Semua rekod arkib telah dipadamkan.');
   };
@@ -452,18 +482,23 @@ export default function App() {
 
     setParticipants(seededParticipants);
     localStorage.setItem(STORAGE_PARTICIPANTS, JSON.stringify(seededParticipants));
-    for (const p of seededParticipants) {
-      try {
-        await setDoc(doc(db, 'participants', p.id), p);
-      } catch (e) {
-        console.warn('Seeding participant notice:', e);
+
+    try {
+      const snap = await getDocs(collection(db, 'participants'));
+      for (const d of snap.docs) {
+        await deleteDoc(d.ref);
       }
+      for (const p of seededParticipants) {
+        await setDoc(doc(db, 'participants', p.id), p);
+      }
+    } catch (e) {
+      console.warn('Seeding participant notice:', e);
     }
-    showToast('Senarai calon peserta telah dikembalikan ke senarai asal.');
+    showToast('Senarai calon peserta telah dikembalikan ke senarai asal (20 peserta).');
   };
 
   const handleFullSystemReset = async () => {
-    handleResetActiveMatches();
+    await handleResetActiveMatches();
     await handleResetSavedSessions();
     await handleResetParticipantsToDefault();
     showToast('Set semula penuh sistem telah berjaya diselesaikan.');
@@ -549,38 +584,36 @@ export default function App() {
       localStorage.setItem(STORAGE_USER_SESSION, JSON.stringify(updatedProfile));
     }
 
-    if (currentUser) {
-      setIsCloudSyncing(true);
-      try {
-        await setDoc(doc(db, 'participants', participant.id), {
-          id: participant.id,
-          name: participant.name,
-          gender: participant.gender,
-          age: participant.age,
-          occupation: participant.occupation,
-          location: participant.location,
-          marital: participant.marital,
-          smoking: participant.smoking,
-          hobbies: participant.hobbies || [],
-          ideal: participant.ideal || '',
-          photo: participant.photo || '',
-          createdAt: participant.createdAt || new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          ownerId: participant.ownerId || currentUser.uid,
-          userId: participant.userId || currentUser.uid,
-          userEmail: participant.userEmail || currentUser.email || '',
-        });
-        setIsCloudSyncing(false);
-      } catch (err) {
-        setIsCloudSyncing(false);
-        console.warn('Firestore write warning:', err);
-      }
+    setIsCloudSyncing(true);
+    try {
+      await setDoc(doc(db, 'participants', participant.id), {
+        id: participant.id,
+        name: participant.name,
+        gender: participant.gender,
+        age: participant.age,
+        occupation: participant.occupation,
+        location: participant.location,
+        marital: participant.marital,
+        smoking: participant.smoking,
+        hobbies: participant.hobbies || [],
+        ideal: participant.ideal || '',
+        photo: participant.photo || '',
+        createdAt: participant.createdAt || new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        ownerId: participant.ownerId || currentUser?.uid || userProfile?.uid || 'user',
+        userId: participant.userId || currentUser?.uid || userProfile?.uid || 'user',
+        userEmail: participant.userEmail || currentUser?.email || userProfile?.email || '',
+      });
+      setIsCloudSyncing(false);
+    } catch (err) {
+      setIsCloudSyncing(false);
+      console.warn('Firestore write warning:', err);
     }
 
     setIsAddEditModalOpen(false);
     setIsMyProfileModalOpen(false);
     setParticipantToEdit(null);
-    showToast('Profil peserta berjaya disimpan.');
+    showToast('Profil peserta berjaya disimpan dan disegerakkan.');
   };
 
   // Delete Candidate handler (Administrator Only)
@@ -593,15 +626,13 @@ export default function App() {
     const targetId = participantToDelete.id;
     setParticipants(prev => prev.filter(p => p.id !== targetId));
 
-    if (currentUser) {
-      setIsCloudSyncing(true);
-      try {
-        await deleteDoc(doc(db, 'participants', targetId));
-        setIsCloudSyncing(false);
-      } catch (err) {
-        setIsCloudSyncing(false);
-        console.warn('Firestore delete warning:', err);
-      }
+    setIsCloudSyncing(true);
+    try {
+      await deleteDoc(doc(db, 'participants', targetId));
+      setIsCloudSyncing(false);
+    } catch (err) {
+      setIsCloudSyncing(false);
+      console.warn('Firestore delete warning:', err);
     }
 
     setParticipantToDelete(null);
@@ -654,6 +685,15 @@ export default function App() {
       setMatches(newMatches);
       setMatchesPublished(true);
       localStorage.setItem(STORAGE_MATCHES_PUBLISHED, 'true');
+      try {
+        await setDoc(doc(db, 'system_settings', 'active_matches'), {
+          matches: newMatches,
+          matchesPublished: true,
+          updatedAt: new Date().toISOString(),
+        });
+      } catch (e) {
+        console.warn('Sync active matches notice:', e);
+      }
     }
   };
 
@@ -684,6 +724,15 @@ export default function App() {
       setMatches(newMatches);
       setMatchesPublished(true);
       localStorage.setItem(STORAGE_MATCHES_PUBLISHED, 'true');
+      try {
+        await setDoc(doc(db, 'system_settings', 'active_matches'), {
+          matches: newMatches,
+          matchesPublished: true,
+          updatedAt: new Date().toISOString(),
+        });
+      } catch (e) {
+        console.warn('Sync active matches notice:', e);
+      }
       showToast(`Top ${newMatches.length} Padanan berjaya dikemaskini bagi ${participants.length} calon.`);
     } else {
       showToast('Padanan berjaya dikemaskini menggunakan model algoritma keserasian.');
@@ -887,6 +936,7 @@ export default function App() {
         onClose={() => setIsAdminResetModalOpen(false)}
         onResetActiveMatches={handleResetActiveMatches}
         onResetSavedSessions={handleResetSavedSessions}
+        onClearAllParticipants={handleClearAllParticipants}
         onResetParticipantsToDefault={handleResetParticipantsToDefault}
         onFullSystemReset={handleFullSystemReset}
       />

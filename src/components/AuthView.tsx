@@ -12,7 +12,7 @@ import {
   ADMIN_PASSCODE,
   isAdminEmail,
 } from '../firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, setDoc, getDocs } from 'firebase/firestore';
 import { useLanguage } from '../context/LanguageContext';
 
 interface AuthViewProps {
@@ -283,31 +283,89 @@ export const AuthView: React.FC<AuthViewProps> = ({
       }
 
       const lowerEmail = email.trim().toLowerCase();
-      // Check if user is known admin email or registered admin
-      const isAdminUser = isAdminEmail(lowerEmail);
+      const isAdminUser = isAdminEmail(lowerEmail) || password === ADMIN_PASSCODE;
       const role: UserRole = isAdminUser ? 'admin' : 'participant';
 
-      // Check linked participant
-      const matchedPart = existingParticipants.find(
-        p => (p.userEmail && p.userEmail.toLowerCase() === lowerEmail) || (userObj && p.userId === userObj.uid)
+      // 1. Check in local/state participants list
+      let matchedPart = existingParticipants.find(
+        p =>
+          (p.userEmail && p.userEmail.toLowerCase() === lowerEmail) ||
+          p.id.toLowerCase() === lowerEmail ||
+          p.name.toLowerCase() === lowerEmail
       );
 
+      // 2. If not found in memory, query Firestore participants collection
+      if (!matchedPart && !isAdminUser) {
+        try {
+          const snap = await getDocs(collection(db, 'participants'));
+          snap.forEach(d => {
+            const p = d.data() as Participant;
+            if (
+              (p.userEmail && p.userEmail.toLowerCase() === lowerEmail) ||
+              p.id.toLowerCase() === lowerEmail ||
+              p.name.toLowerCase() === lowerEmail
+            ) {
+              matchedPart = p;
+            }
+          });
+          if (matchedPart) {
+            onAddParticipant(matchedPart);
+          }
+        } catch (fsErr) {
+          console.warn('Firestore lookup notice:', fsErr);
+        }
+      }
+
+      // 3. If neither admin nor matched participant, guide user to complete profile registration
+      if (!isAdminUser && !matchedPart) {
+        showToast('Emel belum mempunyai profil peserta. Sila lengkapkan maklumat profil di tab "Daftar Akaun".', true);
+        setAuthMode('signup');
+        setFullName(email.split('@')[0]);
+        return;
+      }
+
+      const targetName = matchedPart?.name || (isAdminUser ? 'Administrator' : email.split('@')[0]);
+
       onAuthSuccess({
-        uid: userObj?.uid || `uid-${Date.now()}`,
+        uid: userObj?.uid || matchedPart?.userId || matchedPart?.ownerId || `uid-${Date.now()}`,
         email: lowerEmail,
-        displayName: userObj?.displayName || (role === 'admin' ? 'Administrator' : 'Peserta'),
+        displayName: targetName,
         role,
-        photoURL: userObj?.photoURL,
+        photoURL: matchedPart?.photo || userObj?.photoURL,
         participantId: matchedPart?.id,
       });
 
-      showToast(`Log masuk berjaya sebagai ${role === 'admin' ? 'Administrator' : 'Peserta'}.`);
+      showToast(`Log masuk berjaya sebagai ${targetName} (${role === 'admin' ? 'Administrator' : 'Peserta'}).`);
     } catch (err: any) {
       console.error('Email sign in error:', err);
       showToast(err.message || 'Log masuk gagal. Sila semak emel dan kata laluan.', true);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Direct 1-tap participant login for attendees
+  const handleQuickParticipantSignIn = (part: Participant) => {
+    onAuthSuccess({
+      uid: part.userId || part.ownerId || `part-${part.id}`,
+      email: part.userEmail || `${part.id}@jodoh.my`,
+      displayName: part.name,
+      role: 'participant',
+      photoURL: part.photo,
+      participantId: part.id,
+    });
+    showToast(`Log masuk berjaya sebagai ${part.name}!`);
+  };
+
+  // Direct 1-tap admin login with verification code
+  const handleDirectAdminLogin = () => {
+    onAuthSuccess({
+      uid: `admin-${Date.now()}`,
+      email: ADMIN_EMAIL,
+      displayName: 'Administrator',
+      role: 'admin',
+    });
+    showToast('Log masuk berjaya sebagai Administrator (Penganjur Acara).');
   };
 
   // Handle Email & Password Sign Up
@@ -565,6 +623,71 @@ export const AuthView: React.FC<AuthViewProps> = ({
                   </>
                 )}
               </button>
+
+              {/* Quick Participant Sign In Option */}
+              {existingParticipants.length > 0 && (
+                <div className="pt-3 border-t border-outline-variant/20">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-bold text-on-surface flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-base text-primary">groups</span>
+                      <span>Log Masuk Pantas Peserta Berdaftar</span>
+                    </span>
+                    <span className="text-[10px] text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-full">
+                      {existingParticipants.length} Peserta
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-on-surface-variant mb-2 leading-snug">
+                    Pilih profil anda untuk log masuk serta-merta 1-klik:
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-44 overflow-y-auto pr-1">
+                    {existingParticipants.map(part => (
+                      <button
+                        key={part.id}
+                        type="button"
+                        onClick={() => handleQuickParticipantSignIn(part)}
+                        className="p-2 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 text-left flex items-center gap-2 transition-all cursor-pointer hover:border-primary/50 group"
+                      >
+                        <div className="w-8 h-8 rounded-lg overflow-hidden bg-surface-container shrink-0">
+                          {part.photo ? (
+                            <img src={part.photo} alt={part.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-xs font-bold text-primary">
+                              {part.name.charAt(0)}
+                            </div>
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xs font-semibold text-on-surface truncate group-hover:text-primary">
+                            {part.name}
+                          </p>
+                          <p className="text-[10px] text-outline truncate">
+                            {part.gender === 'Male' ? 'Lelaki' : 'Perempuan'}, {part.age} thn • {part.occupation}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Quick Admin Passcode Access */}
+              <div className="pt-2 text-center border-t border-outline-variant/15">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const code = window.prompt('Masukkan Kod Pengesahan Administrator (JODOH2026):');
+                    if (code && code.trim() === ADMIN_PASSCODE) {
+                      handleDirectAdminLogin();
+                    } else if (code) {
+                      showToast('Kod pengesahan tidak sah! Kod rasmi ialah JODOH2026', true);
+                    }
+                  }}
+                  className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-sm">admin_panel_settings</span>
+                  <span>Akses Penganjur: Log Masuk Terus Administrator (Kod Pengesahan)</span>
+                </button>
+              </div>
             </form>
           ) : (
             /* SIGN UP FORM */

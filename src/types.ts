@@ -66,3 +66,27 @@ export interface SavedMatchSession {
   savedBy?: string;
   participantsCount: number;
 }
+
+export interface AiChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: string;
+}
+
+export interface AiChatSession {
+  id: string;
+  participantId: string;
+  participantName: string;
+  participantGender?: 'Male' | 'Female';
+  participantEmail?: string;
+  partnerId?: string;
+  partnerName: string;
+  partnerOccupation?: string;
+  matchScore?: number;
+  coupleRank?: number | 'ALL';
+  messages: AiChatMessage[];
+  lastMessage?: string;
+  lastUpdated: string;
+  createdAt?: string;
+}
