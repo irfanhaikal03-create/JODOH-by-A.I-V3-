@@ -60,29 +60,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Aside Bar */}
       <aside
-        className={`fixed left-0 top-0 lg:top-20 bottom-0 w-72 lg:w-64 bg-surface-container-lowest shadow-2xl lg:shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 lg:z-40 flex flex-col justify-between py-4 px-3 border-r border-outline-variant/20 transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        className={`fixed left-0 top-0 lg:top-20 bottom-0 w-72 lg:w-64 bg-surface-container-lowest shadow-2xl lg:shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 lg:z-40 flex flex-col border-r border-outline-variant/20 transition-transform duration-300 ease-in-out select-none ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex flex-col gap-4">
-          {/* Header Row with Close Button for Mobile */}
-          <div className="flex items-center justify-between px-2 pt-2 lg:pt-0">
-            <span className="text-[11px] text-outline tracking-wider uppercase font-bold">
+        {/* Top Header Row with Close / Collapse Button (Mobile AND Desktop) */}
+        <div className="flex items-center justify-between px-3.5 py-3 border-b border-outline-variant/15 shrink-0 bg-surface-container-lowest">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="material-symbols-outlined text-lg text-primary shrink-0">view_sidebar</span>
+            <span className="text-[11px] text-outline tracking-wider uppercase font-bold truncate">
               {isAdmin ? t('adminSuite', 'Papan Kawalan Penganjur') : t('participantPortal', 'Portal Suai Kenal')}
             </span>
-
-            {/* Close Button on Smartphone / Tablet */}
-            <button
-              type="button"
-              onClick={onClose}
-              className="lg:hidden p-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-all cursor-pointer flex items-center justify-center shadow-xs"
-              title="Tutup menu"
-              aria-label="Tutup navigation menu"
-            >
-              <span className="material-symbols-outlined text-xl">close</span>
-            </button>
           </div>
 
+          {/* Universal Close Button on Mobile, Tablet & Desktop */}
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-error-container hover:text-on-error-container transition-all cursor-pointer flex items-center gap-1 shadow-xs shrink-0"
+            title="Tutup / Sembunyikan sidebar"
+            aria-label="Tutup navigation menu"
+          >
+            <span className="material-symbols-outlined text-lg">close</span>
+            <span className="text-[11px] font-semibold pr-0.5">Tutup</span>
+          </button>
+        </div>
+
+        {/* Scrollable Body: Nav Items & Bottom Section */}
+        <div className="flex-1 overflow-y-auto overscroll-contain py-3 px-3 flex flex-col justify-between gap-6 sidebar-scroll">
           <nav className="flex flex-col gap-1">
             <button
               type="button"
@@ -236,53 +241,53 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </button>
             )}
           </nav>
-        </div>
 
-        {/* Bottom Section */}
-        <div className="flex flex-col gap-3">
-          {/* Admin Publish Toggle Control */}
-          {isAdmin && onTogglePublish && (
-            <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-on-surface">
-                  {t('published', 'Penerbitan Keputusan')}
-                </span>
-                <span
-                  className={`w-2 h-2 rounded-full ${
-                    matchesPublished ? 'bg-emerald-500' : 'bg-amber-500'
+          {/* Bottom Section */}
+          <div className="flex flex-col gap-3 pb-8">
+            {/* Admin Publish Toggle Control */}
+            {isAdmin && onTogglePublish && (
+              <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-on-surface">
+                    {t('published', 'Penerbitan Keputusan')}
+                  </span>
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      matchesPublished ? 'bg-emerald-500' : 'bg-amber-500'
+                    }`}
+                  ></span>
+                </div>
+                <p className="text-[11px] text-on-surface-variant leading-tight">
+                  {matchesPublished
+                    ? (t('published', 'Diterbitkan') + ' - Peserta boleh melihat keputusan.')
+                    : (t('draft', 'Draf') + ' - Belum diterbitkan kepada peserta.')}
+                </p>
+                <button
+                  type="button"
+                  onClick={onTogglePublish}
+                  className={`w-full py-1.5 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    matchesPublished
+                      ? 'bg-surface-container-high hover:bg-surface-container-highest text-on-surface'
+                      : 'bg-primary text-on-primary hover:opacity-95 shadow-xs'
                   }`}
-                ></span>
+                >
+                  {matchesPublished ? t('withdrawPublish', 'Tarik Balik Penerbitan') : t('publishToParticipants', 'Terbitkan Kepada Peserta')}
+                </button>
               </div>
-              <p className="text-[11px] text-on-surface-variant leading-tight">
-                {matchesPublished
-                  ? (t('published', 'Diterbitkan') + ' - Peserta boleh melihat keputusan.')
-                  : (t('draft', 'Draf') + ' - Belum diterbitkan kepada peserta.')}
-              </p>
-              <button
-                type="button"
-                onClick={onTogglePublish}
-                className={`w-full py-1.5 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  matchesPublished
-                    ? 'bg-surface-container-high hover:bg-surface-container-highest text-on-surface'
-                    : 'bg-primary text-on-primary hover:opacity-95 shadow-xs'
-                }`}
-              >
-                {matchesPublished ? t('withdrawPublish', 'Tarik Balik Penerbitan') : t('publishToParticipants', 'Terbitkan Kepada Peserta')}
-              </button>
-            </div>
-          )}
+            )}
 
-          {/* Discreet Security Module */}
-          <div className="p-3 rounded-xl bg-surface-container-low flex flex-col gap-1 border border-outline-variant/15">
-            <div className="flex items-center gap-1.5 text-primary">
-              <span className="material-symbols-outlined text-sm">lock</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider">
-                {t('privacyGuaranteed', 'Privasi Terjamin')}
-              </span>
+            {/* Discreet Security Module */}
+            <div className="p-3 rounded-xl bg-surface-container-low flex flex-col gap-1 border border-outline-variant/15">
+              <div className="flex items-center gap-1.5 text-primary">
+                <span className="material-symbols-outlined text-sm">lock</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider">
+                  {t('privacyGuaranteed', 'Privasi Terjamin')}
+                </span>
+              </div>
+              <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                {t('privacyDesc', 'Data anda dilindungi dan diproses mengikut piawaian kerahsiaan acara.')}
+              </p>
             </div>
-            <p className="text-[11px] text-on-surface-variant leading-relaxed">
-              {t('privacyDesc', 'Data anda dilindungi dan diproses mengikut piawaian kerahsiaan acara.')}
-            </p>
           </div>
         </div>
       </aside>

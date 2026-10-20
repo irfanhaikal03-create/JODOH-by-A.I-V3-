@@ -126,9 +126,34 @@ export default function App() {
   const [isInsufficientModalOpen, setIsInsufficientModalOpen] = useState(false);
   const [isAffinityVectorsOpen, setIsAffinityVectorsOpen] = useState(false);
   const [isMatchingRulesOpen, setIsMatchingRulesOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
+    try {
+      const stored = localStorage.getItem('jodoh_sidebar_open');
+      if (stored !== null) {
+        return stored === 'true';
+      }
+      return typeof window !== 'undefined' ? window.innerWidth >= 1024 : true;
+    } catch (e) {
+      return true;
+    }
+  });
 
-  // Status & Toast State
+  const handleToggleSidebar = () => {
+    setIsSidebarOpen(prev => {
+      const next = !prev;
+      try {
+        localStorage.setItem('jodoh_sidebar_open', String(next));
+      } catch (e) {}
+      return next;
+    });
+  };
+
+  const handleCloseSidebar = () => {
+    setIsSidebarOpen(false);
+    try {
+      localStorage.setItem('jodoh_sidebar_open', 'false');
+    } catch (e) {}
+  };
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isToastError, setIsToastError] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
@@ -857,7 +882,8 @@ export default function App() {
         onTabChange={tab => setActiveTab(tab)}
         matchesCount={matches.length}
         isEligible={isEligible}
-        onToggleSidebar={() => setIsSidebarOpen(prev => !prev)}
+        onToggleSidebar={handleToggleSidebar}
+        isSidebarOpen={isSidebarOpen}
         currentUser={currentUser}
         userProfile={userProfile}
         userRole={effectiveRole}
@@ -877,7 +903,7 @@ export default function App() {
         onOpenAffinityVectors={() => setIsAffinityVectorsOpen(true)}
         onOpenMatchingRules={() => setIsMatchingRulesOpen(true)}
         isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
+        onClose={handleCloseSidebar}
         userRole={effectiveRole}
         matchesPublished={matchesPublished}
         onTogglePublish={() => {
@@ -893,8 +919,27 @@ export default function App() {
         onOpenWhatsAppModal={isAdmin ? handleOpenWhatsAppGeneral : undefined}
       />
 
+      {/* Floating Re-open Sidebar Button when closed on Desktop */}
+      {!isSidebarOpen && (
+        <button
+          type="button"
+          onClick={() => {
+            setIsSidebarOpen(true);
+            try {
+              localStorage.setItem('jodoh_sidebar_open', 'true');
+            } catch (e) {}
+          }}
+          className="hidden lg:flex fixed left-0 top-24 z-30 items-center gap-1.5 px-3 py-2 bg-surface-container-highest/95 hover:bg-primary hover:text-on-primary text-on-surface border border-l-0 border-outline-variant/30 rounded-r-xl shadow-md transition-all cursor-pointer font-semibold text-xs group backdrop-blur-xs"
+          title="Buka semula Menu Sidebar"
+          aria-label="Buka semula sidebar menu"
+        >
+          <span className="material-symbols-outlined text-lg">dock_to_right</span>
+          <span className="text-[11px] font-bold">Buka Menu</span>
+        </button>
+      )}
+
       {/* Main Content Area */}
-      <div className="lg:pl-64 pl-0 transition-all duration-300 min-h-screen">
+      <div className={`${isSidebarOpen ? 'lg:pl-64' : 'lg:pl-0'} pl-0 transition-all duration-300 min-h-screen`}>
         <main className="relative w-full pt-16 sm:pt-20 px-2.5 sm:px-space-md lg:px-space-xl pb-margin bg-background min-h-screen">
           <div className="w-full max-w-7xl mx-auto pt-space-md sm:pt-space-lg">
             {/* ROLE-BASED TAB VIEWS */}

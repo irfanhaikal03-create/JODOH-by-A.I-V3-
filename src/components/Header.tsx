@@ -11,6 +11,7 @@ interface HeaderProps {
   matchesCount: number;
   isEligible: boolean;
   onToggleSidebar?: () => void;
+  isSidebarOpen?: boolean;
   currentUser?: User | null;
   userProfile?: AppUser | null;
   userRole?: UserRole;
@@ -29,6 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
   matchesCount,
   isEligible,
   onToggleSidebar,
+  isSidebarOpen = true,
   currentUser,
   userProfile,
   userRole = 'admin',
@@ -57,16 +59,25 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="fixed top-0 left-0 right-0 h-16 sm:h-20 bg-surface-container-lowest/95 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex items-center justify-between px-3 sm:px-6 border-b border-outline-variant/20 flex-nowrap gap-2 sm:gap-4 overflow-hidden">
       {/* Left Branding & App Title Area */}
       <div className="flex items-center gap-2 sm:gap-3 shrink-0 min-w-0">
-        {/* Mobile Sidebar Toggle Button */}
+        {/* Sidebar Toggle Button (Mobile & Desktop) */}
         {onToggleSidebar && (
           <button
             type="button"
             onClick={onToggleSidebar}
-            className="lg:hidden p-1.5 rounded-lg text-on-surface hover:bg-surface-container transition-all cursor-pointer flex items-center justify-center shrink-0"
-            title="Buka menu navigasi"
-            aria-label="Buka navigasi menu"
+            className={`p-1.5 sm:p-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
+              isSidebarOpen
+                ? 'bg-primary/10 text-primary border-primary/25 shadow-xs'
+                : 'text-on-surface hover:bg-surface-container border-outline-variant/30 bg-surface-container-low/70'
+            }`}
+            title={isSidebarOpen ? 'Tutup / Sembunyikan Sidebar Menu' : 'Buka Sidebar Menu'}
+            aria-label={isSidebarOpen ? 'Tutup sidebar menu' : 'Buka sidebar menu'}
           >
-            <span className="material-symbols-outlined text-xl sm:text-2xl">menu</span>
+            <span className="material-symbols-outlined text-xl sm:text-2xl transition-transform">
+              {isSidebarOpen ? 'menu_open' : 'menu'}
+            </span>
+            <span className="hidden xl:inline text-xs font-semibold select-none">
+              {isSidebarOpen ? 'Tutup Menu' : 'Menu'}
+            </span>
           </button>
         )}
 
