@@ -2,9 +2,11 @@ import React from 'react';
 import { UserRole } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 
+export type NavTabType = 'participants-pool' | 'top-10-ai-matches' | 'admin-insights' | 'manual-matchmaker';
+
 interface SidebarProps {
-  activeTab: 'participants-pool' | 'top-10-ai-matches';
-  onTabChange: (tab: 'participants-pool' | 'top-10-ai-matches') => void;
+  activeTab: NavTabType;
+  onTabChange: (tab: NavTabType) => void;
   onOpenAffinityVectors: () => void;
   onOpenMatchingRules: () => void;
   isOpen: boolean;
@@ -16,6 +18,7 @@ interface SidebarProps {
   onOpenResetModal?: () => void;
   savedSessionsCount?: number;
   onOpenConcierge?: () => void;
+  onOpenWhatsAppModal?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -32,6 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenResetModal,
   savedSessionsCount = 0,
   onOpenConcierge,
+  onOpenWhatsAppModal,
 }) => {
   const { t, languageInfo, openLanguageModal } = useLanguage();
   const isAdmin = userRole === 'admin';
@@ -110,6 +114,43 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             {isAdmin && (
               <>
+                <button
+                  type="button"
+                  onClick={() => handleNavClick(() => onTabChange('admin-insights'))}
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left cursor-pointer ${
+                    activeTab === 'admin-insights'
+                      ? 'bg-primary-container text-on-primary font-bold shadow-xs'
+                      : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-xl">monitoring</span>
+                  <span>Analitik & Wawasan AI</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleNavClick(() => onTabChange('manual-matchmaker'))}
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-left cursor-pointer ${
+                    activeTab === 'manual-matchmaker'
+                      ? 'bg-primary-container text-on-primary font-bold shadow-xs'
+                      : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-xl">handshake</span>
+                  <span>Meja Kerja Manual</span>
+                </button>
+
+                {onOpenWhatsAppModal && (
+                  <button
+                    type="button"
+                    onClick={() => handleNavClick(onOpenWhatsAppModal)}
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-all text-left cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-xl text-emerald-600 dark:text-emerald-400">chat</span>
+                    <span>Pusat Makluman WhatsApp</span>
+                  </button>
+                )}
+
                 <button
                   type="button"
                   onClick={() => handleNavClick(onOpenAffinityVectors)}

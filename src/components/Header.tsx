@@ -3,9 +3,11 @@ import { User } from 'firebase/auth';
 import { UserRole, AppUser } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 
+export type NavTabType = 'participants-pool' | 'top-10-ai-matches' | 'admin-insights' | 'manual-matchmaker';
+
 interface HeaderProps {
-  activeTab: 'participants-pool' | 'top-10-ai-matches';
-  onTabChange: (tab: 'participants-pool' | 'top-10-ai-matches') => void;
+  activeTab: NavTabType;
+  onTabChange: (tab: NavTabType) => void;
   matchesCount: number;
   isEligible: boolean;
   onToggleSidebar?: () => void;
@@ -18,6 +20,7 @@ interface HeaderProps {
   isCloudSyncing?: boolean;
   onToggleRole?: () => void;
   onOpenConcierge?: () => void;
+  onOpenWhatsAppModal?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -35,6 +38,7 @@ export const Header: React.FC<HeaderProps> = ({
   isCloudSyncing,
   onToggleRole,
   onOpenConcierge,
+  onOpenWhatsAppModal,
 }) => {
   const { t, languageInfo, openLanguageModal } = useLanguage();
   const isAdmin = userRole === 'admin';
@@ -117,11 +121,56 @@ export const Header: React.FC<HeaderProps> = ({
               {matchesCount}
             </span>
           </button>
+
+          {isAdmin && (
+            <>
+              <button
+                type="button"
+                onClick={() => onTabChange('admin-insights')}
+                className={`px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1 cursor-pointer font-semibold whitespace-nowrap ${
+                  activeTab === 'admin-insights'
+                    ? 'bg-primary-container text-on-primary font-bold shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60'
+                }`}
+                title="Papan Pemuka Analitik Demografi & AI Gap Analysis"
+              >
+                <span className="material-symbols-outlined text-sm">monitoring</span>
+                <span>Analitik</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onTabChange('manual-matchmaker')}
+                className={`px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1 cursor-pointer font-semibold whitespace-nowrap ${
+                  activeTab === 'manual-matchmaker'
+                    ? 'bg-primary-container text-on-primary font-bold shadow-xs'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60'
+                }`}
+                title="Meja Kerja Padanan Manual Berbantu AI"
+              >
+                <span className="material-symbols-outlined text-sm">handshake</span>
+                <span>Padanan Manual</span>
+              </button>
+            </>
+          )}
         </nav>
       </div>
 
       {/* Right Header Controls Area */}
       <div className="flex items-center gap-2 sm:gap-3 shrink-0 flex-nowrap z-10">
+        {/* Quick WhatsApp Dispatch Trigger for Admin */}
+        {isAdmin && onOpenWhatsAppModal && (
+          <button
+            type="button"
+            onClick={onOpenWhatsAppModal}
+            title="Buka Pusat Makluman WhatsApp"
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 h-8 sm:h-9 rounded-full text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-xs transition-all cursor-pointer shrink-0 whitespace-nowrap active:scale-95"
+          >
+            <span className="material-symbols-outlined text-sm">chat</span>
+            <span className="hidden sm:inline font-semibold text-xs">WhatsApp</span>
+          </button>
+        )}
+
         {/* Language / Translation Feature Button */}
         <button
           type="button"

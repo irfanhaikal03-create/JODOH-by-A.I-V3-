@@ -19,6 +19,7 @@ export const MyProfileModal: React.FC<MyProfileModalProps> = ({
   const [age, setAge] = useState<number>(26);
   const [occupation, setOccupation] = useState('');
   const [location, setLocation] = useState('Kuala Lumpur');
+  const [phone, setPhone] = useState('');
   const [marital, setMarital] = useState<'Single' | 'Divorced' | 'Widowed'>('Single');
   const [smoking, setSmoking] = useState<'Non-Smoker' | 'Smoker'>('Non-Smoker');
   const [hobbiesStr, setHobbiesStr] = useState('');
@@ -79,6 +80,7 @@ export const MyProfileModal: React.FC<MyProfileModalProps> = ({
       setAge(participant.age || 26);
       setOccupation(participant.occupation || '');
       setLocation(participant.location || 'Kuala Lumpur');
+      setPhone(participant.phone || '');
       setMarital(participant.marital || 'Single');
       setSmoking(participant.smoking || 'Non-Smoker');
       setHobbiesStr(
@@ -107,6 +109,7 @@ export const MyProfileModal: React.FC<MyProfileModalProps> = ({
       age: Number(age) || 25,
       occupation: occupation.trim() || 'Profesional',
       location: location.trim() || 'Kuala Lumpur',
+      phone: phone.trim() || undefined,
       marital,
       smoking,
       hobbies: hobbiesArr.length > 0 ? hobbiesArr : ['Membaca', 'Kopi', 'Melancong'],
@@ -259,6 +262,27 @@ export const MyProfileModal: React.FC<MyProfileModalProps> = ({
               <option value="Non-Smoker">Tidak Merokok (Non-Smoker)</option>
               <option value="Smoker">Merokok (Smoker)</option>
             </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-1">
+              Nombor Telefon (WhatsApp)
+            </label>
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">
+                chat
+              </span>
+              <input
+                type="text"
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
+                placeholder="cth: 012-3456789 atau 60123456789"
+                className="w-full pl-9 pr-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
+              />
+            </div>
+            <p className="text-[11px] text-outline mt-1">
+              Nombor ini digunakan oleh penganjur untuk menghantar makluman padanan dan jemputan ta'aruf.
+            </p>
           </div>
 
           <div>

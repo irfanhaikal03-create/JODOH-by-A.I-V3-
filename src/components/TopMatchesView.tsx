@@ -36,6 +36,7 @@ interface TopMatchesViewProps {
   savedSessionsCount?: number;
   activeSessionTitle?: string;
   onOpenConcierge?: (rank?: number) => void;
+  onOpenWhatsAppDispatch?: (match: MatchResult) => void;
 }
 
 export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
@@ -57,6 +58,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
   savedSessionsCount = 0,
   activeSessionTitle,
   onOpenConcierge,
+  onOpenWhatsAppDispatch,
 }) => {
   const { t, translateSmoking } = useLanguage();
   const isAdmin = userRole === 'admin';
@@ -1195,23 +1197,37 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                         </ul>
                       </div>
 
-                      {/* Secondary Match Card Concierge Action */}
-                      {onOpenConcierge && (isAdmin || (myMatch && myMatch.rank === match.rank)) && (
-                        <div className="mt-3 pt-3 border-t border-outline-variant/15 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                          <div className="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
-                            <span className="material-symbols-outlined text-base text-primary">psychology</span>
-                            <span>{isAdmin ? `AI Analysis untuk Pasangan #${match.rank}` : 'Personal AI Dating Advisor'}</span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => onOpenConcierge(match.rank)}
-                            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold transition-all cursor-pointer self-start sm:self-auto active:scale-95"
-                          >
-                            <span className="material-symbols-outlined text-sm">chat</span>
-                            <span>{isAdmin ? `Bincang Pasangan #${match.rank} dengan AI` : 'Tanya AI Mengenai Pasangan Ini'}</span>
-                          </button>
+                      {/* Secondary Match Card Concierge Action & WhatsApp Dispatch */}
+                      <div className="mt-3 pt-3 border-t border-outline-variant/15 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+                          <span className="material-symbols-outlined text-base text-primary">psychology</span>
+                          <span>{isAdmin ? `Tindakan Penganjur untuk Pasangan #${match.rank}` : 'Personal AI Dating Advisor'}</span>
                         </div>
-                      )}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {onOpenWhatsAppDispatch && isAdmin && (
+                            <button
+                              type="button"
+                              onClick={() => onOpenWhatsAppDispatch(match)}
+                              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 text-emerald-800 dark:text-emerald-200 border border-emerald-500/30 text-xs font-bold transition-all cursor-pointer active:scale-95"
+                              title="Hantar makluman rasmi ke WhatsApp pasangan"
+                            >
+                              <span className="material-symbols-outlined text-sm text-emerald-600 dark:text-emerald-400">chat</span>
+                              <span>Hantar WhatsApp</span>
+                            </button>
+                          )}
+
+                          {onOpenConcierge && (isAdmin || (myMatch && myMatch.rank === match.rank)) && (
+                            <button
+                              type="button"
+                              onClick={() => onOpenConcierge(match.rank)}
+                              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold transition-all cursor-pointer self-start sm:self-auto active:scale-95"
+                            >
+                              <span className="material-symbols-outlined text-sm">psychology</span>
+                              <span>{isAdmin ? `Bincang Pasangan #${match.rank}` : 'Tanya AI'}</span>
+                            </button>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}

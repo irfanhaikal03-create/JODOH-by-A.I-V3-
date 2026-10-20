@@ -21,6 +21,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
   const [smoking, setSmoking] = useState<'Non-Smoker' | 'Smoker'>('Non-Smoker');
   const [occupation, setOccupation] = useState('');
   const [location, setLocation] = useState('Kuala Lumpur');
+  const [phone, setPhone] = useState('');
   const [photo, setPhoto] = useState('');
   const [hobbies, setHobbies] = useState('');
   const [ideal, setIdeal] = useState('');
@@ -78,6 +79,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
       setSmoking(participantToEdit.smoking);
       setOccupation(participantToEdit.occupation);
       setLocation(participantToEdit.location);
+      setPhone(participantToEdit.phone || '');
       setPhoto(participantToEdit.photo || '');
       setHobbies(
         Array.isArray(participantToEdit.hobbies)
@@ -93,6 +95,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
       setSmoking('Non-Smoker');
       setOccupation('');
       setLocation('Kuala Lumpur');
+      setPhone('');
       setPhoto('');
       setHobbies('');
       setIdeal('');
@@ -146,6 +149,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
       smoking,
       occupation: occupation.trim(),
       location,
+      phone: phone.trim() || undefined,
       photo: photo.trim() || undefined,
       hobbies: hobbiesArray,
       ideal: ideal.trim(),
@@ -341,6 +345,25 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
                 <option value="Sarawak">Sarawak</option>
                 <option value="Melaka">Melaka</option>
               </select>
+            </div>
+          </div>
+
+          {/* WhatsApp Phone Number */}
+          <div>
+            <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold mb-1">
+              Nombor Telefon WhatsApp <span className="text-outline text-xs lowercase font-normal">(cth: 012-3456789 atau 60123456789)</span>
+            </label>
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">
+                chat
+              </span>
+              <input
+                type="text"
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
+                placeholder="012-3456789"
+                className="w-full pl-9 pr-space-md py-2 bg-surface-container-low rounded-lg text-on-surface font-body-sm text-body-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 border border-transparent font-mono"
+              />
             </div>
           </div>
 

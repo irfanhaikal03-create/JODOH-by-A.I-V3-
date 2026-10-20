@@ -6,6 +6,10 @@ import { Sidebar } from './components/Sidebar';
 import { ParticipantsPoolView } from './components/ParticipantsPoolView';
 import { ParticipantGlimpseView } from './components/ParticipantGlimpseView';
 import { TopMatchesView } from './components/TopMatchesView';
+import { AdminInsightsView } from './components/AdminInsightsView';
+import { ManualMatchmakerView } from './components/ManualMatchmakerView';
+import { WhatsAppDispatchModal, WhatsAppDispatchTarget } from './components/WhatsAppDispatchModal';
+import { NavTabType } from './components/Header';
 import { AddEditParticipantModal } from './components/AddEditParticipantModal';
 import { DeleteConfirmModal } from './components/DeleteConfirmModal';
 import { GenerationModal } from './components/GenerationModal';
@@ -65,8 +69,11 @@ export default function App() {
   });
 
   // Navigation State
-  const [activeTab, setActiveTab] = useState<'participants-pool' | 'top-10-ai-matches'>('participants-pool');
+  const [activeTab, setActiveTab] = useState<NavTabType>('participants-pool');
   const [isCloudSyncing, setIsCloudSyncing] = useState(false);
+  const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
+  const [whatsAppTarget, setWhatsAppTarget] = useState<WhatsAppDispatchTarget | null>(null);
+  const [manualMatchmakerPreselectedId, setManualMatchmakerPreselectedId] = useState<string | undefined>(undefined);
 
   // Publication State of AI Matches
   const [matchesPublished, setMatchesPublished] = useState<boolean>(() => {
@@ -176,6 +183,62 @@ export default function App() {
     window.addEventListener('jodoh_language_changed', handleLanguageChange);
     return () => window.removeEventListener('jodoh_language_changed', handleLanguageChange);
   }, [t]);
+
+  // WhatsApp Dispatch Handlers
+  const handleOpenWhatsAppSingle = (participant: Participant) => {
+    setWhatsAppTarget({ participant, mode: 'single' });
+    setIsWhatsAppModalOpen(true);
+  };
+
+  const handleOpenWhatsAppMatch = (match: MatchResult) => {
+    setWhatsAppTarget({ match, mode: 'match' });
+    setIsWhatsAppModalOpen(true);
+  };
+
+  const handleOpenWhatsAppGeneral = () => {
+    if (matches.length > 0) {
+      setWhatsAppTarget({ match: matches[0], mode: 'match' });
+    } else if (participants.length > 0) {
+      setWhatsAppTarget({ participant: participants[0], mode: 'single' });
+    } else {
+      setWhatsAppTarget({ mode: 'single' });
+    }
+    setIsWhatsAppModalOpen(true);
+  };
+
+  // Manual Matchmaker Handlers
+  const handleOpenManualMatchmaker = (preselectedId?: string) => {
+    setManualMatchmakerPreselectedId(preselectedId);
+    setActiveTab('manual-matchmaker');
+  };
+
+  const handleAssignOfficialMatch = async (newMatch: MatchResult) => {
+    setMatches(prev => {
+      const filtered = prev.filter(
+        m => !(m.maleId === newMatch.maleId || m.femaleId === newMatch.femaleId)
+      );
+      const updated = [newMatch, ...filtered].map((m, idx) => ({ ...m, rank: idx + 1 }));
+      localStorage.setItem(STORAGE_MATCHES, JSON.stringify(updated));
+      return updated;
+    });
+
+    try {
+      const updatedMatches = [
+        newMatch,
+        ...matches.filter(m => !(m.maleId === newMatch.maleId || m.femaleId === newMatch.femaleId)),
+      ].map((m, idx) => ({ ...m, rank: idx + 1 }));
+
+      await setDoc(doc(db, 'system_settings', 'active_matches'), {
+        matches: updatedMatches,
+        matchesPublished: true,
+        updatedAt: new Date().toISOString(),
+      });
+    } catch (e) {
+      console.warn('Sync assigned match error:', e);
+    }
+
+    showToast(`Pasangan ${newMatch.maleName} & ${newMatch.femaleName} berjaya ditetapkan sebagai pasangan rasmi!`);
+  };
 
   // Check if current authenticated user has verified administrator role
   const activeUserEmail = (userProfile?.email || currentUser?.email || '').trim().toLowerCase();
@@ -804,6 +867,7 @@ export default function App() {
         isCloudSyncing={isCloudSyncing}
         onToggleRole={handleToggleRole}
         onOpenConcierge={() => handleOpenConcierge()}
+        onOpenWhatsAppModal={isAdmin ? handleOpenWhatsAppGeneral : undefined}
       />
 
       {/* Fixed Left Navigation Rail */}
@@ -826,6 +890,7 @@ export default function App() {
         onOpenResetModal={isAdmin ? () => setIsAdminResetModalOpen(true) : undefined}
         savedSessionsCount={savedSessions.length}
         onOpenConcierge={() => handleOpenConcierge()}
+        onOpenWhatsAppModal={isAdmin ? handleOpenWhatsAppGeneral : undefined}
       />
 
       {/* Main Content Area */}
@@ -835,7 +900,7 @@ export default function App() {
             {/* ROLE-BASED TAB VIEWS */}
             {activeTab === 'participants-pool' ? (
               isAdmin ? (
-                /* ADMINISTRATOR VIEW: Full candidate pool with Add, Edit, Delete, and Generate Matches */
+                /* ADMINISTRATOR VIEW: Full candidate pool with Add, Edit, Delete, Generate Matches, and WhatsApp */
                 <ParticipantsPoolView
                   participants={participants}
                   onOpenAddModal={() => {
@@ -848,6 +913,9 @@ export default function App() {
                   }}
                   onDeleteParticipant={p => setParticipantToDelete(p)}
                   onGenerateMatches={handleStartGeneration}
+                  onOpenWhatsAppDispatch={handleOpenWhatsAppSingle}
+                  onNavigateToInsights={() => setActiveTab('admin-insights')}
+                  onNavigateToManualMatchmaker={handleOpenManualMatchmaker}
                 />
               ) : (
                 /* PARTICIPANT VIEW: Glimpse of attendee directory & their own profile */
@@ -866,8 +934,8 @@ export default function App() {
                   onOpenConcierge={() => handleOpenConcierge()}
                 />
               )
-            ) : (
-              /* MATCHES TAB: Top Matches View with Role Adaptations */
+            ) : activeTab === 'top-10-ai-matches' ? (
+              /* MATCHES TAB: Top Matches View with Role Adaptations & WhatsApp dispatch */
               <TopMatchesView
                 matches={matches}
                 participantsCount={participants.length}
@@ -892,6 +960,26 @@ export default function App() {
                 savedSessionsCount={savedSessions.length}
                 activeSessionTitle={activeSessionTitle}
                 onOpenConcierge={handleOpenConcierge}
+                onOpenWhatsAppDispatch={handleOpenWhatsAppMatch}
+              />
+            ) : activeTab === 'admin-insights' ? (
+              /* ADMIN INSIGHTS: Demographic Dashboard & AI Unmatched Gap Analysis */
+              <AdminInsightsView
+                participants={participants}
+                matches={matches}
+                onOpenManualMatchmaker={handleOpenManualMatchmaker}
+                onOpenWhatsAppDispatch={handleOpenWhatsAppSingle}
+                onBackToDirectory={() => setActiveTab('participants-pool')}
+              />
+            ) : (
+              /* MANUAL MATCHMAKER: AI-Assisted Side-by-Side Candidate Workbench */
+              <ManualMatchmakerView
+                participants={participants}
+                currentMatches={matches}
+                preselectedParticipantId={manualMatchmakerPreselectedId}
+                onAssignOfficialMatch={handleAssignOfficialMatch}
+                onOpenWhatsAppDispatch={handleOpenWhatsAppMatch}
+                onBackToDirectory={() => setActiveTab('participants-pool')}
               />
             )}
           </div>
@@ -1026,6 +1114,17 @@ export default function App() {
         matchesPublished={matchesPublished}
         currentParticipantProfile={currentParticipantProfile}
         initialCoupleRank={conciergeSelectedRank}
+      />
+
+      {/* WhatsApp & Email Dispatch Modal */}
+      <WhatsAppDispatchModal
+        isOpen={isWhatsAppModalOpen}
+        onClose={() => {
+          setIsWhatsAppModalOpen(false);
+          setWhatsAppTarget(null);
+        }}
+        target={whatsAppTarget}
+        onSuccess={msg => showToast(msg)}
       />
     </div>
   );

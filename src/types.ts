@@ -21,6 +21,7 @@ export interface Participant {
   hobbies: string[] | string;
   ideal: string;
   photo?: string;
+  phone?: string;
   ownerId?: string;
   userId?: string;
   userEmail?: string;

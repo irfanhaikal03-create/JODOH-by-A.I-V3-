@@ -8,6 +8,9 @@ interface ParticipantsPoolViewProps {
   onEditParticipant: (participant: Participant) => void;
   onDeleteParticipant: (participant: Participant) => void;
   onGenerateMatches: () => void;
+  onOpenWhatsAppDispatch?: (participant: Participant) => void;
+  onNavigateToInsights?: () => void;
+  onNavigateToManualMatchmaker?: (participantId?: string) => void;
 }
 
 export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
@@ -16,6 +19,9 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
   onEditParticipant,
   onDeleteParticipant,
   onGenerateMatches,
+  onOpenWhatsAppDispatch,
+  onNavigateToInsights,
+  onNavigateToManualMatchmaker,
 }) => {
   const { t, translateGender, translateMarital, translateSmoking } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
@@ -178,6 +184,30 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
 
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          {onNavigateToInsights && (
+            <button
+              type="button"
+              onClick={onNavigateToInsights}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-surface-container text-on-surface text-xs sm:text-sm hover:bg-surface-container-high transition-all border border-outline-variant/30 cursor-pointer font-bold"
+              title="Lihat Demografi & Analisis Jurang Calon"
+            >
+              <span className="material-symbols-outlined text-primary text-lg">monitoring</span>
+              <span>Analitik Demografi</span>
+            </button>
+          )}
+
+          {onNavigateToManualMatchmaker && (
+            <button
+              type="button"
+              onClick={() => onNavigateToManualMatchmaker()}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-surface-container text-on-surface text-xs sm:text-sm hover:bg-surface-container-high transition-all border border-outline-variant/30 cursor-pointer font-bold"
+              title="Padankan mana-mana 2 calon secara manual"
+            >
+              <span className="material-symbols-outlined text-secondary text-lg">handshake</span>
+              <span>Padankan Manual</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={onOpenAddModal}
@@ -400,6 +430,16 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
 
                     {/* Quick action buttons */}
                     <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity shrink-0">
+                      {onOpenWhatsAppDispatch && (
+                        <button
+                          type="button"
+                          onClick={() => onOpenWhatsAppDispatch(item)}
+                          title="Hantar Makluman WhatsApp"
+                          className="p-1.5 rounded-lg text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-all cursor-pointer"
+                        >
+                          <span className="material-symbols-outlined text-lg">chat</span>
+                        </button>
+                      )}
                       <button
                         type="button"
                         onClick={() => onEditParticipant(item)}
