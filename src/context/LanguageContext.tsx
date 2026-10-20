@@ -63,6 +63,14 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
   }, [currentLanguage]);
 
+  // Keep HTML document lang & dir attributes in sync with active language
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = languageInfo.code;
+      document.documentElement.dir = languageInfo.direction || 'ltr';
+    }
+  }, [languageInfo]);
+
   // Translate key
   const t = (key: TranslationKey | string, fallback?: string): string => {
     const lang = currentLanguage.toLowerCase();
@@ -72,14 +80,14 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return customTranslations[lang][key];
     }
 
-    // 2. Check static dictionaries
-    if (STATIC_DICTIONARIES[lang] && STATIC_DICTIONARIES[lang][key as TranslationKey]) {
-      return STATIC_DICTIONARIES[lang][key as TranslationKey];
+    // 2. Check static dictionaries for active language
+    if (STATIC_DICTIONARIES[lang] && (STATIC_DICTIONARIES[lang] as any)[key]) {
+      return (STATIC_DICTIONARIES[lang] as any)[key];
     }
 
     // 3. Fallback to English dictionary
-    if (STATIC_DICTIONARIES.en && STATIC_DICTIONARIES.en[key as TranslationKey]) {
-      return STATIC_DICTIONARIES.en[key as TranslationKey];
+    if (STATIC_DICTIONARIES.en && (STATIC_DICTIONARIES.en as any)[key]) {
+      return (STATIC_DICTIONARIES.en as any)[key];
     }
 
     // 4. Return provided fallback or key itself
@@ -90,25 +98,39 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const translateGender = (gender?: string): string => {
     if (!gender) return '';
     const clean = gender.toLowerCase().trim();
-    if (clean === 'male' || clean === 'lelaki') return t('male', 'Lelaki');
-    if (clean === 'female' || clean === 'wanita') return t('female', 'Wanita');
+    if (clean === 'male' || clean === 'lelaki' || clean === 'pria' || clean === 'homme' || clean === 'hombre') {
+      return t('male', 'Lelaki');
+    }
+    if (clean === 'female' || clean === 'wanita' || clean === 'perempuan' || clean === 'femme' || clean === 'mujer') {
+      return t('female', 'Wanita');
+    }
     return gender;
   };
 
   const translateMarital = (marital?: string): string => {
     if (!marital) return '';
     const clean = marital.toLowerCase().trim();
-    if (clean === 'single' || clean === 'bujang') return t('single', 'Bujang');
-    if (clean === 'divorced' || clean === 'bercerai') return t('divorced', 'Bercerai');
-    if (clean === 'widowed' || clean === 'kematian pasangan') return t('widowed', 'Kematian Pasangan');
+    if (clean === 'single' || clean === 'bujang' || clean === 'lajang' || clean === 'célibataire' || clean === 'soltero') {
+      return t('single', 'Bujang');
+    }
+    if (clean === 'divorced' || clean === 'bercerai' || clean === 'divorcé' || clean === 'divorciado') {
+      return t('divorced', 'Bercerai');
+    }
+    if (clean === 'widowed' || clean === 'kematian pasangan' || clean === 'duda/janda' || clean === 'veuf' || clean === 'viudo') {
+      return t('widowed', 'Kematian Pasangan');
+    }
     return marital;
   };
 
   const translateSmoking = (smoking?: string): string => {
     if (!smoking) return '';
     const clean = smoking.toLowerCase().trim();
-    if (clean.includes('non') || clean.includes('bukan')) return t('nonSmoker', 'Bukan Perokok');
-    if (clean.includes('smoker') || clean.includes('perokok')) return t('smoker', 'Perokok');
+    if (clean.includes('non') || clean.includes('bukan') || clean.includes('tidak') || clean.includes('ne fume pas')) {
+      return t('nonSmoker', 'Bukan Perokok');
+    }
+    if (clean.includes('smoker') || clean.includes('perokok') || clean.includes('fumeur')) {
+      return t('smoker', 'Perokok');
+    }
     return smoking;
   };
 
@@ -139,6 +161,23 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       localStorage.setItem(STORAGE_LANG, targetCode);
     } catch (e) {}
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = targetCode;
+      document.documentElement.dir = matched?.direction || 'ltr';
+    }
+
+    // Broadcast language change event
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('jodoh_language_changed', {
+          detail: {
+            code: targetCode,
+            name: matched ? matched.nativeName : clean,
+          },
+        })
+      );
+    }
 
     // If it's a custom language not covered in static dictionary, fetch dynamic translations
     if (!STATIC_DICTIONARIES[targetCode] && !customTranslations[targetCode]) {

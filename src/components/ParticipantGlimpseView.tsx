@@ -89,15 +89,15 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold uppercase tracking-wider mb-2">
                 <span className="material-symbols-outlined text-sm">auto_awesome</span>
-                <span>Keputusan Pemadanan Telah Diterbitkan!</span>
+                <span>{t('matchingResultsPublished', 'Keputusan Pemadanan Telah Diterbitkan!')}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-serif font-bold text-white">
-                Algoritma AI Telah Selesai Menjana Top {matches.length} Padanan
+                {t('aiGeneratedMatches', 'Algoritma AI Telah Selesai Menjana Top')} {matches.length} {t('topMatchesTitle', 'Padanan')}
               </h2>
               <p className="text-white/80 text-xs sm:text-sm mt-1 max-w-2xl">
                 {myMatch
-                  ? `Tahniah! Anda telah tersenarai dalam Padanan #${myMatch.rank} dengan skor keserasian ${myMatch.score}%!`
-                  : 'Pihak penganjur telah memuktamadkan senarai pasangan serasi bagi kohort acara ini.'}
+                  ? `${t('congratsMatchFound', 'Tahniah! Anda telah tersenarai dalam')} ${t('matchRank', 'Padanan #')}${myMatch.rank} (${myMatch.score}%)`
+                  : t('notPublishedDesc', 'Pihak penganjur telah memuktamadkan senarai pasangan serasi bagi kohort acara ini.')}
               </p>
             </div>
             <div className="flex items-center gap-2 shrink-0 flex-wrap">
@@ -108,7 +108,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   className="inline-flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-xl bg-white/20 text-white font-bold text-xs hover:bg-white/30 transition-all cursor-pointer backdrop-blur-xs border border-white/30 active:scale-95 shadow-sm"
                 >
                   <span className="material-symbols-outlined text-base">psychology</span>
-                  <span>Tanya AI Concierge Pasangan</span>
+                  <span>{t('askAiConcierge', 'Tanya AI Concierge Pasangan')}</span>
                 </button>
               )}
               {onOpenSavedSessions && (
@@ -118,7 +118,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   className="inline-flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-xl bg-white/20 text-white font-bold text-xs hover:bg-white/30 transition-all cursor-pointer backdrop-blur-xs"
                 >
                   <span className="material-symbols-outlined text-base">history</span>
-                  <span>Sejarah Rekod ({savedSessionsCount})</span>
+                  <span>{t('savedSessions', 'Sejarah Rekod')} ({savedSessionsCount})</span>
                 </button>
               )}
               <button
@@ -127,7 +127,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-primary font-bold text-sm shadow-md hover:bg-surface-container-lowest transition-all shrink-0 cursor-pointer active:scale-95"
               >
                 <span className="material-symbols-outlined text-lg">favorite</span>
-                <span>Lihat Keputusan Pemadanan</span>
+                <span>{t('viewMatchDetails', 'Lihat Keputusan Pemadanan')}</span>
               </button>
             </div>
           </div>
@@ -141,17 +141,17 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-800 text-[11px] font-bold border border-amber-500/20">
-                  Menunggu Tindakan Penganjur
+                  {t('organizerWaitingTitle', 'Menunggu Tindakan Penganjur')}
                 </span>
                 <span className="text-xs text-outline font-medium">
-                  {maleCount} Lelaki • {femaleCount} Perempuan berdaftar
+                  {maleCount} {t('male', 'Lelaki')} • {femaleCount} {t('female', 'Perempuan')}
                 </span>
               </div>
               <h3 className="text-base sm:text-lg font-bold text-on-surface mt-1 font-serif">
-                Sesi Pendaftaran Peserta Sedang Berlangsung
+                {t('organizerWaitingTitle', 'Sesi Pendaftaran Peserta Sedang Berlangsung')}
               </h3>
               <p className="text-xs sm:text-sm text-on-surface-variant max-w-2xl mt-0.5">
-                Pemadanan AI hanya boleh dijalankan oleh <strong>Administrator</strong>. Anda boleh melengkapkan profil peribadi dan melihat sekali imbas peserta-peserta lain di bawah sementara menunggu penganjur menerbitkan keputusan.
+                {t('organizerWaitingDesc', 'Pemadanan AI hanya boleh dijalankan oleh Administrator. Anda boleh melengkapkan profil peribadi dan melihat sekali imbas peserta-peserta lain di bawah.')}
               </p>
             </div>
           </div>
@@ -163,7 +163,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
               className="px-4 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-center shadow-2xs"
             >
               <span className="material-symbols-outlined text-base text-primary">history</span>
-              <span>Rekod Sejarah Rasmi ({savedSessionsCount})</span>
+              <span>{t('savedSessions', 'Rekod Sejarah Rasmi')} ({savedSessionsCount})</span>
             </button>
           )}
         </div>
@@ -196,16 +196,16 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs uppercase font-bold text-primary tracking-wider">
-                    Profil Peserta Saya
+                    {t('myProfileSpotlight', 'Profil Peserta Saya')}
                   </span>
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                  <span className="text-xs text-emerald-700 font-semibold">Aktif dalam Kohort</span>
+                  <span className="text-xs text-emerald-700 font-semibold">{t('eligibleForMatching', 'Aktif dalam Kohort')}</span>
                 </div>
                 <h2 className="text-xl font-serif font-bold text-on-surface">
                   {myProfile.name}, {myProfile.age}
                 </h2>
                 <p className="text-xs text-on-surface-variant">
-                  {myProfile.occupation} • {myProfile.location}, Malaysia
+                  {myProfile.occupation} • {myProfile.location}
                 </p>
               </div>
             </div>
@@ -216,25 +216,25 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
               className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-xs font-bold transition-all shadow-xs border border-outline-variant/30 cursor-pointer self-start sm:self-center"
             >
               <span className="material-symbols-outlined text-base text-primary">edit</span>
-              <span>Kemaskini Profil Saya</span>
+              <span>{t('editProfile', 'Kemaskini Profil Saya')}</span>
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-4 text-xs text-on-surface-variant">
             <div className="bg-surface-container-low/70 p-3 rounded-xl">
-              <span className="text-outline uppercase font-bold text-[10px] block mb-1">Status & Gaya Hidup</span>
+              <span className="text-outline uppercase font-bold text-[10px] block mb-1">{t('marital', 'Status')} & {t('smoking', 'Tabiat')}</span>
               <p className="font-semibold text-on-surface">
-                {myProfile.marital} • {myProfile.smoking}
+                {translateMarital(myProfile.marital)} • {translateSmoking(myProfile.smoking)}
               </p>
             </div>
             <div className="bg-surface-container-low/70 p-3 rounded-xl">
-              <span className="text-outline uppercase font-bold text-[10px] block mb-1">Hobi & Minat</span>
+              <span className="text-outline uppercase font-bold text-[10px] block mb-1">{t('hobbies', 'Hobi & Minat')}</span>
               <p className="font-semibold text-on-surface truncate">
                 {Array.isArray(myProfile.hobbies) ? myProfile.hobbies.join(', ') : myProfile.hobbies}
               </p>
             </div>
             <div className="bg-surface-container-low/70 p-3 rounded-xl">
-              <span className="text-outline uppercase font-bold text-[10px] block mb-1">Ciri Pasangan Idaman</span>
+              <span className="text-outline uppercase font-bold text-[10px] block mb-1">{t('myIdealCriteria', 'Ciri Pasangan Idaman')}</span>
               <p className="font-semibold text-on-surface truncate">
                 "{myProfile.ideal}"
               </p>
@@ -251,10 +251,10 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                 <div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-[10px] uppercase font-bold text-primary tracking-wider">
-                      Pasangan Rasmi Anda • Padanan #{myMatch.rank}
+                      {t('matchedWith', 'Pasangan Rasmi Anda')} • {t('matchRank', 'Padanan #')}{myMatch.rank}
                     </span>
                     <span className="px-1.5 py-0.2 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold">
-                      {myMatch.score}% Keserasian
+                      {myMatch.score}% {t('compatibilityScore', 'Keserasian')}
                     </span>
                   </div>
                   <h3 className="text-base font-serif font-bold text-on-surface">
@@ -273,7 +273,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-xs hover:bg-primary/90 transition-all cursor-pointer shrink-0 active:scale-95"
                 >
                   <span className="material-symbols-outlined text-base">psychology</span>
-                  <span>Tanya AI Dating Advisor (Recap & Dates)</span>
+                  <span>{t('askAiConcierge', 'Tanya AI Dating Advisor')}</span>
                 </button>
               )}
             </div>
@@ -286,16 +286,16 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">
-              Direktori Peserta
+              {t('participantsPool', 'Direktori Peserta')}
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
-            <span className="text-xs text-on-surface-variant font-medium">Sekali Imbas (In a Glimpse)</span>
+            <span className="text-xs text-on-surface-variant font-medium">{t('glimpseCandidatesTitle', 'Sekali Imbas')}</span>
           </div>
           <h2 className="text-2xl font-serif font-bold text-on-surface mt-0.5">
-            Peserta-Peserta Acara ({filteredParticipants.length})
+            {t('participantsPool', 'Peserta-Peserta Acara')} ({filteredParticipants.length})
           </h2>
           <p className="text-xs sm:text-sm text-on-surface-variant">
-            Lihat serba sedikit latar belakang calon lain yang turut menyertai acara suai kenal ini.
+            {t('glimpseCandidatesDesc', 'Lihat serba sedikit latar belakang calon lain yang turut menyertai acara suai kenal ini.')}
           </p>
         </div>
 
@@ -312,7 +312,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   : 'text-on-surface-variant hover:text-on-surface'
               }`}
             >
-              Semua ({participants.length})
+              {t('filterAll', 'Semua')} ({participants.length})
             </button>
             <button
               type="button"
@@ -323,7 +323,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   : 'text-on-surface-variant hover:text-on-surface'
               }`}
             >
-              Lelaki ({maleCount})
+              {t('male', 'Lelaki')} ({maleCount})
             </button>
             <button
               type="button"
@@ -334,7 +334,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   : 'text-on-surface-variant hover:text-on-surface'
               }`}
             >
-              Perempuan ({femaleCount})
+              {t('female', 'Perempuan')} ({femaleCount})
             </button>
           </div>
 
@@ -345,7 +345,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
               onChange={e => setLocationFilter(e.target.value)}
               className="px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/30 text-xs font-semibold text-on-surface"
             >
-              <option value="ALL">Semua Lokasi</option>
+              <option value="ALL">{t('filterAll', 'Semua Lokasi')}</option>
               {locations.map(loc => (
                 <option key={loc} value={loc}>
                   {loc}

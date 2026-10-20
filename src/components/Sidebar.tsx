@@ -226,7 +226,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     : 'bg-primary text-on-primary hover:opacity-95 shadow-xs'
                 }`}
               >
-                {matchesPublished ? 'Tarik Balik Penerbitan' : 'Terbitkan Kepada Peserta'}
+                {matchesPublished ? t('withdrawPublish', 'Tarik Balik Penerbitan') : t('publishToParticipants', 'Terbitkan Kepada Peserta')}
               </button>
             </div>
           )}
@@ -236,13 +236,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div className="flex items-center gap-1.5 text-primary">
               <span className="material-symbols-outlined text-sm">lock</span>
               <span className="text-[10px] font-bold uppercase tracking-wider">
-                Privasi Terjamin
+                {t('privacyGuaranteed', 'Privasi Terjamin')}
               </span>
             </div>
             <p className="text-[11px] text-on-surface-variant leading-relaxed">
-              {isAdmin
-                ? 'Sistem penganjur berkuasa AI dengan perlindungan penuh kerahsiaan acara.'
-                : 'Data anda dilindungi dan diproses mengikut piawaian kerahsiaan acara.'}
+              {t('privacyDesc', 'Data anda dilindungi dan diproses mengikut piawaian kerahsiaan acara.')}
             </p>
           </div>
         </div>

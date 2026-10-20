@@ -165,6 +165,18 @@ export default function App() {
     }, 3200);
   };
 
+  // Listen for language change events to trigger user-friendly toast confirmation
+  useEffect(() => {
+    const handleLanguageChange = (e: any) => {
+      const { name } = e.detail || {};
+      if (name) {
+        showToast(`${t('languageChanged', 'Bahasa berjaya ditukar kepada')} ${name}`);
+      }
+    };
+    window.addEventListener('jodoh_language_changed', handleLanguageChange);
+    return () => window.removeEventListener('jodoh_language_changed', handleLanguageChange);
+  }, [t]);
+
   // Check if current authenticated user has verified administrator role
   const activeUserEmail = (userProfile?.email || currentUser?.email || '').trim().toLowerCase();
   const isOfficialAdmin = isAdminEmail(activeUserEmail) || userProfile?.role === 'admin';

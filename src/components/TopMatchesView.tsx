@@ -356,18 +356,18 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
     return (
       <div className="bg-surface-container-lowest rounded-xl p-space-xl text-center flex flex-col items-center justify-center my-space-lg border border-outline-variant/20">
         <span className="material-symbols-outlined text-4xl text-outline mb-space-sm">psychology</span>
-        <h3 className="font-headline-md text-headline-md text-on-surface font-serif">Tiada Padanan Dijana Lagi</h3>
+        <h3 className="font-headline-md text-headline-md text-on-surface font-serif">{t('noMatchesYet', 'Tiada Padanan Dijana Lagi')}</h3>
         <p className="font-body-md text-body-md text-on-surface-variant max-w-md mx-auto mt-space-xs mb-space-lg">
           {isAdmin
-            ? 'Sila pastikan terdapat sekurang-kurangnya 1 calon lelaki dan 1 perempuan, kemudian jalankan pemadanan AI.'
-            : 'Penganjur acara belum menjalankan pemadanan AI untuk kohort ini. Sila semak semula sebentar lagi.'}
+            ? t('noMatchesDesc', 'Sila pastikan terdapat sekurang-kurangnya 1 calon lelaki dan 1 perempuan, kemudian jalankan pemadanan AI.')
+            : t('notPublishedDesc', 'Penganjur acara belum menjalankan pemadanan AI untuk kohort ini. Sila semak semula sebentar lagi.')}
         </p>
         <button
           type="button"
           onClick={onBackToParticipants}
           className="px-space-lg py-space-sm rounded-lg bg-primary-container text-on-primary font-label-lg font-bold cursor-pointer"
         >
-          {isAdmin ? 'Kembali ke Participants Pool' : 'Kembali ke Direktori Peserta'}
+          {isAdmin ? t('backToPool', 'Kembali ke Direktori') : t('backToPool', 'Kembali ke Direktori Peserta')}
         </button>
       </div>
     );
@@ -381,20 +381,20 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
           <span className="material-symbols-outlined text-3xl">hourglass_top</span>
         </div>
         <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-800 text-xs font-bold border border-amber-500/20 mb-3">
-          Status: Menunggu Penganjur Menjalankan Pemadanan
+          {t('organizerWaitingTitle', 'Status: Menunggu Penganjur Menjalankan Pemadanan')}
         </span>
         <h3 className="text-xl sm:text-2xl font-serif font-bold text-on-surface">
-          Keputusan Belum Diterbitkan
+          {t('notPublishedTitle', 'Keputusan Belum Diterbitkan')}
         </h3>
         <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mt-2 mb-6 leading-relaxed">
-          Pemadanan berkuasa AI hanya boleh dijalankan oleh <strong>Administrator (Penganjur Acara)</strong>. Sila semak semula sebentar lagi atau kembali ke direktori peserta untuk melihat maklumat peserta lain.
+          {t('notPublishedDesc', 'Penganjur acara belum menerbitkan keputusan padanan AI kepada peserta. Sila tunggu pengumuman rasmi.')}
         </p>
         <button
           type="button"
           onClick={onBackToParticipants}
           className="px-6 py-2.5 rounded-xl bg-primary text-on-primary text-xs font-bold hover:opacity-95 transition-all shadow-sm cursor-pointer"
         >
-          Kembali ke Direktori Peserta
+          {t('backToPool', 'Kembali ke Direktori Peserta')}
         </button>
       </div>
     );
@@ -412,13 +412,13 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
             <div>
               <div className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-white/90 mb-0.5">
                 <span className="material-symbols-outlined text-sm">favorite</span>
-                <span>Tahniah! Padanan Anda Telah Ditemui</span>
+                <span>{t('congratsMatchFound', 'Tahniah! Padanan Anda Telah Ditemui')}</span>
               </div>
               <h2 className="text-xl font-bold font-serif text-white">
-                Anda Dipadankan Bersama {myMatch.maleName.includes(currentUserName || '') ? myMatch.femaleName : myMatch.maleName}
+                {t('matchedWith', 'Anda Dipadankan Bersama')} {myMatch.maleName.includes(currentUserName || '') ? myMatch.femaleName : myMatch.maleName}
               </h2>
               <p className="text-xs text-white/80 mt-0.5">
-                Padanan #{myMatch.rank} • Skor Keserasian: <strong>{myMatch.score}%</strong> • {myMatch.whyTheyMatch.slice(0, 110)}...
+                {t('matchRank', 'Padanan #')}{myMatch.rank} • {t('compatibilityScore', 'Skor Keserasian')}: <strong>{myMatch.score}%</strong> • {myMatch.whyTheyMatch.slice(0, 110)}...
               </p>
             </div>
           </div>
@@ -431,7 +431,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-bold transition-all shrink-0 cursor-pointer backdrop-blur-xs border border-white/30 active:scale-95 shadow-sm"
               >
                 <span className="material-symbols-outlined text-base">psychology</span>
-                <span>Tanya AI Dating Advisor</span>
+                <span>{t('askAiConcierge', 'Tanya AI Dating Advisor')}</span>
               </button>
             )}
             <button
@@ -443,7 +443,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
               }}
               className="px-4 py-2.5 rounded-xl bg-white text-primary text-xs font-bold shadow-md hover:bg-surface-container-lowest transition-all shrink-0 cursor-pointer active:scale-95"
             >
-              Lihat Butiran Padanan
+              {t('viewMatchDetails', 'Lihat Butiran Padanan')}
             </button>
           </div>
         </div>
@@ -459,12 +459,12 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
               className="hover:text-primary transition-colors flex items-center gap-1 cursor-pointer font-semibold"
             >
               <span className="material-symbols-outlined text-sm sm:text-base">groups</span>
-              <span>{isAdmin ? 'Participants Pool' : 'Direktori Peserta'}</span>
+              <span>{isAdmin ? t('participantsPool', 'Direktori Calon') : t('participantsPool', 'Direktori Peserta')}</span>
             </button>
             <span className="material-symbols-outlined text-xs text-outline">chevron_right</span>
             <span className="text-on-surface font-semibold flex items-center gap-1">
               <span className="material-symbols-outlined text-sm sm:text-base text-primary">batch_prediction</span>
-              <span>Batch Run #01 ({participantsCount} Calon)</span>
+              <span>Batch Run #01 ({participantsCount} {t('registeredCount', 'Calon')})</span>
             </span>
           </nav>
 
@@ -477,7 +477,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
               auto_awesome
             </span>
             <span className="truncate">
-              {matches.length} Pasangan 1-to-1 Eksklusif • Sifar Pertindihan
+              {matches.length} {t('exclusivePairings', 'Pasangan 1-to-1 Eksklusif • Sifar Pertindihan')}
             </span>
           </div>
         </div>
@@ -487,13 +487,13 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
           <div className="max-w-3xl flex flex-col gap-1">
             <div className="flex items-center gap-space-xs text-primary text-[10px] sm:text-label-sm uppercase tracking-wider font-bold">
               <span className="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-              <span>Sintesis Afiniti AI • Model 1-ke-1 Eksklusif</span>
+              <span>{t('aiAffinitySynthesis', 'Sintesis Afiniti AI • Model 1-ke-1 Eksklusif')}</span>
             </div>
             <h1 className="text-xl sm:text-headline-lg text-on-surface font-semibold tracking-tight font-serif">
-              Top {matches.length} Padanan Keserasian AI
+              Top {matches.length} {t('topMatchesTitle', 'Padanan Keserasian AI')}
             </h1>
             <p className="text-xs sm:text-body-md text-on-surface-variant max-w-2xl leading-relaxed">
-              Penilaian bersilang merangkumi umur, kerjaya, tabiat hidup, minat riadah dan kriteria pasangan idaman dengan padanan eksklusif.
+              {t('matchesSubtitle', 'Penilaian bersilang merangkumi umur, kerjaya, tabiat hidup, minat riadah dan kriteria pasangan idaman dengan padanan eksklusif.')}
             </p>
           </div>
 
@@ -505,7 +505,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
               className="flex items-center gap-1 sm:gap-space-xs px-3 py-2 sm:px-space-md sm:py-space-sm rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors text-xs sm:text-label-lg shadow-sm cursor-pointer border border-outline-variant/20 font-semibold"
             >
               <span className="material-symbols-outlined text-base sm:text-lg">arrow_back</span>
-              <span>{isAdmin ? 'Back to Pool' : 'Ke Direktori'}</span>
+              <span>{isAdmin ? t('backToPool', 'Back to Pool') : t('backToPool', 'Ke Direktori')}</span>
             </button>
 
             <div className="relative group">
@@ -516,7 +516,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                 title="Muat turun Laporan PDF Dossier atau CSV"
               >
                 <span className="material-symbols-outlined text-base sm:text-lg">download</span>
-                <span>Export PDF</span>
+                <span>{t('exportPdf', 'Export PDF')}</span>
                 <span className="material-symbols-outlined text-sm text-outline -mr-0.5">arrow_drop_down</span>
               </button>
               <div className="absolute right-0 top-full mt-1 bg-surface-container-lowest rounded-lg shadow-lg border border-outline-variant/20 p-1 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-20 flex flex-col min-w-[200px]">
@@ -526,7 +526,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   className="px-3 py-2 text-left text-xs font-semibold text-on-surface hover:bg-surface-container rounded-md flex items-center gap-2 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-sm text-primary">download</span>
-                  <span>Muat Turun PDF</span>
+                  <span>{t('exportPdf', 'Muat Turun PDF')}</span>
                 </button>
                 <button
                   type="button"
@@ -534,7 +534,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   className="px-3 py-2 text-left text-xs font-semibold text-on-surface hover:bg-surface-container rounded-md flex items-center gap-2 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-sm text-tertiary">visibility</span>
-                  <span>Pratonton Dossier</span>
+                  <span>{t('candidateDossier', 'Pratonton Dossier')}</span>
                 </button>
                 <button
                   type="button"

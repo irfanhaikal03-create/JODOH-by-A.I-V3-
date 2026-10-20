@@ -497,7 +497,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
           JODOH by A.I
         </h1>
         <p className="text-sm sm:text-base text-on-surface-variant font-medium mt-1">
-          Executive Matchmaking Suite • Portal Peserta & Administrator
+          {t('appTagline', 'Executive Matchmaking Suite • Portal Peserta & Administrator')}
         </p>
       </div>
 
@@ -514,7 +514,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
-            Log Masuk (Sign In)
+            {t('signInTab', 'Log Masuk (Sign In)')}
           </button>
           <button
             type="button"
@@ -525,7 +525,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
-            Daftar Akaun (Sign Up)
+            {t('signUpTab', 'Daftar Akaun (Sign Up)')}
           </button>
         </div>
 
@@ -534,12 +534,12 @@ export const AuthView: React.FC<AuthViewProps> = ({
           <div className="mb-6 p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/25 text-xs text-on-surface-variant flex items-start gap-2.5">
             <span className="material-symbols-outlined text-primary text-lg shrink-0 mt-0.5">verified_user</span>
             <div className="leading-relaxed">
-              <strong className="text-on-surface font-semibold">Struktur Peranan:</strong>
+              <strong className="text-on-surface font-semibold">{t('roleStructure', 'Struktur Peranan')}:</strong>
               <div className="mt-1">
-                • <strong className="text-primary">Peserta:</strong> Terbuka kepada semua individu untuk melengkapkan profil diri, melihat direktori calon secara sekali imbas, dan menerima keputusan rasmi.
+                • <strong className="text-primary">{t('roleParticipant', 'Peserta')}:</strong> {t('participantRoleDesc', 'Terbuka kepada semua individu untuk melengkapkan profil diri, melihat direktori calon secara sekali imbas, dan menerima keputusan rasmi.')}
               </div>
               <div>
-                • <strong className="text-primary">Administrator:</strong> Akses khas penganjur acara untuk menguruskan kohort dan menjalankan pemadanan AI (memerlukan kod pengesahan rasmi).
+                • <strong className="text-primary">{t('roleAdmin', 'Administrator')}:</strong> {t('adminRoleDesc', 'Akses khas penganjur acara untuk menguruskan kohort dan menjalankan pemadanan AI (memerlukan kod pengesahan rasmi).')}
               </div>
             </div>
           </div>
@@ -569,12 +569,12 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>Teruskan dengan Google</span>
+            <span>{t('continueWithGoogle', 'Teruskan dengan Google')}</span>
           </button>
 
           <div className="flex items-center gap-3 my-4">
             <div className="h-px bg-outline-variant/30 flex-1"></div>
-            <span className="text-xs uppercase font-bold text-outline tracking-wider">Atau Guna Emel</span>
+            <span className="text-xs uppercase font-bold text-outline tracking-wider">{t('orUseEmail', 'Atau Guna Emel')}</span>
             <div className="h-px bg-outline-variant/30 flex-1"></div>
           </div>
 
@@ -583,7 +583,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
             <form onSubmit={handleEmailSignIn} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-1">
-                  Alamat Emel
+                  {t('emailAddress', 'Alamat Emel')}
                 </label>
                 <input
                   type="email"
@@ -597,7 +597,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
               <div>
                 <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-1">
-                  Kata Laluan
+                  {t('password', 'Kata Laluan')}
                 </label>
                 <input
                   type="password"
@@ -615,11 +615,11 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 className="w-full py-3 px-4 rounded-xl bg-primary text-on-primary font-bold text-sm hover:opacity-95 active:scale-98 transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
               >
                 {isLoading ? (
-                  <span>Memproses...</span>
+                  <span>{t('processing', 'Memproses...')}</span>
                 ) : (
                   <>
                     <span className="material-symbols-outlined text-lg">login</span>
-                    <span>Log Masuk</span>
+                    <span>{t('signIn', 'Log Masuk')}</span>
                   </>
                 )}
               </button>
@@ -630,14 +630,14 @@ export const AuthView: React.FC<AuthViewProps> = ({
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-xs font-bold text-on-surface flex items-center gap-1.5">
                       <span className="material-symbols-outlined text-base text-primary">groups</span>
-                      <span>Log Masuk Pantas Peserta Berdaftar</span>
+                      <span>{t('quickParticipantSignIn', 'Log Masuk Pantas Peserta Berdaftar')}</span>
                     </span>
                     <span className="text-[10px] text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-full">
-                      {existingParticipants.length} Peserta
+                      {existingParticipants.length} {t('registeredCount', 'Peserta')}
                     </span>
                   </div>
                   <p className="text-[11px] text-on-surface-variant mb-2 leading-snug">
-                    Pilih profil anda untuk log masuk serta-merta 1-klik:
+                    {t('quickParticipantDesc', 'Pilih profil anda untuk log masuk serta-merta 1-klik:')}
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-44 overflow-y-auto pr-1">
                     {existingParticipants.map(part => (
@@ -661,7 +661,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                             {part.name}
                           </p>
                           <p className="text-[10px] text-outline truncate">
-                            {part.gender === 'Male' ? 'Lelaki' : 'Perempuan'}, {part.age} thn • {part.occupation}
+                            {part.gender === 'Male' ? t('male', 'Lelaki') : t('female', 'Perempuan')}, {part.age} {t('yearsOld', 'thn')} • {part.occupation}
                           </p>
                         </div>
                       </button>
@@ -675,7 +675,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 <button
                   type="button"
                   onClick={() => {
-                    const code = window.prompt('Masukkan Kod Pengesahan Administrator (JODOH2026):');
+                    const code = window.prompt(`${t('adminPasscode', 'Kod Pengesahan Administrator')}:`);
                     if (code && code.trim() === ADMIN_PASSCODE) {
                       handleDirectAdminLogin();
                     } else if (code) {
@@ -685,7 +685,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                   className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-sm">admin_panel_settings</span>
-                  <span>Akses Penganjur: Log Masuk Terus Administrator (Kod Pengesahan)</span>
+                  <span>{t('quickAdminAccess', 'Akses Penganjur: Log Masuk Terus Administrator')}</span>
                 </button>
               </div>
             </form>
@@ -695,7 +695,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
               {/* Role Selector Card */}
               <div>
                 <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">
-                  Pilih Peranan Anda (Role Selection)
+                  {t('roleStructure', 'Pilih Peranan Anda')}
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Participant Option (Open for all) */}
@@ -710,14 +710,14 @@ export const AuthView: React.FC<AuthViewProps> = ({
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className="material-symbols-outlined text-xl">favorite</span>
-                        <span className="font-bold text-sm">Peserta (Participant)</span>
+                        <span className="font-bold text-sm">{t('roleParticipant', 'Peserta')}</span>
                       </div>
                       <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">
-                        Terbuka
+                        {t('eligibleForMatching', 'Terbuka')}
                       </span>
                     </div>
                     <p className="text-[11px] text-on-surface-variant mt-1.5 leading-snug">
-                      Menyertai acara untuk mencari jodoh. Mengisi data profil diri dan melihat direktori peserta lain.
+                      {t('participantRoleDesc', 'Menyertai acara untuk mencari jodoh. Mengisi data profil diri dan melihat direktori peserta lain.')}
                     </p>
                   </div>
 
@@ -733,14 +733,14 @@ export const AuthView: React.FC<AuthViewProps> = ({
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className="material-symbols-outlined text-xl">admin_panel_settings</span>
-                        <span className="font-bold text-sm">Administrator</span>
+                        <span className="font-bold text-sm">{t('roleAdmin', 'Administrator')}</span>
                       </div>
                       <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold border border-primary/20">
-                        Perlu Pengesahan
+                        {t('confirm', 'Perlu Kod')}
                       </span>
                     </div>
                     <p className="text-[11px] text-on-surface-variant mt-1.5 leading-snug">
-                      Khusus untuk penganjur acara yang mempunyai kod kelulusan penganjur yang sah.
+                      {t('adminRoleDesc', 'Khusus untuk penganjur acara yang mempunyai kod kelulusan penganjur yang sah.')}
                     </p>
                   </div>
                 </div>
@@ -750,7 +750,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-1">
-                    Nama Penuh
+                    {t('fullName', 'Nama Penuh')}
                   </label>
                   <input
                     type="text"
@@ -764,7 +764,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
                 <div>
                   <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-1">
-                    Alamat Emel
+                    {t('emailAddress', 'Alamat Emel')}
                   </label>
                   <input
                     type="email"
@@ -779,7 +779,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
               <div>
                 <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-1">
-                  Kata Laluan (Sekurang-kurangnya 6 aksara)
+                  {t('password', 'Kata Laluan')}
                 </label>
                 <input
                   type="password"
@@ -796,18 +796,18 @@ export const AuthView: React.FC<AuthViewProps> = ({
               {selectedRole === 'admin' && (
                 <div className="p-3.5 rounded-xl bg-primary/5 border border-primary/20 space-y-1.5">
                   <label className="block text-xs font-bold text-primary uppercase tracking-wider">
-                    Kod Pengesahan Administrator (Admin Verification Code) *
+                    {t('adminPasscode', 'Kod Pengesahan Administrator')} *
                   </label>
                   <input
                     type="password"
                     required
                     value={adminCode}
                     onChange={e => setAdminCode(e.target.value)}
-                    placeholder="Masukkan kod pengesahan rasmi penganjur"
+                    placeholder={t('enterPasscode', 'Masukkan kod pengesahan rasmi penganjur')}
                     className="w-full px-3.5 py-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/40 text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <p className="text-[11px] text-on-surface-variant leading-relaxed">
-                    Akses penganjur dilindungi. Hanya pendaftar yang mempunyai kod pengesahan rasmi pihak penganjur sahaja boleh mendaftar sebagai Administrator.
+                    {t('adminRoleDesc', 'Akses penganjur dilindungi. Hanya pendaftar yang mempunyai kod pengesahan rasmi pihak penganjur sahaja boleh mendaftar sebagai Administrator.')}
                   </p>
                 </div>
               )}
@@ -817,27 +817,27 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 <div className="border-t border-outline-variant/20 pt-4 space-y-3.5">
                   <div className="flex items-center gap-1.5 text-primary font-bold text-xs uppercase tracking-wider">
                     <span className="material-symbols-outlined text-base">badge</span>
-                    <span>Maklumat Profil Suai Kenal Anda</span>
+                    <span>{t('myProfileSpotlight', 'Maklumat Profil Suai Kenal Anda')}</span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-semibold text-on-surface-variant mb-1">
-                        Jantina
+                        {t('genderLabel', 'Jantina')}
                       </label>
                       <select
                         value={gender}
                         onChange={e => setGender(e.target.value as 'Male' | 'Female')}
                         className="w-full px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface text-sm"
                       >
-                        <option value="Female">Perempuan (Female)</option>
-                        <option value="Male">Lelaki (Male)</option>
+                        <option value="Female">{t('female', 'Perempuan (Female)')}</option>
+                        <option value="Male">{t('male', 'Lelaki (Male)')}</option>
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-on-surface-variant mb-1">
-                        Umur (Tahun)
+                        {t('age', 'Umur')} ({t('yearsOld', 'Tahun')})
                       </label>
                       <input
                         type="number"
@@ -853,7 +853,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-semibold text-on-surface-variant mb-1">
-                        Pekerjaan
+                        {t('occupation', 'Pekerjaan')}
                       </label>
                       <input
                         type="text"
@@ -866,7 +866,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
                     <div>
                       <label className="block text-xs font-semibold text-on-surface-variant mb-1">
-                        Lokasi / Negeri
+                        {t('location', 'Lokasi / Negeri')}
                       </label>
                       <select
                         value={location}
@@ -894,37 +894,37 @@ export const AuthView: React.FC<AuthViewProps> = ({
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-semibold text-on-surface-variant mb-1">
-                        Taraf Perkahwinan
+                        {t('marital', 'Taraf Perkahwinan')}
                       </label>
                       <select
                         value={marital}
                         onChange={e => setMarital(e.target.value as any)}
                         className="w-full px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface text-sm"
                       >
-                        <option value="Single">Bujang (Single)</option>
-                        <option value="Divorced">Pernah Berkahwin (Divorced)</option>
-                        <option value="Widowed">Kematian Pasangan (Widowed)</option>
+                        <option value="Single">{t('single', 'Bujang (Single)')}</option>
+                        <option value="Divorced">{t('divorced', 'Pernah Berkahwin (Divorced)')}</option>
+                        <option value="Widowed">{t('widowed', 'Kematian Pasangan (Widowed)')}</option>
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-on-surface-variant mb-1">
-                        Tabiat Merokok
+                        {t('smoking', 'Tabiat Merokok')}
                       </label>
                       <select
                         value={smoking}
                         onChange={e => setSmoking(e.target.value as any)}
                         className="w-full px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface text-sm"
                       >
-                        <option value="Non-Smoker">Tidak Merokok (Non-Smoker)</option>
-                        <option value="Smoker">Merokok (Smoker)</option>
+                        <option value="Non-Smoker">{t('nonSmoker', 'Tidak Merokok (Non-Smoker)')}</option>
+                        <option value="Smoker">{t('smoker', 'Merokok (Smoker)')}</option>
                       </select>
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-on-surface-variant mb-1">
-                      Hobi & Minat (Asingkan dengan koma)
+                      {t('hobbies', 'Hobi & Minat')}
                     </label>
                     <input
                       type="text"
@@ -937,7 +937,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
                   <div>
                     <label className="block text-xs font-semibold text-on-surface-variant mb-1">
-                      Kriteria Pasangan Idaman & Nilai Peribadi
+                      {t('idealPartner', 'Kriteria Pasangan Idaman & Nilai Peribadi')}
                     </label>
                     <textarea
                       rows={2}
@@ -952,7 +952,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <label className="block text-xs font-semibold text-on-surface-variant">
-                        Foto Profil (Pilihan)
+                        {t('photoUpload', 'Foto Profil (Pilihan)')}
                       </label>
                       <div className="inline-flex rounded-lg bg-surface-container p-0.5 border border-outline-variant/30 text-[11px]">
                         <button
@@ -964,7 +964,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                               : 'text-on-surface-variant hover:text-on-surface'
                           }`}
                         >
-                          📁 Muat Naik Fail
+                          📁 {t('chooseFile', 'Muat Naik Fail')}
                         </button>
                         <button
                           type="button"
@@ -975,7 +975,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                               : 'text-on-surface-variant hover:text-on-surface'
                           }`}
                         >
-                          🔗 Pautan URL
+                          🔗 {t('orPhotoUrl', 'Pautan URL')}
                         </button>
                       </div>
                     </div>
@@ -1010,11 +1010,11 @@ export const AuthView: React.FC<AuthViewProps> = ({
                           />
                           <div className="min-w-0">
                             <span className="text-xs font-bold text-on-surface block truncate">
-                              Foto Profil Sedia Digunakan
+                              {t('photoUpload', 'Foto Profil Sedia Digunakan')}
                             </span>
                             <span className="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
                               <span className="material-symbols-outlined text-xs">check_circle</span>
-                              Imej berjaya dimuatkan
+                              {t('confirm', 'Imej berjaya dimuatkan')}
                             </span>
                           </div>
                         </div>
@@ -1026,7 +1026,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                               onClick={() => fileInputRef.current?.click()}
                               className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-surface-container hover:bg-surface-container-high text-primary border border-primary/20 transition-all cursor-pointer"
                             >
-                              Tukar Fail
+                              {t('editCandidate', 'Tukar Fail')}
                             </button>
                           ) : (
                             <button
@@ -1041,7 +1041,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                             type="button"
                             onClick={() => setPhotoUrl('')}
                             className="p-1.5 rounded-lg text-outline hover:text-error hover:bg-error/10 transition-all cursor-pointer"
-                            title="Padam Foto"
+                            title={t('deleteCandidate', 'Padam Foto')}
                           >
                             <span className="material-symbols-outlined text-base">delete</span>
                           </button>
@@ -1073,10 +1073,10 @@ export const AuthView: React.FC<AuthViewProps> = ({
                         </div>
                         <div>
                           <p className="text-xs font-bold text-on-surface">
-                            Klik untuk muat naik atau seret foto ke sini
+                            {t('chooseFile', 'Klik untuk muat naik')} {t('orDragDrop', 'atau seret foto ke sini')}
                           </p>
                           <p className="text-[11px] text-on-surface-variant mt-0.5">
-                            Menyokong pelbagai format: <strong>JPG, PNG, WEBP, GIF, AVIF, SVG</strong>
+                            {t('photoUploadDesc', 'Menyokong pelbagai format: JPG, PNG, WEBP, GIF, AVIF, SVG')}
                           </p>
                         </div>
                       </div>
@@ -1091,7 +1091,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                           className="w-full px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:bg-surface-container-lowest"
                         />
                         <p className="text-[11px] text-on-surface-variant">
-                          Masukkan pautan URL gambar terus dari web (cth: Unsplash, Pexels, atau hosting foto).
+                          {t('orPhotoUrl', 'Masukkan pautan URL gambar terus dari web')}
                         </p>
                       </div>
                     )}
@@ -1105,11 +1105,11 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 className="w-full py-3.5 px-4 rounded-xl bg-primary text-on-primary font-bold text-sm hover:opacity-95 active:scale-98 transition-all shadow-md cursor-pointer flex items-center justify-center gap-2 mt-4"
               >
                 {isLoading ? (
-                  <span>Mendaftarkan akaun...</span>
+                  <span>{t('processing', 'Memproses...')}</span>
                 ) : (
                   <>
                     <span className="material-symbols-outlined text-lg">person_add</span>
-                    <span>Daftar Sebagai {selectedRole === 'admin' ? 'Administrator' : 'Peserta'}</span>
+                    <span>{t('registerAsParticipant', 'Daftar Sebagai')} {selectedRole === 'admin' ? t('roleAdmin', 'Administrator') : t('roleParticipant', 'Peserta')}</span>
                   </>
                 )}
               </button>
