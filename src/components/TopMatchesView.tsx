@@ -266,10 +266,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
         checkPageBreak(20);
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
-        doc.setTextColor(184, 16, 89);
+        doc.setTextColor(180, 130, 70);
         doc.text('2. Potential Challenges:', margin + 2, y);
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(86, 65, 70);
+        doc.setTextColor(87, 83, 78);
         const cleanChallenges = cleanPdfText(m.potentialChallenges);
         const challengeLines = doc.splitTextToSize(cleanChallenges, contentWidth - 4);
         doc.text(challengeLines, margin + 2, y + 3.5);
@@ -279,10 +279,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
         checkPageBreak(16);
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
-        doc.setTextColor(98, 0, 45);
+        doc.setTextColor(28, 25, 23);
         doc.text('3. Tailored Date Ideas:', margin + 2, y);
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(86, 65, 70);
+        doc.setTextColor(87, 83, 78);
         const acts = Array.isArray(m.recommendedActivities) ? m.recommendedActivities : [];
         const datesText = acts
           .map((act, i) => `${i + 1}. ${cleanPdfText(act)}`)
@@ -292,7 +292,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
         y += 5 + datesLines.length * 3.4;
 
         // Thin separator line
-        doc.setDrawColor(220, 192, 197);
+        doc.setDrawColor(231, 229, 228);
         doc.setLineWidth(0.2);
         doc.line(margin, y, pageWidth - margin, y);
         y += 5;
@@ -406,33 +406,32 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
     <div className="flex flex-col w-full">
       {/* PERSONAL MATCH CONGRATULATORY BANNER (For participant) */}
       {myMatch && (
-        <div className="mb-6 p-5 rounded-2xl bg-gradient-to-r from-primary to-primary-container text-on-primary shadow-lg border border-primary-fixed/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shrink-0 shadow-inner">
-              💍
+        <div className="mb-6 p-6 rounded-2xl bg-stone-900 text-white shadow-xl border border-[#b48246]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-5 relative overflow-hidden">
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="w-14 h-14 rounded-2xl bg-stone-800 text-[#b48246] border border-[#b48246]/40 flex items-center justify-center text-2xl shrink-0 shadow-sm">
+              <span className="material-symbols-outlined text-3xl">favorite</span>
             </div>
             <div>
-              <div className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-white/90 mb-0.5">
-                <span className="material-symbols-outlined text-sm">favorite</span>
+              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-[#b48246] mb-1">
                 <span>{t('congratsMatchFound', 'Tahniah! Padanan Anda Telah Ditemui')}</span>
               </div>
-              <h2 className="text-xl font-bold font-serif text-white">
+              <h2 className="text-xl sm:text-2xl font-bold font-serif text-white tracking-tight">
                 {t('matchedWith', 'Anda Dipadankan Bersama')} {myMatch.maleName.includes(currentUserName || '') ? myMatch.femaleName : myMatch.maleName}
               </h2>
-              <p className="text-xs text-white/80 mt-0.5">
-                {t('matchRank', 'Padanan #')}{myMatch.rank} • {t('compatibilityScore', 'Skor Keserasian')}: <strong>{myMatch.score}%</strong> • {myMatch.whyTheyMatch.slice(0, 110)}...
+              <p className="text-xs text-stone-300 mt-1">
+                {t('matchRank', 'Padanan #')}{myMatch.rank} <span className="text-[#b48246]">·</span> {t('compatibilityScore', 'Skor Keserasian')}: <strong className="text-white font-mono">{myMatch.score}%</strong> <span className="text-[#b48246]">·</span> {myMatch.whyTheyMatch.slice(0, 110)}...
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap shrink-0">
+          <div className="flex items-center gap-2.5 flex-wrap shrink-0 relative z-10">
             {onOpenConcierge && (
               <button
                 type="button"
                 onClick={() => onOpenConcierge(myMatch.rank)}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-bold transition-all shrink-0 cursor-pointer backdrop-blur-xs border border-white/30 active:scale-95 shadow-sm"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold transition-all shrink-0 cursor-pointer border border-white/20 active:scale-95 shadow-2xs"
               >
-                <span className="material-symbols-outlined text-base">psychology</span>
+                <span className="material-symbols-outlined text-base text-[#b48246]">auto_awesome</span>
                 <span>{t('askAiConcierge', 'Tanya AI Dating Advisor')}</span>
               </button>
             )}
@@ -443,7 +442,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                 const el = document.getElementById(`match-card-${myMatch.rank}`);
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="px-4 py-2.5 rounded-xl bg-white text-primary text-xs font-bold shadow-md hover:bg-surface-container-lowest transition-all shrink-0 cursor-pointer active:scale-95"
+              className="px-4 py-2.5 rounded-xl bg-[#b48246] text-white text-xs font-bold shadow-md hover:bg-[#a37237] transition-all shrink-0 cursor-pointer active:scale-95"
             >
               {t('viewMatchDetails', 'Lihat Butiran Padanan')}
             </button>
@@ -452,31 +451,28 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
       )}
 
       {/* Breadcrumbs & Header Section */}
-      <section className="flex flex-col gap-space-sm sm:gap-space-md pb-space-md sm:pb-space-lg">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-space-md">
-          <nav className="flex items-center gap-space-xs text-on-surface-variant text-xs sm:text-label-md flex-wrap">
+      <section className="flex flex-col gap-2 sm:gap-3 pb-4 sm:pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <nav className="flex items-center gap-2 text-stone-500 text-xs font-medium flex-wrap">
             <button
               type="button"
               onClick={onBackToParticipants}
-              className="hover:text-primary transition-colors flex items-center gap-1 cursor-pointer font-semibold"
+              className="hover:text-stone-900 transition-colors flex items-center gap-1 cursor-pointer font-semibold"
             >
-              <span className="material-symbols-outlined text-sm sm:text-base">groups</span>
+              <span className="material-symbols-outlined text-sm sm:text-base text-stone-400">groups</span>
               <span>{isAdmin ? t('participantsPool', 'Direktori Calon') : t('participantsPool', 'Direktori Peserta')}</span>
             </button>
-            <span className="material-symbols-outlined text-xs text-outline">chevron_right</span>
-            <span className="text-on-surface font-semibold flex items-center gap-1">
-              <span className="material-symbols-outlined text-sm sm:text-base text-primary">batch_prediction</span>
+            <span className="text-stone-300">/</span>
+            <span className="text-stone-900 font-semibold flex items-center gap-1">
+              <span className="material-symbols-outlined text-sm sm:text-base text-[#b48246]">verified</span>
               <span>Batch Run #01 ({participantsCount} {t('registeredCount', 'Calon')})</span>
             </span>
           </nav>
 
           {/* Badge for Batch Status */}
-          <div className="inline-flex self-start sm:self-auto items-center gap-1 sm:gap-space-xs px-2.5 py-1 rounded-full bg-surface-container-high text-primary text-[10px] sm:text-label-sm font-semibold max-w-full">
-            <span
-              className="material-symbols-outlined text-xs sm:text-sm text-secondary animate-pulse shrink-0"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              auto_awesome
+          <div className="inline-flex self-start sm:self-auto items-center gap-1.5 px-3 py-1 rounded-full bg-stone-100 text-stone-800 text-xs font-medium border border-stone-200">
+            <span className="material-symbols-outlined text-xs text-[#b48246] shrink-0">
+              diamond
             </span>
             <span className="truncate">
               {matches.length} {t('exclusivePairings', 'Pasangan 1-to-1 Eksklusif • Sifar Pertindihan')}
@@ -485,65 +481,65 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
         </div>
 
         {/* Editorial Title & Action Matrix */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-sm sm:gap-space-lg">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-3 sm:gap-6 mt-1">
           <div className="max-w-3xl flex flex-col gap-1">
-            <div className="flex items-center gap-space-xs text-primary text-[10px] sm:text-label-sm uppercase tracking-wider font-bold">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+            <div className="flex items-center gap-1.5 text-[#b48246] text-xs uppercase tracking-widest font-bold">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#b48246]"></span>
               <span>{t('aiAffinitySynthesis', 'Sintesis Afiniti AI • Model 1-ke-1 Eksklusif')}</span>
             </div>
-            <h1 className="text-xl sm:text-headline-lg text-on-surface font-semibold tracking-tight font-serif">
+            <h1 className="text-2xl sm:text-3xl text-stone-900 font-bold tracking-tight font-serif">
               Top {matches.length} {t('topMatchesTitle', 'Padanan Keserasian AI')}
             </h1>
-            <p className="text-xs sm:text-body-md text-on-surface-variant max-w-2xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-stone-500 max-w-2xl leading-relaxed">
               {t('matchesSubtitle', 'Penilaian bersilang merangkumi umur, kerjaya, tabiat hidup, minat riadah dan kriteria pasangan idaman dengan padanan eksklusif.')}
             </p>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-space-sm no-print">
+          <div className="flex flex-wrap items-center gap-2 no-print">
             <button
               type="button"
               onClick={onBackToParticipants}
-              className="flex items-center gap-1 sm:gap-space-xs px-3 py-2 sm:px-space-md sm:py-space-sm rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors text-xs sm:text-label-lg shadow-sm cursor-pointer border border-outline-variant/20 font-semibold"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-stone-700 hover:text-stone-900 hover:bg-stone-50 transition-colors text-xs font-semibold border border-stone-200 shadow-2xs cursor-pointer"
             >
-              <span className="material-symbols-outlined text-base sm:text-lg">arrow_back</span>
-              <span>{isAdmin ? t('backToPool', 'Back to Pool') : t('backToPool', 'Ke Direktori')}</span>
+              <span className="material-symbols-outlined text-base">arrow_back</span>
+              <span>{isAdmin ? t('backToPool', 'Direktori') : t('backToPool', 'Ke Direktori')}</span>
             </button>
 
             <div className="relative group">
               <button
                 type="button"
                 onClick={handleExportPDF}
-                className="flex items-center gap-1 sm:gap-space-xs px-3 py-2 sm:px-space-md sm:py-space-sm rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors text-xs sm:text-label-lg cursor-pointer font-semibold border border-outline-variant/20"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-50 text-stone-800 hover:bg-stone-100 transition-colors text-xs font-semibold border border-stone-200 shadow-2xs cursor-pointer"
                 title="Muat turun Laporan PDF Dossier atau CSV"
               >
-                <span className="material-symbols-outlined text-base sm:text-lg">download</span>
+                <span className="material-symbols-outlined text-base text-[#b48246]">download</span>
                 <span>{t('exportPdf', 'Export PDF')}</span>
-                <span className="material-symbols-outlined text-sm text-outline -mr-0.5">arrow_drop_down</span>
+                <span className="material-symbols-outlined text-sm text-stone-400 -mr-0.5">arrow_drop_down</span>
               </button>
-              <div className="absolute right-0 top-full mt-1 bg-surface-container-lowest rounded-lg shadow-lg border border-outline-variant/20 p-1 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-20 flex flex-col min-w-[200px]">
+              <div className="absolute right-0 top-full mt-1 bg-white rounded-xl shadow-xl border border-stone-200 p-1.5 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-20 flex flex-col min-w-[200px]">
                 <button
                   type="button"
                   onClick={handleExportPDF}
-                  className="px-3 py-2 text-left text-xs font-semibold text-on-surface hover:bg-surface-container rounded-md flex items-center gap-2 cursor-pointer"
+                  className="px-3 py-2 text-left text-xs font-semibold text-stone-800 hover:bg-stone-100 rounded-lg flex items-center gap-2 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-sm text-primary">download</span>
+                  <span className="material-symbols-outlined text-sm text-[#b48246]">download</span>
                   <span>{t('exportPdf', 'Muat Turun PDF')}</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsDossierPreviewOpen(true)}
-                  className="px-3 py-2 text-left text-xs font-semibold text-on-surface hover:bg-surface-container rounded-md flex items-center gap-2 cursor-pointer"
+                  className="px-3 py-2 text-left text-xs font-semibold text-stone-800 hover:bg-stone-100 rounded-lg flex items-center gap-2 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-sm text-tertiary">visibility</span>
+                  <span className="material-symbols-outlined text-sm text-stone-600">visibility</span>
                   <span>{t('candidateDossier', 'Pratonton Dossier')}</span>
                 </button>
                 <button
                   type="button"
                   onClick={handleExportCSV}
-                  className="px-3 py-2 text-left text-xs font-semibold text-on-surface hover:bg-surface-container rounded-md flex items-center gap-2 cursor-pointer"
+                  className="px-3 py-2 text-left text-xs font-semibold text-stone-800 hover:bg-stone-100 rounded-lg flex items-center gap-2 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-sm text-secondary">table_view</span>
+                  <span className="material-symbols-outlined text-sm text-stone-600">table_view</span>
                   <span>Muat Turun Jadual CSV</span>
                 </button>
               </div>
@@ -554,10 +550,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
               <button
                 type="button"
                 onClick={() => onOpenConcierge()}
-                className="flex items-center gap-1.5 px-3 py-2 sm:px-space-md sm:py-space-sm rounded-lg bg-primary/10 hover:bg-primary/20 text-primary border border-primary/25 transition-all text-xs sm:text-label-lg font-bold shadow-xs cursor-pointer"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#fbf6ee] hover:bg-[#f5eedb] text-[#7c5820] border border-[#b48246]/30 transition-all text-xs font-bold shadow-2xs cursor-pointer"
                 title={isAdmin ? 'AI Matchmaking Concierge (Full Cohort Access)' : 'AI Dating Advisor'}
               >
-                <span className="material-symbols-outlined text-base sm:text-lg">psychology</span>
+                <span className="material-symbols-outlined text-base text-[#b48246]">auto_awesome</span>
                 <span>{isAdmin ? 'AI Concierge' : 'Tanya AI'}</span>
               </button>
             )}
@@ -569,10 +565,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   <button
                     type="button"
                     onClick={onSaveMatchesToApp}
-                    className="flex items-center gap-1.5 px-3 py-2 sm:px-space-md sm:py-space-sm rounded-lg bg-surface-container-lowest text-primary hover:bg-primary/5 transition-all text-xs sm:text-label-lg font-bold border border-primary/30 shadow-xs cursor-pointer"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-stone-800 hover:bg-stone-50 transition-all text-xs font-semibold border border-stone-200 shadow-2xs cursor-pointer"
                     title="Simpan keputusan ini terus ke dalam arkib aplikasi (sebagai Draf Admin)"
                   >
-                    <span className="material-symbols-outlined text-base sm:text-lg">bookmark_add</span>
+                    <span className="material-symbols-outlined text-base text-[#b48246]">bookmark_add</span>
                     <span>Simpan ke Arkib</span>
                   </button>
                 )}
@@ -582,10 +578,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   <button
                     type="button"
                     onClick={onOpenSavedSessions}
-                    className="flex items-center gap-1.5 px-3 py-2 sm:px-space-md sm:py-space-sm rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container transition-all text-xs sm:text-label-lg font-bold border border-outline-variant/30 cursor-pointer"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-50 text-stone-800 hover:bg-stone-100 transition-all text-xs font-semibold border border-stone-200 shadow-2xs cursor-pointer"
                     title="Buka arkib keputusan dan draf yang tersimpan"
                   >
-                    <span className="material-symbols-outlined text-base sm:text-lg">folder_managed</span>
+                    <span className="material-symbols-outlined text-base text-stone-500">folder_managed</span>
                     <span>Arkib ({savedSessionsCount})</span>
                   </button>
                 )}
@@ -595,10 +591,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   <button
                     type="button"
                     onClick={onTogglePublish}
-                    className={`flex items-center gap-1.5 px-3 py-2 sm:px-space-md sm:py-space-sm rounded-lg text-xs sm:text-label-lg font-bold transition-all cursor-pointer border ${
+                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
                       matchesPublished
-                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100'
-                        : 'bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100'
+                        ? 'bg-emerald-50 text-emerald-900 border-emerald-200 hover:bg-emerald-100'
+                        : 'bg-amber-50 text-amber-900 border-amber-200 hover:bg-amber-100'
                     }`}
                     title={matchesPublished ? 'Keputusan diterbitkan (Peserta boleh melihat)' : 'Keputusan dalam mod Draf (Hanya Admin)'}
                   >
@@ -614,11 +610,11 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   type="button"
                   disabled={isRegenerating}
                   onClick={onRegenerate}
-                  className="flex items-center gap-1 sm:gap-space-xs px-3.5 py-2 sm:px-space-lg sm:py-space-sm rounded-lg bg-primary-container text-on-primary hover:opacity-95 active:scale-95 transition-all text-xs sm:text-label-lg shadow-md shadow-primary-container/20 cursor-pointer font-bold disabled:opacity-60"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-stone-900 text-white hover:bg-stone-800 active:scale-95 transition-all text-xs shadow-xs cursor-pointer font-bold disabled:opacity-60"
                 >
                   <span
-                    className={`material-symbols-outlined text-base sm:text-lg ${
-                      isRegenerating ? 'animate-spin' : ''
+                    className={`material-symbols-outlined text-base ${
+                      isRegenerating ? 'animate-spin' : 'text-[#b48246]'
                     }`}
                   >
                     cached
@@ -631,10 +627,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   <button
                     type="button"
                     onClick={onOpenResetModal}
-                    className="flex items-center gap-1 px-2.5 py-2 sm:px-3 sm:py-space-sm rounded-lg bg-error/10 hover:bg-error/20 text-error border border-error/25 transition-all text-xs sm:text-label-lg font-bold cursor-pointer"
+                    className="flex items-center gap-1 px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 transition-all text-xs font-semibold cursor-pointer"
                     title="Pusat Set Semula Data (Eksklusif Administrator)"
                   >
-                    <span className="material-symbols-outlined text-base sm:text-lg">restart_alt</span>
+                    <span className="material-symbols-outlined text-base">restart_alt</span>
                     <span>Reset</span>
                   </button>
                 )}
@@ -645,10 +641,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   <button
                     type="button"
                     onClick={() => onOpenConcierge()}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold border border-primary/25 cursor-pointer shadow-xs"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#fbf6ee] hover:bg-[#f5eedb] text-[#7c5820] text-xs font-bold border border-[#b48246]/30 cursor-pointer shadow-2xs"
                     title="Tanya AI Dating Advisor"
                   >
-                    <span className="material-symbols-outlined text-base">psychology</span>
+                    <span className="material-symbols-outlined text-base text-[#b48246]">auto_awesome</span>
                     <span>Tanya AI Dating Advisor</span>
                   </button>
                 )}
@@ -656,14 +652,14 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   <button
                     type="button"
                     onClick={onOpenSavedSessions}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface-container-low text-on-surface hover:bg-surface-container text-xs font-semibold border border-outline-variant/30 cursor-pointer"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-50 text-stone-800 hover:bg-stone-100 text-xs font-semibold border border-stone-200 cursor-pointer"
                   >
-                    <span className="material-symbols-outlined text-base text-primary">history</span>
+                    <span className="material-symbols-outlined text-base text-stone-500">history</span>
                     <span>Sejarah Rekod ({savedSessionsCount})</span>
                   </button>
                 )}
-                <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface-container text-on-surface-variant text-xs font-semibold border border-outline-variant/30 select-none">
-                  <span className="material-symbols-outlined text-base text-primary">verified</span>
+                <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs font-semibold border border-stone-200 select-none">
+                  <span className="material-symbols-outlined text-base text-emerald-600">verified</span>
                   <span>Diterbitkan oleh Penganjur</span>
                 </div>
               </div>
@@ -674,14 +670,14 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
         {/* Real-time Status Notice for Admin */}
         {isAdmin && (
           <div
-            className={`mt-2 p-3 rounded-xl border text-xs flex items-center justify-between gap-3 ${
+            className={`mt-2 p-3.5 rounded-xl border text-xs flex items-center justify-between gap-3 ${
               matchesPublished
-                ? 'bg-emerald-500/10 border-emerald-500/25 text-emerald-900'
-                : 'bg-amber-500/10 border-amber-500/25 text-amber-900'
+                ? 'bg-emerald-50/80 border-emerald-200 text-emerald-900'
+                : 'bg-amber-50/80 border-amber-200 text-amber-900'
             }`}
           >
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-base shrink-0">
+              <span className="material-symbols-outlined text-base shrink-0 text-emerald-700">
                 {matchesPublished ? 'check_circle' : 'lock'}
               </span>
               <span>
@@ -693,7 +689,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
             </div>
 
             {activeSessionTitle && (
-              <span className="hidden sm:inline text-[11px] font-semibold opacity-85 shrink-0">
+              <span className="hidden sm:inline text-[11px] font-semibold text-stone-500 shrink-0">
                 Rekod: {activeSessionTitle}
               </span>
             )}
@@ -702,97 +698,93 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
       </section>
 
       {/* Metric Quick Ribbon */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-space-md mb-space-md sm:mb-space-xl">
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {/* Box 1: Median Affinity */}
-        <div className="p-2.5 sm:p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between border border-outline-variant/15 min-h-[76px] sm:min-h-[100px] h-auto">
-          <span className="text-[10px] sm:text-xs text-outline uppercase tracking-wider font-bold truncate leading-tight">
+        <div className="p-4 rounded-xl bg-white shadow-2xs flex flex-col justify-between border border-stone-200/80 hover:border-stone-300 transition-all min-h-[85px] sm:min-h-[105px]">
+          <span className="text-[10px] sm:text-xs text-stone-400 uppercase tracking-wider font-bold truncate leading-tight">
             Median Affinity
           </span>
-          <div className="flex items-baseline justify-between sm:justify-start gap-1 sm:gap-2 mt-1 sm:mt-auto">
-            <span className="text-lg sm:text-2xl lg:text-3xl font-bold text-primary font-serif leading-none">
+          <div className="flex items-baseline justify-between sm:justify-start gap-1 sm:gap-2 mt-2">
+            <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-stone-900 font-serif leading-none tabular-nums">
               {medianAffinity}
             </span>
-            <span className="px-1.5 py-0.5 rounded bg-secondary-fixed/60 text-secondary font-bold text-[9px] sm:text-xs shrink-0 self-center">
+            <span className="px-2 py-0.5 rounded-full bg-[#fbf6ee] text-[#7c5820] font-bold text-[10px] border border-[#b48246]/20 shrink-0">
               +4.2% vs avg
             </span>
           </div>
         </div>
 
         {/* Box 2: Top Category Alignment */}
-        <div className="p-2.5 sm:p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between border border-outline-variant/15 min-h-[76px] sm:min-h-[100px] h-auto">
-          <span className="text-[10px] sm:text-xs text-outline uppercase tracking-wider font-bold truncate leading-tight">
+        <div className="p-4 rounded-xl bg-white shadow-2xs flex flex-col justify-between border border-stone-200/80 hover:border-stone-300 transition-all min-h-[85px] sm:min-h-[105px]">
+          <span className="text-[10px] sm:text-xs text-stone-400 uppercase tracking-wider font-bold truncate leading-tight">
             Top Category Alignment
           </span>
-          <div className="flex flex-col gap-0.5 mt-1 sm:mt-auto">
-            <div className="flex items-center gap-1 text-on-surface">
-              <span className="material-symbols-outlined text-primary text-sm sm:text-base shrink-0">psychology</span>
-              <span className="text-xs sm:text-sm lg:text-base font-bold text-on-surface font-serif truncate leading-tight">
+          <div className="flex flex-col gap-0.5 mt-2">
+            <div className="flex items-center gap-1.5 text-stone-900">
+              <span className="material-symbols-outlined text-[#b48246] text-sm sm:text-base shrink-0">auto_awesome</span>
+              <span className="text-xs sm:text-sm lg:text-base font-bold text-stone-900 font-serif truncate leading-tight">
                 Value Vector 04
               </span>
             </div>
-            <span className="text-[9px] sm:text-xs text-on-surface-variant truncate leading-tight">
+            <span className="text-[10px] sm:text-xs text-stone-500 truncate leading-tight">
               Ethical & Family Aspirations
             </span>
           </div>
         </div>
 
         {/* Box 3: Geographic Overlap */}
-        <div className="p-2.5 sm:p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between border border-outline-variant/15 min-h-[76px] sm:min-h-[100px] h-auto">
-          <span className="text-[10px] sm:text-xs text-outline uppercase tracking-wider font-bold truncate leading-tight">
+        <div className="p-4 rounded-xl bg-white shadow-2xs flex flex-col justify-between border border-stone-200/80 hover:border-stone-300 transition-all min-h-[85px] sm:min-h-[105px]">
+          <span className="text-[10px] sm:text-xs text-stone-400 uppercase tracking-wider font-bold truncate leading-tight">
             Geographic Overlap
           </span>
-          <div className="flex items-baseline justify-between sm:justify-start gap-1 sm:gap-2 mt-1 sm:mt-auto">
-            <span className="text-lg sm:text-2xl lg:text-3xl font-bold text-on-surface font-serif leading-none">
+          <div className="flex items-baseline justify-between sm:justify-start gap-1 sm:gap-2 mt-2">
+            <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-stone-900 font-serif leading-none tabular-nums">
               {geographicOverlapPercent}
             </span>
-            <span className="text-[9px] sm:text-xs font-medium text-on-surface-variant shrink-0">
+            <span className="text-[10px] sm:text-xs font-medium text-stone-500 shrink-0">
               Same Metro Zone
             </span>
           </div>
         </div>
 
         {/* Box 4: Smoking Status Sync */}
-        <div className="p-2.5 sm:p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between border border-outline-variant/15 min-h-[76px] sm:min-h-[100px] h-auto">
-          <span className="text-[10px] sm:text-xs text-outline uppercase tracking-wider font-bold truncate leading-tight">
+        <div className="p-4 rounded-xl bg-white shadow-2xs flex flex-col justify-between border border-stone-200/80 hover:border-stone-300 transition-all min-h-[85px] sm:min-h-[105px]">
+          <span className="text-[10px] sm:text-xs text-stone-400 uppercase tracking-wider font-bold truncate leading-tight">
             Smoking Status Sync
           </span>
-          <div className="flex items-baseline justify-between sm:justify-start gap-1 sm:gap-2 mt-1 sm:mt-auto">
-            <span className="text-lg sm:text-2xl lg:text-3xl font-bold text-primary-container font-serif leading-none">
+          <div className="flex items-baseline justify-between sm:justify-start gap-1 sm:gap-2 mt-2">
+            <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-stone-900 font-serif leading-none tabular-nums">
               {smokingConcordance}
             </span>
-            <span className="px-1.5 py-0.5 rounded bg-secondary-fixed/60 text-secondary font-bold text-[9px] sm:text-xs shrink-0 self-center">
+            <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-bold text-[10px] border border-emerald-200 shrink-0">
               100% Concordance
             </span>
           </div>
         </div>
       </section>
-
       {/* MATCH #1: Golden Ribbon Master Card */}
-      <section className="mb-space-xl">
-        <div className="relative overflow-hidden rounded-2xl bg-surface-container-lowest shadow-md transition-all duration-300 hover:shadow-xl border border-outline-variant/20">
+      <section className="mb-8" id="match-card-1">
+        <div className="relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl border border-[#b48246]/35">
           {/* High Affinity Ambient Header Bar */}
-          <div className="px-3 sm:px-space-lg py-2 sm:py-space-sm bg-gradient-to-r from-secondary-fixed via-surface-container-high to-surface-container flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-2 sm:gap-space-sm">
-              <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-secondary text-on-secondary text-xs sm:text-label-md font-bold shadow-sm">
+          <div className="px-4 sm:px-6 py-3.5 bg-[#fbf6ee] border-b border-[#b48246]/20 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#b48246] text-white text-xs font-bold shadow-xs">
                 #1
               </span>
-              <div className="flex items-center gap-1 sm:gap-space-xs px-2 sm:px-space-sm py-0.5 rounded-full bg-surface-container-lowest text-primary text-[10px] sm:text-label-sm font-bold tracking-wide uppercase shadow-xs">
-                <span
-                  className="material-symbols-outlined text-xs sm:text-sm text-secondary"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white text-[#7c5820] text-xs font-bold tracking-wider uppercase border border-[#b48246]/30 shadow-2xs">
+                <span className="material-symbols-outlined text-sm text-[#b48246]">
                   workspace_premium
                 </span>
                 <span>Gold Ribbon • Top Algorithmic Match</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-space-md">
-              <div className="flex items-center gap-1 sm:gap-space-xs px-2.5 sm:px-space-md py-0.5 sm:py-1 rounded-full bg-surface-container-lowest shadow-sm">
-                <span className="text-[10px] sm:text-label-sm text-outline uppercase font-bold">
-                  Match Affinity
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#b48246]/30 shadow-2xs">
+                <span className="text-[11px] text-stone-500 uppercase tracking-wider font-bold">
+                  Keserasian
                 </span>
-                <span className="text-base sm:text-headline-sm text-primary font-bold">
+                <span className="text-base sm:text-lg text-stone-900 font-bold font-mono">
                   {match1.score}%
                 </span>
               </div>
@@ -800,12 +792,12 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
           </div>
 
           {/* Candidate Side-by-Side Arena */}
-          <div className="p-3 sm:p-space-lg">
-            <div className="grid grid-cols-1 lg:grid-cols-11 items-center gap-3 sm:gap-space-lg">
+          <div className="p-4 sm:p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-11 items-center gap-4 sm:gap-6">
               {/* Male Candidate (Left) */}
-              <div className="lg:col-span-5 flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-space-md p-3 sm:p-space-md rounded-xl bg-surface-container-low transition-transform hover:-translate-y-0.5 border border-outline-variant/15">
+              <div className="lg:col-span-5 flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-2xl bg-stone-50/70 transition-all hover:bg-stone-50 border border-stone-200/80">
                 <img
-                  className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl object-cover shadow-sm flex-shrink-0 ring-1 ring-outline-variant/30"
+                  className="w-20 h-20 sm:w-28 sm:h-28 rounded-2xl object-cover shadow-xs shrink-0 ring-1 ring-stone-300/60"
                   alt={`Portrait of ${match1.maleName}`}
                   src={
                     match1.malePhoto ||
@@ -817,31 +809,31 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   }}
                 />
                 <div className="flex flex-col text-center sm:text-left gap-1 w-full min-w-0">
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 sm:gap-space-xs">
-                    <span className="text-base sm:text-headline-sm text-on-surface font-semibold font-serif">
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
+                    <span className="text-lg sm:text-xl text-stone-900 font-bold font-serif">
                       {match1.maleName}
                     </span>
-                    <span className="text-xs sm:text-label-md text-outline">
-                      {match1.maleAge} yrs
+                    <span className="text-xs text-stone-400 font-medium">
+                      {match1.maleAge} thn
                     </span>
                   </div>
-                  <span className="text-xs sm:text-label-md text-primary font-semibold">
+                  <span className="text-xs text-[#b48246] font-semibold">
                     {match1.maleOccupation}
                   </span>
-                  <div className="flex items-center justify-center sm:justify-start gap-1 text-on-surface-variant text-[11px] sm:text-body-sm mt-0.5">
-                    <span className="material-symbols-outlined text-xs sm:text-sm text-outline">
+                  <div className="flex items-center justify-center sm:justify-start gap-1 text-stone-500 text-xs mt-0.5">
+                    <span className="material-symbols-outlined text-xs text-stone-400">
                       location_on
                     </span>
                     <span>{match1.maleLocation}</span>
                   </div>
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 mt-1.5 sm:mt-space-sm">
-                    <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] sm:text-label-sm font-semibold">
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mt-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-stone-200/80 text-stone-700 text-xs font-medium">
                       {match1.maleSmoking}
                     </span>
                     {match1.maleHobbies.slice(0, 2).map((h, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] sm:text-label-sm font-semibold"
+                        className="px-2.5 py-0.5 rounded-full bg-[#fbf6ee] text-[#7c5820] border border-[#b48246]/20 text-xs font-medium"
                       >
                         {h}
                       </span>
@@ -850,26 +842,25 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                 </div>
               </div>
 
-              {/* Central Affinity Badge */}
-              <div className="lg:col-span-1 flex flex-col items-center justify-center py-1 sm:py-2 lg:py-0">
-                <div className="relative flex items-center justify-center w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-primary-container text-on-primary shadow-md sm:shadow-lg shadow-primary-container/30">
-                  <span
-                    className="material-symbols-outlined text-lg sm:text-2xl animate-pulse"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
-                  >
-                    all_inclusive
+              {/* Central Affinity Badge / Luxury Dial */}
+              <div className="lg:col-span-1 flex flex-col items-center justify-center py-2 lg:py-0">
+                <div className="relative flex items-center justify-center w-14 h-14 rounded-full bg-stone-900 text-white shadow-md border border-[#b48246]/40">
+                  <span className="material-symbols-outlined text-2xl text-[#b48246]">
+                    favorite
                   </span>
-                  <div className="absolute -inset-1 rounded-full bg-primary-container/20 animate-ping pointer-events-none"></div>
                 </div>
-                <span className="text-[10px] sm:text-label-sm text-primary font-bold mt-1 sm:mt-2 uppercase tracking-tight">
-                  {match1.score}% Synced
+                <span className="text-[11px] text-stone-900 font-bold font-mono mt-2">
+                  {match1.score}%
+                </span>
+                <span className="text-[9px] text-stone-400 uppercase tracking-widest font-semibold">
+                  Synced
                 </span>
               </div>
 
               {/* Female Candidate (Right) */}
-              <div className="lg:col-span-5 flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-space-md p-3 sm:p-space-md rounded-xl bg-surface-container-low transition-transform hover:-translate-y-0.5 border border-outline-variant/15">
+              <div className="lg:col-span-5 flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-2xl bg-stone-50/70 transition-all hover:bg-stone-50 border border-stone-200/80">
                 <img
-                  className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl object-cover shadow-sm flex-shrink-0 ring-1 ring-outline-variant/30"
+                  className="w-20 h-20 sm:w-28 sm:h-28 rounded-2xl object-cover shadow-xs shrink-0 ring-1 ring-stone-300/60"
                   alt={`Portrait of ${match1.femaleName}`}
                   src={
                     match1.femalePhoto ||
@@ -881,31 +872,31 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   }}
                 />
                 <div className="flex flex-col text-center sm:text-left gap-1 w-full min-w-0">
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 sm:gap-space-xs">
-                    <span className="text-base sm:text-headline-sm text-on-surface font-semibold font-serif">
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5">
+                    <span className="text-lg sm:text-xl text-stone-900 font-bold font-serif">
                       {match1.femaleName}
                     </span>
-                    <span className="text-xs sm:text-label-md text-outline">
-                      {match1.femaleAge} yrs
+                    <span className="text-xs text-stone-400 font-medium">
+                      {match1.femaleAge} thn
                     </span>
                   </div>
-                  <span className="text-xs sm:text-label-md text-primary font-semibold">
+                  <span className="text-xs text-[#b48246] font-semibold">
                     {match1.femaleOccupation}
                   </span>
-                  <div className="flex items-center justify-center sm:justify-start gap-1 text-on-surface-variant text-[11px] sm:text-body-sm mt-0.5">
-                    <span className="material-symbols-outlined text-xs sm:text-sm text-outline">
+                  <div className="flex items-center justify-center sm:justify-start gap-1 text-stone-500 text-xs mt-0.5">
+                    <span className="material-symbols-outlined text-xs text-stone-400">
                       location_on
                     </span>
                     <span>{match1.femaleLocation}</span>
                   </div>
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 mt-1.5 sm:mt-space-sm">
-                    <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] sm:text-label-sm font-semibold">
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mt-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-stone-200/80 text-stone-700 text-xs font-medium">
                       {match1.femaleSmoking}
                     </span>
                     {match1.femaleHobbies.slice(0, 2).map((h, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] sm:text-label-sm font-semibold"
+                        className="px-2.5 py-0.5 rounded-full bg-[#fbf6ee] text-[#7c5820] border border-[#b48246]/20 text-xs font-medium"
                       >
                         {h}
                       </span>
@@ -916,9 +907,9 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
             </div>
 
             {/* Shared Trait Quick Badges */}
-            <div className="flex flex-wrap items-center gap-1 sm:gap-space-xs mt-3 sm:mt-space-lg pt-3 sm:pt-space-md border-t border-outline-variant/30">
-              <span className="text-[10px] sm:text-label-sm text-outline uppercase tracking-wider mr-1 sm:mr-2 font-bold">
-                Cross-Checked Traits:
+            <div className="flex flex-wrap items-center gap-2 mt-5 pt-4 border-t border-stone-200/70">
+              <span className="text-xs text-stone-400 uppercase tracking-wider font-bold mr-1">
+                Kelebihan Bersama:
               </span>
               {(match1.crossCheckedTraits || [
                 'Non-Smoker Match',
@@ -928,21 +919,15 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
               ]).map((trait, tIdx) => (
                 <span
                   key={tIdx}
-                  className={`flex items-center gap-1 px-2 py-0.5 sm:px-space-sm sm:py-1 rounded-full text-[10px] sm:text-label-sm font-semibold ${
-                    tIdx === 0
-                      ? 'bg-secondary-fixed text-on-secondary-fixed'
-                      : tIdx % 2 === 1
-                      ? 'bg-surface-container-high text-primary'
-                      : 'bg-surface-container text-on-surface-variant'
-                  }`}
+                  className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700 border border-stone-200"
                 >
-                  <span className="material-symbols-outlined text-xs sm:text-sm">
+                  <span className="material-symbols-outlined text-sm text-[#b48246]">
                     {tIdx === 0
                       ? 'smoke_free'
                       : tIdx === 1
-                      ? 'outdoor_grill'
+                      ? 'restaurant'
                       : tIdx === 2
-                      ? 'share_location'
+                      ? 'near_me'
                       : 'schedule'}
                   </span>
                   <span>{trait}</span>
@@ -951,67 +936,67 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
             </div>
 
             {/* 3-Pillar Qualitative Evaluation Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-space-md mt-3 sm:mt-space-lg">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
               {/* Pillar 1: Why They Match */}
-              <div className="p-3 sm:p-space-md rounded-xl bg-surface-container-low flex flex-col gap-1 sm:gap-space-xs border border-outline-variant/15">
-                <div className="flex items-center gap-1.5 text-primary">
-                  <span className="material-symbols-outlined text-base sm:text-lg">auto_awesome</span>
-                  <h3 className="text-xs sm:text-label-lg font-bold uppercase tracking-wider">
-                    1. Why They Match
+              <div className="p-4 rounded-xl bg-white flex flex-col gap-1.5 border border-stone-200/80 shadow-2xs">
+                <div className="flex items-center gap-1.5 text-stone-900">
+                  <span className="material-symbols-outlined text-base text-[#b48246]">auto_awesome</span>
+                  <h3 className="text-xs font-bold uppercase tracking-wider">
+                    1. Kenapa Mereka Serasi
                   </h3>
                 </div>
-                <p className="text-xs sm:text-body-sm text-on-surface-variant leading-relaxed">
+                <p className="text-xs text-stone-600 leading-relaxed mt-1">
                   {match1.whyTheyMatch}
                 </p>
-                <div className="mt-auto pt-2">
-                  <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+                <div className="mt-auto pt-3">
+                  <div className="w-full bg-stone-100 h-1.5 rounded-full overflow-hidden">
                     <div
-                      className="bg-primary h-full rounded-full transition-all duration-700"
+                      className="bg-[#b48246] h-full rounded-full transition-all duration-700"
                       style={{ width: `${match1.valueSynthesisPercent || 98}%` }}
                     ></div>
                   </div>
-                  <span className="text-[10px] sm:text-label-sm text-outline mt-1 block font-semibold">
-                    Value Synthesis: {match1.valueSynthesisPercent || 98}% Strong
+                  <span className="text-[10px] text-stone-400 mt-1.5 block font-semibold">
+                    Value Synthesis: {match1.valueSynthesisPercent || 98}% Kukuh
                   </span>
                 </div>
               </div>
 
               {/* Pillar 2: Potential Challenges */}
-              <div className="p-3 sm:p-space-md rounded-xl bg-surface-container-low flex flex-col gap-1 sm:gap-space-xs border border-outline-variant/15">
-                <div className="flex items-center gap-1.5 text-on-surface">
-                  <span className="material-symbols-outlined text-base sm:text-lg text-secondary">balance</span>
-                  <h3 className="text-xs sm:text-label-lg font-bold uppercase tracking-wider">
-                    2. Potential Challenges
+              <div className="p-4 rounded-xl bg-white flex flex-col gap-1.5 border border-stone-200/80 shadow-2xs">
+                <div className="flex items-center gap-1.5 text-stone-900">
+                  <span className="material-symbols-outlined text-base text-stone-500">balance</span>
+                  <h3 className="text-xs font-bold uppercase tracking-wider">
+                    2. Cabaran Berpotensi
                   </h3>
                 </div>
-                <p className="text-xs sm:text-body-sm text-on-surface-variant leading-relaxed">
+                <p className="text-xs text-stone-600 leading-relaxed mt-1">
                   {match1.potentialChallenges}
                 </p>
-                <div className="mt-auto pt-2">
-                  <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+                <div className="mt-auto pt-3">
+                  <div className="w-full bg-stone-100 h-1.5 rounded-full overflow-hidden">
                     <div
-                      className="bg-secondary-container h-full rounded-full transition-all duration-700"
+                      className="bg-stone-800 h-full rounded-full transition-all duration-700"
                       style={{ width: `${match1.frictionProbabilityPercent || 22}%` }}
                     ></div>
                   </div>
-                  <span className="text-[10px] sm:text-label-sm text-outline mt-1 block font-semibold">
-                    Friction Probability: Low ({match1.frictionProbabilityPercent || 22}%)
+                  <span className="text-[10px] text-stone-400 mt-1.5 block font-semibold">
+                    Risiko Friksi: Rendah ({match1.frictionProbabilityPercent || 22}%)
                   </span>
                 </div>
               </div>
 
               {/* Pillar 3: Tailored Date Recommendations */}
-              <div className="p-3 sm:p-space-md rounded-xl bg-surface-container-low flex flex-col gap-1 sm:gap-space-xs border border-outline-variant/15">
-                <div className="flex items-center gap-1.5 text-primary">
-                  <span className="material-symbols-outlined text-base sm:text-lg">hotel_class</span>
-                  <h3 className="text-xs sm:text-label-lg font-bold uppercase tracking-wider">
-                    3. Tailored Date Ideas
+              <div className="p-4 rounded-xl bg-white flex flex-col gap-1.5 border border-stone-200/80 shadow-2xs">
+                <div className="flex items-center gap-1.5 text-stone-900">
+                  <span className="material-symbols-outlined text-base text-[#b48246]">local_activity</span>
+                  <h3 className="text-xs font-bold uppercase tracking-wider">
+                    3. Cadangan Janji Temu
                   </h3>
                 </div>
-                <ul className="flex flex-col gap-1 text-xs sm:text-body-sm text-on-surface-variant">
+                <ul className="flex flex-col gap-2 text-xs text-stone-600 mt-1">
                   {match1.recommendedActivities.map((act, idx) => (
-                    <li key={idx} className="flex items-start gap-1.5">
-                      <span className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-surface-container-high text-primary text-[10px] sm:text-label-sm font-bold flex items-center justify-center">
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="shrink-0 w-4 h-4 rounded-full bg-[#fbf6ee] text-[#7c5820] text-[10px] font-bold flex items-center justify-center border border-[#b48246]/30">
                         {idx + 1}
                       </span>
                       <span>{act}</span>
@@ -1021,26 +1006,41 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
               </div>
 
               {/* Bottom Action Bar for Match #1 */}
-              {onOpenConcierge && (isAdmin || (myMatch && myMatch.rank === 1)) && (
-                <div className="col-span-1 md:col-span-3 mt-3 pt-3 border-t border-outline-variant/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                  <div className="flex items-center gap-2 text-xs text-on-surface-variant font-medium">
-                    <span className="material-symbols-outlined text-base text-primary">psychology</span>
-                    <span>
-                      {isAdmin
-                        ? 'AI Concierge: Analisis mendalam kekuatan nilai & cadangan aktiviti Pasangan #1'
-                        : 'AI Dating Advisor: Bincang idea temu janji & pengukuhan hubungan'}
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => onOpenConcierge(1)}
-                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold shadow-xs hover:bg-primary/90 transition-all cursor-pointer self-start sm:self-auto active:scale-95"
-                  >
-                    <span className="material-symbols-outlined text-sm">chat</span>
-                    <span>{isAdmin ? 'Analisis Pasangan #1 dengan AI' : 'Tanya AI Mengenai Pasangan Ini'}</span>
-                  </button>
+              <div className="col-span-1 md:col-span-3 mt-2 pt-3 border-t border-stone-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-xs text-stone-500 font-medium">
+                  <span className="material-symbols-outlined text-base text-[#b48246]">verified</span>
+                  <span>
+                    {isAdmin
+                      ? 'AI Concierge: Analisis mendalam kekuatan nilai & cadangan aktiviti Pasangan #1'
+                      : 'AI Dating Advisor: Bincang idea temu janji & pengukuhan hubungan'}
+                  </span>
                 </div>
-              )}
+
+                <div className="flex items-center gap-2 flex-wrap">
+                  {onOpenWhatsAppDispatch && isAdmin && (
+                    <button
+                      type="button"
+                      onClick={() => onOpenWhatsAppDispatch(match1)}
+                      className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-semibold transition-all cursor-pointer active:scale-95 shadow-2xs"
+                      title="Hantar makluman rasmi ke WhatsApp pasangan"
+                    >
+                      <span className="material-symbols-outlined text-sm text-emerald-600">chat</span>
+                      <span>Hantar WhatsApp</span>
+                    </button>
+                  )}
+
+                  {onOpenConcierge && (isAdmin || (myMatch && myMatch.rank === 1)) && (
+                    <button
+                      type="button"
+                      onClick={() => onOpenConcierge(1)}
+                      className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-stone-900 text-white text-xs font-semibold shadow-xs hover:bg-stone-800 transition-all cursor-pointer active:scale-95"
+                    >
+                      <span className="material-symbols-outlined text-sm text-[#b48246]">auto_awesome</span>
+                      <span>{isAdmin ? 'Analisis Pasangan #1 dengan AI' : 'Tanya AI Mengenai Pasangan Ini'}</span>
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1048,22 +1048,22 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
 
       {/* MATCHES #2 THROUGH #10: Interactive Accordion Hierarchy */}
       {secondaryMatches.length > 0 && (
-        <section className="flex flex-col gap-space-md mb-space-xl">
+        <section className="flex flex-col gap-4 mb-8">
           <div className="flex items-center justify-between no-print">
-            <div className="flex items-center gap-space-xs">
-              <span className="font-headline-sm text-headline-sm text-on-surface font-semibold font-serif">
-                Secondary Algorithmic Pairings
+            <div className="flex items-center gap-2">
+              <span className="text-lg text-stone-900 font-bold font-serif">
+                Padanan Keserasian Seterusnya
               </span>
-              <span className="px-space-xs py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-bold">
-                Ranks #2 - #{matches.length}
+              <span className="px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-700 font-semibold text-xs border border-stone-200">
+                #2 - #{matches.length}
               </span>
             </div>
             <button
               type="button"
               onClick={toggleAll}
-              className="font-label-md text-label-md text-primary hover:underline cursor-pointer font-semibold"
+              className="text-xs text-[#b48246] hover:text-[#8f6430] hover:underline cursor-pointer font-bold transition-colors"
             >
-              {allExpanded ? 'Collapse All Pairings' : 'Expand All Pairings'}
+              {allExpanded ? 'Tutup Semua Butiran' : 'Buka Semua Butiran'}
             </button>
           </div>
 
@@ -1073,22 +1073,23 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
             return (
               <div
                 key={match.rank}
-                className="rounded-xl bg-surface-container-lowest shadow-sm transition-all duration-200 border border-outline-variant/15 overflow-hidden"
+                id={`match-card-${match.rank}`}
+                className="rounded-2xl bg-white shadow-2xs hover:shadow-md transition-all duration-200 border border-stone-200/80 hover:border-[#b48246]/40 overflow-hidden"
               >
                 {/* Trigger Row */}
                 <div
                   onClick={() => toggleCard(match.rank)}
-                  className="p-3 sm:p-space-md cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-space-md hover:bg-surface-container-low/40 rounded-xl transition-colors select-none"
+                  className="p-4 sm:p-5 cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-stone-50/50 transition-colors select-none"
                 >
-                  <div className="flex items-center gap-2.5 sm:gap-space-md min-w-0">
-                    <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-surface-container-high text-primary text-xs sm:text-label-md font-bold flex items-center justify-center flex-shrink-0">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <span className="w-8 h-8 rounded-full bg-stone-100 text-stone-800 text-xs font-bold flex items-center justify-center shrink-0 border border-stone-200/60 font-mono">
                       #{match.rank}
                     </span>
 
-                    <div className="flex items-center gap-2 sm:gap-space-sm min-w-0">
-                      <div className="flex -space-x-2.5 sm:-space-x-3 overflow-hidden flex-shrink-0">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex -space-x-2.5 overflow-hidden shrink-0">
                         <img
-                          className="inline-block h-10 w-10 sm:h-12 sm:w-12 rounded-full ring-2 ring-surface-container-lowest object-cover"
+                          className="inline-block h-11 w-11 rounded-full ring-2 ring-white object-cover shadow-2xs"
                           alt={match.maleName}
                           src={
                             match.malePhoto ||
@@ -1096,11 +1097,11 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                           }
                           onError={e => {
                             (e.currentTarget as HTMLImageElement).src =
-                              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80';
+                              'https://lh3.googleusercontent.com/aida-public/AB6AXuAwOqlCtrC7wUSP62ZrSTKwVCa18SwrN7yEN_VPoHM2eSuDPcJfp2ajgyFTZGe8jYhs-pjTpYDHoVr9EmRpV5SWHTzwr86XN9LWOjKGAaW8Y645slcvdlLU6XHML39LTJ2GE6h_tHpGUdI9uAWjj2Nmd8jBqgASdPQb5tSDd6nrQ-1epJ-tTyAbMOq82GyTIGsKQ2wIt9wARh3wzv9slVcX1Bs1EeV4X_FSDBgFacd4Awfg2SNqGg84';
                           }}
                         />
                         <img
-                          className="inline-block h-10 w-10 sm:h-12 sm:w-12 rounded-full ring-2 ring-surface-container-lowest object-cover"
+                          className="inline-block h-11 w-11 rounded-full ring-2 ring-white object-cover shadow-2xs"
                           alt={match.femaleName}
                           src={
                             match.femalePhoto ||
@@ -1108,52 +1109,52 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                           }
                           onError={e => {
                             (e.currentTarget as HTMLImageElement).src =
-                              'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
+                              'https://lh3.googleusercontent.com/aida-public/AB6AXuBnSwa8m2QElUYk3cXu4-FBt_8BOb2uaCzu0RaP20Z8W8f9OyyFFt-M8Ddcrjlbz9ZWLIBS9S1-S8l5kwB63LxCDVKYKXvnIQMm04_EtdQNvScW8NXkWUG7eU4kHrqW6BXdCj5qZraQVlIWGf1UMJkgP2t2g-S3BKHRRvuEECoRtGipu0KtT_DV859ZTflCMruAR-kJpFFIHeLYNQH88pCAuN6DEi-i9oUCgua6mK2ONxwVzqS7PV3i';
                           }}
                         />
                       </div>
 
                       <div className="flex flex-col min-w-0">
-                        <div className="flex flex-wrap items-center gap-1 sm:gap-2">
-                          <span className="text-sm sm:text-headline-sm text-on-surface font-semibold font-serif truncate">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <span className="text-base text-stone-900 font-bold font-serif truncate">
                             {match.maleName}
                           </span>
-                          <span className="text-xs text-outline">&amp;</span>
-                          <span className="text-sm sm:text-headline-sm text-on-surface font-semibold font-serif truncate">
+                          <span className="text-xs text-stone-400 font-serif italic">&amp;</span>
+                          <span className="text-base text-stone-900 font-bold font-serif truncate">
                             {match.femaleName}
                           </span>
                         </div>
-                        <span className="text-[11px] sm:text-body-sm text-on-surface-variant truncate">
-                          {match.maleOccupation} ({match.maleAge}) • {match.femaleOccupation} ({match.femaleAge})
+                        <span className="text-xs text-stone-500 truncate">
+                          {match.maleOccupation} ({match.maleAge}) <span className="text-stone-300">·</span> {match.femaleOccupation} ({match.femaleAge})
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 sm:gap-space-md justify-between md:justify-end pt-1 md:pt-0 border-t border-outline-variant/10 md:border-0">
-                    <div className="flex flex-wrap gap-1">
-                      <span className="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] sm:text-label-sm font-semibold">
+                  <div className="flex items-center gap-3 sm:gap-4 justify-between md:justify-end pt-2 md:pt-0 border-t border-stone-100 md:border-0">
+                    <div className="flex flex-wrap gap-1.5">
+                      <span className="px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-700 text-xs font-medium">
                         {match.maleSmoking}
                       </span>
                       {match.crossCheckedTraits && match.crossCheckedTraits[1] && (
-                        <span className="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[10px] sm:text-label-sm">
+                        <span className="px-2.5 py-0.5 rounded-full bg-stone-50 text-stone-600 text-xs border border-stone-200/60">
                           {match.crossCheckedTraits[1]}
                         </span>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-1.5 sm:gap-space-sm shrink-0">
+                    <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                       <div className="text-right">
-                        <span className="text-base sm:text-headline-sm text-primary font-bold">
+                        <span className="text-base sm:text-lg text-stone-900 font-bold font-mono">
                           {match.score}%
                         </span>
-                        <span className="text-[9px] sm:text-label-sm text-outline block font-medium">
-                          Affinity
+                        <span className="text-[9px] text-stone-400 block font-semibold uppercase tracking-wider">
+                          Keserasian
                         </span>
                       </div>
                       <span
-                        className={`material-symbols-outlined text-outline transform transition-transform duration-200 text-lg sm:text-2xl ${
-                          isExpanded ? 'rotate-180' : ''
+                        className={`material-symbols-outlined text-stone-400 transform transition-transform duration-200 text-xl ${
+                          isExpanded ? 'rotate-180 text-stone-900' : ''
                         }`}
                       >
                         expand_more
@@ -1164,43 +1165,55 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
 
                 {/* Expandable Drawer Details */}
                 {isExpanded && (
-                  <div className="px-3 pb-3 sm:px-space-lg sm:pb-space-lg pt-1 card-details">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-space-md pt-2.5 sm:pt-space-md border-t border-outline-variant/30">
-                      <div className="p-3 sm:p-space-md rounded-xl bg-surface-container-low flex flex-col gap-1 border border-outline-variant/15">
-                        <span className="text-xs sm:text-label-sm text-primary font-bold uppercase tracking-wider">
-                          Why They Match
-                        </span>
-                        <p className="text-xs sm:text-body-sm text-on-surface-variant mt-0.5 leading-relaxed">
+                  <div className="px-4 pb-4 sm:px-6 sm:pb-6 pt-1 card-details border-t border-stone-100 bg-stone-50/40">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3">
+                      <div className="p-4 rounded-xl bg-white flex flex-col gap-1 border border-stone-200/80 shadow-2xs">
+                        <div className="flex items-center gap-1.5 text-stone-900">
+                          <span className="material-symbols-outlined text-base text-[#b48246]">auto_awesome</span>
+                          <span className="text-xs text-stone-900 font-bold uppercase tracking-wider">
+                            Kenapa Mereka Serasi
+                          </span>
+                        </div>
+                        <p className="text-xs text-stone-600 mt-1 leading-relaxed">
                           {match.whyTheyMatch}
                         </p>
                       </div>
 
-                      <div className="p-3 sm:p-space-md rounded-xl bg-surface-container-low flex flex-col gap-1 border border-outline-variant/15">
-                        <span className="text-xs sm:text-label-sm text-secondary font-bold uppercase tracking-wider">
-                          Potential Challenges
-                        </span>
-                        <p className="text-xs sm:text-body-sm text-on-surface-variant mt-0.5 leading-relaxed">
+                      <div className="p-4 rounded-xl bg-white flex flex-col gap-1 border border-stone-200/80 shadow-2xs">
+                        <div className="flex items-center gap-1.5 text-stone-900">
+                          <span className="material-symbols-outlined text-base text-stone-500">balance</span>
+                          <span className="text-xs text-stone-900 font-bold uppercase tracking-wider">
+                            Cabaran Berpotensi
+                          </span>
+                        </div>
+                        <p className="text-xs text-stone-600 mt-1 leading-relaxed">
                           {match.potentialChallenges}
                         </p>
                       </div>
 
-                      <div className="p-3 sm:p-space-md rounded-xl bg-surface-container-low flex flex-col gap-1 border border-outline-variant/15">
-                        <span className="text-xs sm:text-label-sm text-primary font-bold uppercase tracking-wider">
-                          Tailored Date Recommendations
-                        </span>
-                        <ul className="text-xs sm:text-body-sm text-on-surface-variant mt-0.5 flex flex-col gap-1">
+                      <div className="p-4 rounded-xl bg-white flex flex-col gap-1 border border-stone-200/80 shadow-2xs">
+                        <div className="flex items-center gap-1.5 text-stone-900">
+                          <span className="material-symbols-outlined text-base text-[#b48246]">local_activity</span>
+                          <span className="text-xs text-stone-900 font-bold uppercase tracking-wider">
+                            Cadangan Janji Temu
+                          </span>
+                        </div>
+                        <ul className="text-xs text-stone-600 mt-1 flex flex-col gap-1.5">
                           {match.recommendedActivities.map((act, aIdx) => (
-                            <li key={aIdx}>
-                              {aIdx + 1}. {act}
+                            <li key={aIdx} className="flex items-start gap-1.5">
+                              <span className="shrink-0 w-3.5 h-3.5 rounded-full bg-[#fbf6ee] text-[#7c5820] text-[9px] font-bold flex items-center justify-center border border-[#b48246]/20 mt-0.5">
+                                {aIdx + 1}
+                              </span>
+                              <span>{act}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
 
                       {/* Secondary Match Card Concierge Action & WhatsApp Dispatch */}
-                      <div className="mt-3 pt-3 border-t border-outline-variant/15 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div className="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
-                          <span className="material-symbols-outlined text-base text-primary">psychology</span>
+                      <div className="col-span-1 md:col-span-3 mt-2 pt-3 border-t border-stone-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                        <div className="flex items-center gap-1.5 text-xs text-stone-500 font-medium">
+                          <span className="material-symbols-outlined text-base text-[#b48246]">psychology</span>
                           <span>{isAdmin ? `Tindakan Penganjur untuk Pasangan #${match.rank}` : 'Personal AI Dating Advisor'}</span>
                         </div>
                         <div className="flex items-center gap-2 flex-wrap">
@@ -1208,10 +1221,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                             <button
                               type="button"
                               onClick={() => onOpenWhatsAppDispatch(match)}
-                              className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 text-emerald-800 dark:text-emerald-200 border border-emerald-500/30 text-xs font-bold transition-all cursor-pointer active:scale-95"
+                              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-semibold transition-all cursor-pointer active:scale-95 shadow-2xs"
                               title="Hantar makluman rasmi ke WhatsApp pasangan"
                             >
-                              <span className="material-symbols-outlined text-sm text-emerald-600 dark:text-emerald-400">chat</span>
+                              <span className="material-symbols-outlined text-sm text-emerald-600">chat</span>
                               <span>Hantar WhatsApp</span>
                             </button>
                           )}
@@ -1220,9 +1233,9 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                             <button
                               type="button"
                               onClick={() => onOpenConcierge(match.rank)}
-                              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold transition-all cursor-pointer self-start sm:self-auto active:scale-95"
+                              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold transition-all cursor-pointer active:scale-95 shadow-xs"
                             >
-                              <span className="material-symbols-outlined text-sm">psychology</span>
+                              <span className="material-symbols-outlined text-sm text-[#b48246]">auto_awesome</span>
                               <span>{isAdmin ? `Bincang Pasangan #${match.rank}` : 'Tanya AI'}</span>
                             </button>
                           )}
@@ -1238,32 +1251,32 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
       )}
 
       {/* PRD Fallback / Insufficient Candidates Notice Module */}
-      <section className="mt-space-md sm:mt-space-lg mb-space-lg sm:mb-space-xl no-print">
-        <div className="p-3.5 sm:p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-space-md border border-outline-variant/15">
-          <div className="flex items-start gap-2.5 sm:gap-space-md">
-            <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-surface-container-high text-primary flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0">
-              <span className="material-symbols-outlined text-xl sm:text-2xl">info</span>
+      <section className="mt-4 mb-8 no-print">
+        <div className="p-4 sm:p-5 rounded-2xl bg-white shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-stone-200/80">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-xl bg-stone-100 text-[#b48246] flex items-center justify-center shrink-0 border border-stone-200">
+              <span className="material-symbols-outlined text-xl">info</span>
             </div>
             <div className="flex flex-col min-w-0">
-              <div className="flex flex-wrap items-center gap-1.5 sm:gap-space-xs">
-                <span className="text-sm sm:text-headline-sm text-on-surface font-semibold font-serif">
-                  System Requirement Note
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-sm font-bold text-stone-900 font-serif">
+                  Nota Syarat Kelayakan Sistem
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant text-[10px] sm:text-label-sm font-bold shrink-0">
-                  PRD Section F04
+                <span className="px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 text-[10px] font-bold border border-stone-200">
+                  Mod Integriti
                 </span>
               </div>
-              <p className="text-xs sm:text-body-sm text-on-surface-variant mt-1 leading-relaxed">
-                Requires at least 1 male and 1 female participant to generate matches. When fewer candidates exist, the algorithmic generator halts automatically to safeguard evaluation integrity.
+              <p className="text-xs text-stone-500 mt-1 leading-relaxed">
+                Memerlukan sekurang-kurangnya 1 calon lelaki dan 1 calon perempuan untuk membolehkan enjin AI menjana padanan yang tepat dan bebas kecenderungan.
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onSimulateInsufficient}
-            className="w-full md:w-auto px-space-md py-2 sm:py-space-sm rounded-lg bg-surface-container-high text-primary hover:bg-surface-container transition-colors text-xs sm:text-label-md font-semibold flex-shrink-0 cursor-pointer text-center"
+            className="w-full md:w-auto px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 transition-colors text-xs font-semibold shrink-0 cursor-pointer text-center border border-stone-200"
           >
-            Simulate Insufficient Pool
+            Simulasi Kohort Tidak Cukup
           </button>
         </div>
       </section>

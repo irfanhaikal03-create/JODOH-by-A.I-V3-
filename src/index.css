@@ -1,60 +1,60 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #62002d;
-  --color-primary-container: #831843;
+  --color-primary: #1c1917;
+  --color-primary-container: #292524;
   --color-on-primary: #ffffff;
-  --color-on-primary-container: #ff91b0;
-  --color-primary-fixed: #ffd9e1;
-  --color-primary-fixed-dim: #ffb1c5;
-  --color-on-primary-fixed: #3f001a;
-  --color-on-primary-fixed-variant: #861a45;
+  --color-on-primary-container: #f5f5f4;
+  --color-primary-fixed: #e7e5e4;
+  --color-primary-fixed-dim: #d6d3d1;
+  --color-on-primary-fixed: #1c1917;
+  --color-on-primary-fixed-variant: #292524;
   
-  --color-secondary: #b81059;
+  --color-secondary: #b48246;
   --color-on-secondary: #ffffff;
-  --color-secondary-container: #fd4e8a;
-  --color-on-secondary-container: #590027;
-  --color-secondary-fixed: #ffd9e0;
-  --color-secondary-fixed-dim: #ffb1c3;
-  --color-on-secondary-fixed: #3f0019;
-  --color-on-secondary-fixed-variant: #8f0042;
+  --color-secondary-container: #fbf6ee;
+  --color-on-secondary-container: #4e3516;
+  --color-secondary-fixed: #f5eedb;
+  --color-secondary-fixed-dim: #e8dcbe;
+  --color-on-secondary-fixed: #3d2708;
+  --color-on-secondary-fixed-variant: #7c5820;
 
-  --color-tertiary: #1c00a0;
+  --color-tertiary: #334155;
   --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #311fca;
-  --color-on-tertiary-container: #acaaff;
-  --color-tertiary-fixed: #e2dfff;
-  --color-tertiary-fixed-dim: #c3c0ff;
-  --color-on-tertiary-fixed: #0f0069;
-  --color-on-tertiary-fixed-variant: #3323cc;
+  --color-tertiary-container: #f1f5f9;
+  --color-on-tertiary-container: #0f172a;
+  --color-tertiary-fixed: #e2e8f0;
+  --color-tertiary-fixed-dim: #cbd5e1;
+  --color-on-tertiary-fixed: #0f172a;
+  --color-on-tertiary-fixed-variant: #1e293b;
 
-  --color-background: #faf8ff;
-  --color-on-background: #131b2e;
-  --color-surface: #faf8ff;
-  --color-surface-dim: #d2d9f4;
-  --color-surface-bright: #faf8ff;
-  --color-surface-tint: #a5345d;
-  --color-surface-variant: #dae2fd;
+  --color-background: #fafaf9;
+  --color-on-background: #1c1917;
+  --color-surface: #ffffff;
+  --color-surface-dim: #f5f5f4;
+  --color-surface-bright: #ffffff;
+  --color-surface-tint: #b48246;
+  --color-surface-variant: #f5f5f4;
   
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f2f3ff;
-  --color-surface-container: #eaedff;
-  --color-surface-container-high: #e2e7ff;
-  --color-surface-container-highest: #dae2fd;
+  --color-surface-container-low: #faf9f8;
+  --color-surface-container: #f5f4f0;
+  --color-surface-container-high: #efece6;
+  --color-surface-container-highest: #e4e0d8;
 
-  --color-on-surface: #131b2e;
-  --color-on-surface-variant: #564146;
-  --color-inverse-surface: #283044;
-  --color-inverse-on-surface: #eef0ff;
-  --color-inverse-primary: #ffb1c5;
+  --color-on-surface: #1c1917;
+  --color-on-surface-variant: #57534e;
+  --color-inverse-surface: #1c1917;
+  --color-inverse-on-surface: #f5f5f4;
+  --color-inverse-primary: #b48246;
 
-  --color-outline: #897176;
-  --color-outline-variant: #dcc0c5;
+  --color-outline: #a8a29e;
+  --color-outline-variant: #e7e5e4;
   
-  --color-error: #ba1a1a;
+  --color-error: #b91c1c;
   --color-on-error: #ffffff;
-  --color-error-container: #ffdad6;
-  --color-on-error-container: #93000a;
+  --color-error-container: #fef2f2;
+  --color-on-error-container: #991b1b;
 
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -205,11 +205,11 @@ h1, h2, .font-serif, .brand-font {
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: rgba(98, 0, 45, 0.25) transparent;
+  scrollbar-color: rgba(180, 130, 70, 0.3) transparent;
 }
 
 .sidebar-scroll::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .sidebar-scroll::-webkit-scrollbar-track {
@@ -217,10 +217,30 @@ h1, h2, .font-serif, .brand-font {
 }
 
 .sidebar-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(98, 0, 45, 0.25);
+  background-color: rgba(180, 130, 70, 0.3);
   border-radius: 9999px;
 }
 
 .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(98, 0, 45, 0.5);
+  background-color: rgba(180, 130, 70, 0.55);
 }
+
+/* Luxury Exclusive Micro-Interactions & Styling */
+.luxury-card {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card:hover {
+  border-color: rgba(180, 130, 70, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(28, 25, 23, 0.08);
+  transform: translateY(-1px);
+}
+
+.luxury-gold-shimmer {
+  background: linear-gradient(135deg, #b48246 0%, #d4af37 50%, #b48246 100%);
+}
+
+.luxury-subtle-glow {
+  box-shadow: 0 0 20px -5px rgba(180, 130, 70, 0.15);
+}
+

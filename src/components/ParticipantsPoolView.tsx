@@ -70,71 +70,71 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
   return (
     <div className="flex flex-col w-full font-sans">
       {/* Top Stat Metrics Section */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         {/* Total Participants */}
-        <div className="bg-surface-container-lowest p-3 sm:p-5 rounded-2xl shadow-xs flex items-center justify-between transition-all hover:shadow-sm border border-outline-variant/15">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-xs flex items-center justify-between transition-all hover:shadow-sm border border-stone-200/80">
           <div className="flex flex-col min-w-0">
-            <span className="text-[10px] sm:text-xs text-outline uppercase tracking-wider font-bold truncate leading-tight">
+            <span className="text-[10px] sm:text-xs text-stone-400 uppercase tracking-wider font-bold truncate leading-tight">
               {t('totalCandidates', 'Jumlah Calon')}
             </span>
-            <div className="flex items-baseline gap-1 mt-1">
-              <span className="text-xl sm:text-3xl font-bold text-on-surface font-serif leading-none">
+            <div className="flex items-baseline gap-1.5 mt-1">
+              <span className="text-2xl sm:text-3xl font-bold text-stone-900 font-serif leading-none tabular-nums">
                 {totalCount}
               </span>
-              <span className="text-[10px] sm:text-xs text-on-surface-variant truncate">
+              <span className="text-[10px] sm:text-xs text-stone-500 truncate font-medium">
                 {t('activeLanguage', 'Aktif')}
               </span>
             </div>
           </div>
-          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-surface-container-high flex items-center justify-center text-primary shrink-0 ml-1">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-stone-100 text-stone-800 flex items-center justify-center shrink-0 border border-stone-200/60">
             <span className="material-symbols-outlined text-lg sm:text-2xl">group_work</span>
           </div>
         </div>
 
         {/* Male Candidates */}
-        <div className="bg-surface-container-lowest p-3 sm:p-5 rounded-2xl shadow-xs flex items-center justify-between transition-all hover:shadow-sm border border-outline-variant/15">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-xs flex items-center justify-between transition-all hover:shadow-sm border border-stone-200/80">
           <div className="flex flex-col min-w-0">
-            <span className="text-[10px] sm:text-xs text-outline uppercase tracking-wider font-bold truncate leading-tight">
+            <span className="text-[10px] sm:text-xs text-stone-400 uppercase tracking-wider font-bold truncate leading-tight">
               {t('filterMale', 'Calon Lelaki')}
             </span>
-            <div className="flex items-baseline gap-1 mt-1">
-              <span className="text-xl sm:text-3xl font-bold text-on-surface font-serif leading-none">
+            <div className="flex items-baseline gap-1.5 mt-1">
+              <span className="text-2xl sm:text-3xl font-bold text-stone-900 font-serif leading-none tabular-nums">
                 {maleCount}
               </span>
-              <span className="text-[10px] sm:text-xs text-on-surface-variant truncate">
+              <span className="text-[10px] sm:text-xs text-stone-500 truncate font-medium">
                 {t('male', 'Lelaki')}
               </span>
             </div>
           </div>
-          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-surface-container flex items-center justify-center text-tertiary shrink-0 ml-1">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 border border-slate-200/60">
             <span className="material-symbols-outlined text-lg sm:text-2xl">man</span>
           </div>
         </div>
 
         {/* Female Candidates */}
-        <div className="bg-surface-container-lowest p-3 sm:p-5 rounded-2xl shadow-xs flex items-center justify-between transition-all hover:shadow-sm border border-outline-variant/15">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-xs flex items-center justify-between transition-all hover:shadow-sm border border-stone-200/80">
           <div className="flex flex-col min-w-0">
-            <span className="text-[10px] sm:text-xs text-outline uppercase tracking-wider font-bold truncate leading-tight">
+            <span className="text-[10px] sm:text-xs text-stone-400 uppercase tracking-wider font-bold truncate leading-tight">
               {t('filterFemale', 'Calon Wanita')}
             </span>
-            <div className="flex items-baseline gap-1 mt-1">
-              <span className="text-xl sm:text-3xl font-bold text-on-surface font-serif leading-none">
+            <div className="flex items-baseline gap-1.5 mt-1">
+              <span className="text-2xl sm:text-3xl font-bold text-stone-900 font-serif leading-none tabular-nums">
                 {femaleCount}
               </span>
-              <span className="text-[10px] sm:text-xs text-on-surface-variant truncate">
+              <span className="text-[10px] sm:text-xs text-stone-500 truncate font-medium">
                 {t('female', 'Wanita')}
               </span>
             </div>
           </div>
-          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-secondary-fixed flex items-center justify-center text-secondary shrink-0 ml-1">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-amber-50 text-[#8f6430] flex items-center justify-center shrink-0 border border-amber-200/60">
             <span className="material-symbols-outlined text-lg sm:text-2xl">woman</span>
           </div>
         </div>
 
         {/* Match Eligibility Indicator */}
-        <div className="bg-surface-container-lowest p-3 sm:p-5 rounded-2xl shadow-xs flex flex-col justify-between transition-all border border-outline-variant/15 col-span-2 lg:col-span-1">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl shadow-xs flex flex-col justify-between transition-all border border-stone-200/80 col-span-2 lg:col-span-1">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] sm:text-xs text-outline uppercase tracking-wider font-bold">
+            <span className="text-[10px] sm:text-xs text-stone-400 uppercase tracking-wider font-bold">
               Status Quorum
             </span>
             {isEligible ? (
@@ -143,19 +143,19 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
                 {t('eligibleForMatching', 'Sedia')}
               </span>
             ) : (
-              <span className="px-2 py-0.5 rounded-full bg-error-container text-on-error-container text-[10px] sm:text-xs flex items-center gap-1 font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-error"></span>
+              <span className="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-[10px] sm:text-xs flex items-center gap-1 font-semibold border border-rose-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
                 {t('notEligible', 'Tidak Lengkap')}
               </span>
             )}
           </div>
-          <div className="mt-1">
-            <h4 className="text-xs sm:text-sm text-on-surface font-bold">
-              {isEligible ? '1 Lelaki + 1 Wanita Dipenuhi' : 'Quorum Minimum Belum Tercapai'}
+          <div className="mt-2">
+            <h4 className="text-xs sm:text-sm text-stone-900 font-bold">
+              {isEligible ? 'Quorum Dipenuhi (1L + 1W)' : 'Quorum Belum Mencukupi'}
             </h4>
-            <p className="text-[10px] sm:text-xs text-on-surface-variant mt-0.5 line-clamp-1 sm:line-clamp-none">
+            <p className="text-[10px] sm:text-xs text-stone-500 mt-0.5 line-clamp-1 sm:line-clamp-none">
               {isEligible
-                ? `Potensi 1-ke-1: ${Math.min(maleCount, femaleCount)} pasangan eksklusif`
+                ? `Potensi: ${Math.min(maleCount, femaleCount)} pasangan 1-ke-1`
                 : 'Perlu sekurang-kurangnya 1 lelaki & 1 wanita'}
             </p>
           </div>
@@ -163,35 +163,35 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
       </section>
 
       {/* Editorial Section Bar & Primary Action Ribbon */}
-      <div className="bg-surface-container-lowest p-4 sm:p-6 rounded-2xl shadow-xs mb-4 sm:mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4 border border-outline-variant/15">
+      <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-xs mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 border border-stone-200/80">
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-primary uppercase font-bold tracking-widest">
-              Cohort Registry
+            <span className="text-xs text-[#b48246] uppercase font-bold tracking-widest">
+              Executive Cohort
             </span>
-            <span className="w-1 h-1 rounded-full bg-outline-variant"></span>
-            <span className="text-xs text-on-surface-variant font-medium">
-              Manual Input Suite
+            <span className="w-1 h-1 rounded-full bg-stone-300"></span>
+            <span className="text-xs text-stone-500 font-medium">
+              Private Registry
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl text-on-surface tracking-tight mt-0.5 font-serif font-bold">
+          <h2 className="text-xl sm:text-2xl text-stone-900 tracking-tight mt-0.5 font-serif font-bold">
             {t('participantsPool', 'Direktori Calon Peserta')}
           </h2>
-          <p className="text-xs sm:text-sm text-on-surface-variant mt-0.5">
-            Dossier maklumat peribadi profil calon untuk analisis keserasian algoritma pintar.
+          <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
+            Dossier profil calon eksklusif untuk analisis keserasian algoritma pintar.
           </p>
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           {onNavigateToInsights && (
             <button
               type="button"
               onClick={onNavigateToInsights}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-surface-container text-on-surface text-xs sm:text-sm hover:bg-surface-container-high transition-all border border-outline-variant/30 cursor-pointer font-bold"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-stone-100 text-stone-800 text-xs sm:text-sm hover:bg-stone-200 transition-all border border-stone-200/80 cursor-pointer font-semibold active:scale-95"
               title="Lihat Demografi & Analisis Jurang Calon"
             >
-              <span className="material-symbols-outlined text-primary text-lg">monitoring</span>
+              <span className="material-symbols-outlined text-[#b48246] text-lg">monitoring</span>
               <span>Analitik Demografi</span>
             </button>
           )}
@@ -200,10 +200,10 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
             <button
               type="button"
               onClick={() => onNavigateToManualMatchmaker()}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-surface-container text-on-surface text-xs sm:text-sm hover:bg-surface-container-high transition-all border border-outline-variant/30 cursor-pointer font-bold"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-stone-100 text-stone-800 text-xs sm:text-sm hover:bg-stone-200 transition-all border border-stone-200/80 cursor-pointer font-semibold active:scale-95"
               title="Padankan mana-mana 2 calon secara manual"
             >
-              <span className="material-symbols-outlined text-secondary text-lg">handshake</span>
+              <span className="material-symbols-outlined text-[#7c5820] text-lg">handshake</span>
               <span>Padankan Manual</span>
             </button>
           )}
@@ -211,9 +211,9 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
           <button
             type="button"
             onClick={onOpenAddModal}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-surface-container-high text-on-surface text-xs sm:text-sm hover:bg-surface-container-highest transition-all shadow-2xs active:scale-95 cursor-pointer font-bold"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-900 text-xs sm:text-sm border border-stone-300 transition-all shadow-2xs active:scale-95 cursor-pointer font-bold"
           >
-            <span className="material-symbols-outlined text-primary text-xl">person_add</span>
+            <span className="material-symbols-outlined text-[#b48246] text-lg">person_add</span>
             <span>+ {t('addCandidate', 'Tambah Calon')}</span>
           </button>
 
@@ -221,22 +221,22 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
             type="button"
             disabled={!isEligible}
             onClick={onGenerateMatches}
-            className={`relative group inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-xs transition-all cursor-pointer font-bold ${
+            className={`relative group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-sm transition-all cursor-pointer font-bold ${
               isEligible
-                ? 'bg-primary text-on-primary hover:shadow-md hover:opacity-95 active:scale-95'
-                : 'bg-surface-container text-outline cursor-not-allowed opacity-60'
+                ? 'bg-stone-900 text-white hover:bg-stone-800 hover:shadow-md active:scale-95 border border-stone-900'
+                : 'bg-stone-100 text-stone-400 cursor-not-allowed border border-stone-200 opacity-60'
             }`}
           >
-            <span className="material-symbols-outlined text-lg">auto_awesome</span>
+            <span className="material-symbols-outlined text-base text-[#b48246]">auto_awesome</span>
             <span>{t('generateMatches', 'Jana Padanan AI')}</span>
           </button>
         </div>
       </div>
 
       {/* Filtration & Search Shelf */}
-      <div className="bg-surface-container-lowest p-3 sm:p-4 rounded-2xl shadow-xs mb-4 sm:mb-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 border border-outline-variant/15">
+      <div className="bg-white p-3.5 sm:p-4 rounded-2xl shadow-xs mb-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 border border-stone-200/80">
         <div className="flex-1 relative">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-xl pointer-events-none">
+          <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-xl pointer-events-none">
             search
           </span>
           <input
@@ -244,13 +244,13 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder={t('searchPlaceholder', 'Cari mengikut nama, profesion, lokasi atau hobi...')}
-            className="w-full pl-10 pr-10 py-2.5 bg-surface-container-low rounded-xl border border-outline-variant/30 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/30"
+            className="w-full pl-10 pr-10 py-2.5 bg-stone-50 hover:bg-stone-100/50 rounded-xl border border-stone-200 text-xs sm:text-sm font-medium text-stone-900 placeholder:text-stone-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#b48246]/20 focus:border-[#b48246]/50 transition-all"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-800 cursor-pointer p-1"
             >
               <span className="material-symbols-outlined text-base">close</span>
             </button>
@@ -259,14 +259,14 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
 
         <div className="flex flex-wrap items-center gap-2">
           {/* Gender Segmented Filter */}
-          <div className="flex items-center p-1 bg-surface-container-low rounded-xl text-on-surface-variant text-xs font-semibold">
+          <div className="flex items-center p-1 bg-stone-100 rounded-xl border border-stone-200/60 text-xs font-semibold">
             <button
               type="button"
               onClick={() => setGenderFilter('ALL')}
               className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                 genderFilter === 'ALL'
-                  ? 'bg-primary text-on-primary shadow-xs font-bold'
-                  : 'text-on-surface-variant hover:text-on-surface'
+                  ? 'bg-stone-900 text-white shadow-xs font-bold'
+                  : 'text-stone-600 hover:text-stone-900'
               }`}
             >
               {t('filterAll', 'Semua')}
@@ -276,8 +276,8 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
               onClick={() => setGenderFilter('MALE')}
               className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                 genderFilter === 'MALE'
-                  ? 'bg-primary text-on-primary shadow-xs font-bold'
-                  : 'text-on-surface-variant hover:text-on-surface'
+                  ? 'bg-stone-900 text-white shadow-xs font-bold'
+                  : 'text-stone-600 hover:text-stone-900'
               }`}
             >
               {t('male', 'Lelaki')}
@@ -287,8 +287,8 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
               onClick={() => setGenderFilter('FEMALE')}
               className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                 genderFilter === 'FEMALE'
-                  ? 'bg-primary text-on-primary shadow-xs font-bold'
-                  : 'text-on-surface-variant hover:text-on-surface'
+                  ? 'bg-stone-900 text-white shadow-xs font-bold'
+                  : 'text-stone-600 hover:text-stone-900'
               }`}
             >
               {t('female', 'Wanita')}
@@ -299,7 +299,7 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
           <select
             value={maritalFilter}
             onChange={e => setMaritalFilter(e.target.value)}
-            className="px-3 py-2 bg-surface-container-low text-on-surface text-xs font-medium rounded-xl focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer border border-outline-variant/30"
+            className="px-3 py-2 bg-stone-50 hover:bg-stone-100/60 text-stone-800 text-xs font-medium rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b48246]/20 focus:border-[#b48246]/50 cursor-pointer border border-stone-200 transition-all"
           >
             <option value="ALL">{t('marital', 'Status Perkahwinan')}: {t('filterAll', 'Semua')}</option>
             <option value="Single">{translateMarital('Single')}</option>
@@ -311,7 +311,7 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
           <select
             value={smokingFilter}
             onChange={e => setSmokingFilter(e.target.value)}
-            className="px-3 py-2 bg-surface-container-low text-on-surface text-xs font-medium rounded-xl focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer border border-outline-variant/30"
+            className="px-3 py-2 bg-stone-50 hover:bg-stone-100/60 text-stone-800 text-xs font-medium rounded-xl focus:outline-none focus:ring-2 focus:ring-[#b48246]/20 focus:border-[#b48246]/50 cursor-pointer border border-stone-200 transition-all"
           >
             <option value="ALL">{t('smoking', 'Tabiat Merokok')}: {t('filterAll', 'Semua')}</option>
             <option value="Non-Smoker">{translateSmoking('Non-Smoker')}</option>
@@ -322,32 +322,32 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
 
       {/* Candidates Grid Container */}
       {filteredCandidates.length === 0 ? (
-        <div className="bg-surface-container-lowest rounded-2xl shadow-xs p-8 sm:p-12 text-center flex flex-col items-center justify-center my-4 border border-outline-variant/15">
-          <div className="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center text-primary mb-4">
-            <span className="material-symbols-outlined text-3xl">sentiment_dissatisfied</span>
+        <div className="bg-white rounded-2xl shadow-xs p-8 sm:p-12 text-center flex flex-col items-center justify-center my-4 border border-stone-200/80">
+          <div className="w-16 h-16 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-600 mb-4 border border-stone-200/60">
+            <span className="material-symbols-outlined text-3xl text-[#b48246]">person_search</span>
           </div>
-          <h3 className="text-lg sm:text-xl font-bold text-on-surface font-serif">
+          <h3 className="text-lg sm:text-xl font-bold text-stone-900 font-serif">
             {t('noCandidatesFound', 'Tiada Calon Dijumpai')}
           </h3>
-          <p className="text-xs sm:text-sm text-on-surface-variant max-w-md mx-auto mt-1 mb-6">
+          <p className="text-xs sm:text-sm text-stone-500 max-w-md mx-auto mt-1 mb-6">
             Tiada profil menepati kriteria carian anda. Sila ubah tapisan atau tambah profil baru.
           </p>
           <button
             type="button"
             onClick={onOpenAddModal}
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-primary text-on-primary text-xs font-bold shadow-xs hover:opacity-95 transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-stone-900 text-white text-xs font-bold shadow-xs hover:bg-stone-800 transition-all cursor-pointer"
           >
-            <span className="material-symbols-outlined text-base">add</span>
+            <span className="material-symbols-outlined text-base text-[#b48246]">add</span>
             <span>{t('addCandidate', 'Tambah Calon')}</span>
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
           {filteredCandidates.map(item => {
             const isMale = item.gender === 'Male';
             const genderBadgeClass = isMale
-              ? 'bg-surface-container text-tertiary font-bold'
-              : 'bg-secondary-fixed text-secondary font-bold';
+              ? 'bg-slate-100 text-slate-700 border border-slate-200/70 font-semibold'
+              : 'bg-[#fbf6ee] text-[#7c5820] border border-[#b48246]/30 font-semibold';
 
             const hobbiesArr = Array.isArray(item.hobbies)
               ? item.hobbies
@@ -368,17 +368,17 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
             return (
               <div
                 key={item.id}
-                className="bg-surface-container-lowest rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group border border-outline-variant/15"
+                className="bg-white rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group border border-stone-200/80 hover:border-[#b48246]/40"
               >
                 <div>
                   {/* Header bar with Avatar, Name, Age, Status */}
-                  <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="flex items-start justify-between gap-3 mb-3.5">
                     <div className="flex items-center gap-3 min-w-0">
                       {item.photo && item.photo.trim().length > 8 ? (
                         <img
                           src={item.photo}
                           alt={item.name}
-                          className="w-12 h-12 rounded-xl object-cover shadow-2xs ring-1 ring-outline-variant/30 shrink-0"
+                          className="w-12 h-12 rounded-xl object-cover shadow-2xs ring-1 ring-stone-200 shrink-0"
                           onError={e => {
                             (e.currentTarget as HTMLElement).style.display = 'none';
                             const sibling = (e.currentTarget.parentElement?.querySelector('.monogram-fallback') as HTMLElement);
@@ -390,9 +390,9 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
                       <div
                         className={`monogram-fallback w-12 h-12 rounded-xl flex items-center justify-center font-bold text-sm tracking-wider shadow-2xs ${
                           isMale
-                            ? 'bg-tertiary-fixed text-on-tertiary-fixed'
-                            : 'bg-secondary-fixed text-secondary'
-                        } ring-1 ring-outline-variant/30 shrink-0 ${
+                            ? 'bg-slate-100 text-slate-800 border border-slate-200'
+                            : 'bg-amber-50 text-[#7c5820] border border-amber-200'
+                        } shrink-0 ${
                           item.photo && item.photo.trim().length > 8 ? 'hidden' : 'flex'
                         }`}
                       >
@@ -401,10 +401,10 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
 
                       <div className="flex flex-col min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <h3 className="text-base text-on-surface truncate font-semibold">
+                          <h3 className="text-base text-stone-900 truncate font-bold font-serif">
                             {item.name}
                           </h3>
-                          <span className="text-xs text-outline font-medium">
+                          <span className="text-xs text-stone-400 font-medium">
                             , {item.age} {t('yearsOld', 'thn')}
                           </span>
                         </div>
@@ -412,14 +412,14 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
                           <span className={`px-2 py-0.5 rounded-full text-[10px] ${genderBadgeClass}`}>
                             {translateGender(item.gender)}
                           </span>
-                          <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface text-[10px] font-semibold">
+                          <span className="px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 text-[10px] font-medium border border-stone-200/60">
                             {translateMarital(item.marital)}
                           </span>
                           <span
-                            className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
                               item.smoking === 'Smoker'
-                                ? 'bg-error-container text-error'
-                                : 'bg-surface-container-low text-on-surface-variant'
+                                ? 'bg-rose-50 text-rose-700 border-rose-200'
+                                : 'bg-emerald-50 text-emerald-800 border-emerald-200'
                             }`}
                           >
                             {translateSmoking(item.smoking)}
@@ -429,13 +429,13 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
                     </div>
 
                     {/* Quick action buttons */}
-                    <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity shrink-0">
+                    <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity shrink-0">
                       {onOpenWhatsAppDispatch && (
                         <button
                           type="button"
                           onClick={() => onOpenWhatsAppDispatch(item)}
                           title="Hantar Makluman WhatsApp"
-                          className="p-1.5 rounded-lg text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-all cursor-pointer"
+                          className="p-1.5 rounded-lg text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50 transition-all cursor-pointer"
                         >
                           <span className="material-symbols-outlined text-lg">chat</span>
                         </button>
@@ -444,7 +444,7 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
                         type="button"
                         onClick={() => onEditParticipant(item)}
                         title={t('editCandidate', 'Kemaskini')}
-                        className="p-1.5 rounded-lg text-outline hover:text-primary hover:bg-surface-container transition-all cursor-pointer"
+                        className="p-1.5 rounded-lg text-stone-400 hover:text-stone-900 hover:bg-stone-100 transition-all cursor-pointer"
                       >
                         <span className="material-symbols-outlined text-lg">edit</span>
                       </button>
@@ -452,7 +452,7 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
                         type="button"
                         onClick={() => onDeleteParticipant(item)}
                         title={t('deleteCandidate', 'Padam')}
-                        className="p-1.5 rounded-lg text-outline hover:text-error hover:bg-error-container transition-all cursor-pointer"
+                        className="p-1.5 rounded-lg text-stone-400 hover:text-rose-700 hover:bg-rose-50 transition-all cursor-pointer"
                       >
                         <span className="material-symbols-outlined text-lg">delete</span>
                       </button>
@@ -460,29 +460,29 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
                   </div>
 
                   {/* Demographics & Profession Grid */}
-                  <div className="space-y-1.5 py-2 bg-surface-container-low/60 rounded-xl p-3 mb-3">
-                    <div className="flex items-center gap-2 text-on-surface-variant text-xs">
-                      <span className="material-symbols-outlined text-base text-outline">work</span>
-                      <span className="font-semibold text-on-surface truncate">
+                  <div className="space-y-1.5 py-2.5 bg-stone-50/80 rounded-xl px-3 mb-3 border border-stone-200/60">
+                    <div className="flex items-center gap-2 text-stone-700 text-xs">
+                      <span className="material-symbols-outlined text-base text-[#b48246]">work</span>
+                      <span className="font-semibold text-stone-900 truncate">
                         {item.occupation}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-on-surface-variant text-xs">
-                      <span className="material-symbols-outlined text-base text-outline">location_on</span>
+                    <div className="flex items-center gap-2 text-stone-500 text-xs">
+                      <span className="material-symbols-outlined text-base text-stone-400">location_on</span>
                       <span>{item.location}, Malaysia</span>
                     </div>
                   </div>
 
                   {/* Hobbies Tags */}
                   <div className="mb-3">
-                    <span className="text-[10px] text-outline uppercase font-bold block mb-1">
+                    <span className="text-[10px] text-stone-400 uppercase font-bold block mb-1">
                       {t('hobbies', 'Hobi & Minat')}
                     </span>
                     <div className="flex flex-wrap gap-1">
                       {hobbiesArr.map((h, i) => (
                         <span
                           key={i}
-                          className="px-2 py-0.5 rounded-lg bg-surface-container text-on-surface text-[11px] font-medium"
+                          className="px-2 py-0.5 rounded-lg bg-stone-100 text-stone-700 text-[11px] font-medium border border-stone-200/50"
                         >
                           {h}
                         </span>
@@ -491,12 +491,12 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
                   </div>
 
                   {/* Ideal Partner Criteria */}
-                  <div className="p-3 bg-surface-container-low/40 rounded-xl border border-outline-variant/15 mb-3">
-                    <span className="text-[10px] text-primary uppercase font-bold tracking-wider block mb-1 flex items-center gap-1">
+                  <div className="p-3 bg-[#fbfbf9] rounded-xl border border-stone-200/70 mb-3.5">
+                    <span className="text-[10px] text-[#b48246] uppercase font-bold tracking-wider block mb-1 flex items-center gap-1">
                       <span className="material-symbols-outlined text-xs">favorite</span>
                       <span>{t('idealPartner', 'Kriteria Pasangan Idaman')}</span>
                     </span>
-                    <p className="text-xs text-on-surface-variant italic leading-relaxed line-clamp-2">
+                    <p className="text-xs text-stone-600 italic leading-relaxed line-clamp-2">
                       "{item.ideal}"
                     </p>
                   </div>
@@ -506,7 +506,7 @@ export const ParticipantsPoolView: React.FC<ParticipantsPoolViewProps> = ({
                 <button
                   type="button"
                   onClick={() => onEditParticipant(item)}
-                  className="w-full py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-bold text-xs transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                  className="w-full py-2.5 rounded-xl bg-stone-100 hover:bg-stone-900 hover:text-white text-stone-800 font-semibold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer border border-stone-200/70 hover:border-stone-900"
                 >
                   <span className="material-symbols-outlined text-sm">visibility</span>
                   <span>{t('viewProfile', 'Lihat Profil Lengkap')}</span>

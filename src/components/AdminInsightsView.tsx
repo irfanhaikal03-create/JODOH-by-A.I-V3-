@@ -165,15 +165,15 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Top Bar Navigation & Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-2xl border border-stone-200/80 shadow-xs">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="material-symbols-outlined text-primary text-2xl">monitoring</span>
-            <h1 className="text-xl sm:text-2xl font-serif font-bold text-on-surface">
+            <span className="material-symbols-outlined text-[#b48246] text-2xl">monitoring</span>
+            <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
               {t('adminInsightsTitle', 'Papan Pemuka Analitik & Wawasan AI')}
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-outline">
+          <p className="text-xs sm:text-sm text-stone-500">
             Analisis demografi kohort peserta, kadar liputan padanan, dan AI Gap Analysis bagi calon yang belum berpadanan.
           </p>
         </div>
@@ -182,7 +182,7 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
           <button
             type="button"
             onClick={onBackToDirectory}
-            className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-surface-container text-on-surface hover:bg-surface-container-high transition-all border border-outline-variant/20 flex items-center gap-1.5 cursor-pointer"
+            className="px-4 py-2.5 rounded-xl text-xs font-semibold bg-stone-100 text-stone-800 hover:bg-stone-200 transition-all border border-stone-200/80 flex items-center gap-1.5 cursor-pointer active:scale-95"
           >
             <span className="material-symbols-outlined text-base">arrow_back</span>
             <span>Direktori Calon</span>
@@ -191,9 +191,9 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
           <button
             type="button"
             onClick={() => onOpenManualMatchmaker()}
-            className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-primary to-primary-container hover:from-primary/90 hover:to-primary-container/90 shadow-xs hover:shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+            className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-stone-900 hover:bg-stone-800 shadow-xs hover:shadow-md transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 border border-stone-900"
           >
-            <span className="material-symbols-outlined text-base">handshake</span>
+            <span className="material-symbols-outlined text-base text-[#b48246]">handshake</span>
             <span>Meja Kerja Manual</span>
           </button>
         </div>
@@ -202,34 +202,34 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         {/* Total Candidates */}
-        <div className="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/20 shadow-xs">
-          <div className="flex items-center justify-between text-outline text-xs font-bold uppercase tracking-wider mb-2">
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <div className="flex items-center justify-between text-stone-400 text-xs font-bold uppercase tracking-wider mb-2">
             <span>Jumlah Calon</span>
-            <span className="material-symbols-outlined text-lg text-primary">groups</span>
+            <span className="material-symbols-outlined text-lg text-stone-700">groups</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-serif font-bold text-on-surface">
+          <p className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tabular-nums">
             {metrics.total}
           </p>
           <div className="mt-2 flex items-center gap-2 text-xs font-medium">
-            <span className="text-blue-600 dark:text-blue-400 font-bold">{metrics.maleCount} ♂</span>
-            <span className="text-outline">•</span>
-            <span className="text-pink-600 dark:text-pink-400 font-bold">{metrics.femaleCount} ♀</span>
+            <span className="text-slate-700 font-bold">{metrics.maleCount} ♂</span>
+            <span className="text-stone-300">•</span>
+            <span className="text-[#8f6430] font-bold">{metrics.femaleCount} ♀</span>
           </div>
         </div>
 
         {/* Gender Ratio */}
-        <div className="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/20 shadow-xs">
-          <div className="flex items-center justify-between text-outline text-xs font-bold uppercase tracking-wider mb-2">
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <div className="flex items-center justify-between text-stone-400 text-xs font-bold uppercase tracking-wider mb-2">
             <span>Nisbah Jantina</span>
-            <span className="material-symbols-outlined text-lg text-secondary">wc</span>
+            <span className="material-symbols-outlined text-lg text-[#b48246]">wc</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-serif font-bold text-on-surface">
-            {metrics.malePercent}% <span className="text-xs text-outline font-sans font-normal">: {metrics.femalePercent}%</span>
+          <p className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tabular-nums">
+            {metrics.malePercent}% <span className="text-xs text-stone-400 font-sans font-normal">: {metrics.femalePercent}%</span>
           </p>
           {/* Visual Ratio Bar */}
-          <div className="w-full h-2 rounded-full bg-pink-200 dark:bg-pink-950/60 overflow-hidden mt-3 flex">
+          <div className="w-full h-2 rounded-full bg-[#fbf6ee] border border-[#b48246]/20 overflow-hidden mt-3 flex">
             <div 
-              className="bg-blue-500 h-full transition-all duration-500" 
+              className="bg-stone-800 h-full transition-all duration-500" 
               style={{ width: `${metrics.malePercent}%` }}
               title={`Lelaki: ${metrics.malePercent}%`}
             />
@@ -237,43 +237,43 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
         </div>
 
         {/* Average Age */}
-        <div className="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/20 shadow-xs">
-          <div className="flex items-center justify-between text-outline text-xs font-bold uppercase tracking-wider mb-2">
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <div className="flex items-center justify-between text-stone-400 text-xs font-bold uppercase tracking-wider mb-2">
             <span>Purata Umur</span>
-            <span className="material-symbols-outlined text-lg text-amber-500">cake</span>
+            <span className="material-symbols-outlined text-lg text-[#b48246]">cake</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-serif font-bold text-on-surface">
-            {metrics.avgAge} <span className="text-xs text-outline font-sans font-normal">tahun</span>
+          <p className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tabular-nums">
+            {metrics.avgAge} <span className="text-xs text-stone-400 font-sans font-normal">thn</span>
           </p>
-          <p className="text-[11px] text-outline mt-2 font-medium">
-            Kohort eksekutif & profesional muda
+          <p className="text-[11px] text-stone-400 mt-2 font-medium">
+            Kohort eksekutif & profesional
           </p>
         </div>
 
         {/* Average Match Score */}
-        <div className="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/20 shadow-xs">
-          <div className="flex items-center justify-between text-outline text-xs font-bold uppercase tracking-wider mb-2">
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <div className="flex items-center justify-between text-stone-400 text-xs font-bold uppercase tracking-wider mb-2">
             <span>Purata Skor AI</span>
-            <span className="material-symbols-outlined text-lg text-emerald-500">auto_awesome</span>
+            <span className="material-symbols-outlined text-lg text-[#b48246]">auto_awesome</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-serif font-bold text-emerald-600 dark:text-emerald-400">
+          <p className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tabular-nums">
             {metrics.avgScore}%
           </p>
-          <p className="text-[11px] text-outline mt-2 font-medium">
+          <p className="text-[11px] text-stone-400 mt-2 font-medium">
             {matches.length} pasangan aktif berdaftar
           </p>
         </div>
 
         {/* Match Coverage */}
-        <div className="col-span-2 lg:col-span-1 bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/20 shadow-xs">
-          <div className="flex items-center justify-between text-outline text-xs font-bold uppercase tracking-wider mb-2">
+        <div className="col-span-2 lg:col-span-1 bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <div className="flex items-center justify-between text-stone-400 text-xs font-bold uppercase tracking-wider mb-2">
             <span>Liputan Padanan</span>
-            <span className="material-symbols-outlined text-lg text-primary">verified</span>
+            <span className="material-symbols-outlined text-lg text-[#b48246]">verified</span>
           </div>
-          <p className="text-2xl sm:text-3xl font-serif font-bold text-on-surface">
+          <p className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tabular-nums">
             {metrics.matchCoveragePercent}%
           </p>
-          <p className="text-[11px] text-outline mt-2 font-medium">
+          <p className="text-[11px] text-stone-400 mt-2 font-medium">
             {metrics.matchedCount} daripada {metrics.total} calon berpadanan
           </p>
         </div>
@@ -282,9 +282,9 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
       {/* Visual Demographic Distributions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Age Groups Distribution */}
-        <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/20 shadow-xs">
-          <h3 className="font-serif font-bold text-sm sm:text-base text-on-surface mb-3 flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-lg">bar_chart</span>
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <h3 className="font-serif font-bold text-sm sm:text-base text-stone-900 mb-3 flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#b48246] text-lg">bar_chart</span>
             <span>Taburan Lingkungan Umur</span>
           </h3>
           <div className="space-y-2.5">
@@ -292,13 +292,13 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
               const pct = metrics.total > 0 ? Math.round((count / metrics.total) * 100) : 0;
               return (
                 <div key={group} className="text-xs">
-                  <div className="flex justify-between font-semibold mb-1">
-                    <span className="text-on-surface">{group} tahun</span>
-                    <span className="text-outline">{count} calon ({pct}%)</span>
+                  <div className="flex justify-between font-medium mb-1">
+                    <span className="text-stone-800">{group} tahun</span>
+                    <span className="text-stone-500 tabular-nums">{count} calon ({pct}%)</span>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+                  <div className="w-full h-1.5 rounded-full bg-stone-100 overflow-hidden">
                     <div 
-                      className="bg-primary h-full rounded-full transition-all duration-500"
+                      className="bg-stone-800 h-full rounded-full transition-all duration-500"
                       style={{ width: `${pct}%` }}
                     />
                   </div>
@@ -309,24 +309,24 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
         </div>
 
         {/* Geographic / State Breakdown */}
-        <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/20 shadow-xs">
-          <h3 className="font-serif font-bold text-sm sm:text-base text-on-surface mb-3 flex items-center gap-2">
-            <span className="material-symbols-outlined text-secondary text-lg">pin_drop</span>
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <h3 className="font-serif font-bold text-sm sm:text-base text-stone-900 mb-3 flex items-center gap-2">
+            <span className="material-symbols-outlined text-[#b48246] text-lg">pin_drop</span>
             <span>Lokasi / Negeri Peserta</span>
           </h3>
-          <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+          <div className="space-y-2 max-h-48 overflow-y-auto pr-1 sidebar-scroll">
             {Object.entries(metrics.locations)
               .sort((a, b) => b[1] - a[1])
               .map(([loc, count]) => {
                 const pct = metrics.total > 0 ? Math.round((count / metrics.total) * 100) : 0;
                 return (
-                  <div key={loc} className="flex items-center justify-between text-xs p-2 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all">
-                    <span className="font-semibold text-on-surface truncate">{loc}</span>
+                  <div key={loc} className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-stone-50 hover:bg-stone-100/70 transition-all border border-stone-100">
+                    <span className="font-semibold text-stone-800 truncate">{loc}</span>
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold text-[10px]">
+                      <span className="px-2 py-0.5 rounded-full bg-[#fbf6ee] text-[#7c5820] font-bold text-[10px] border border-[#b48246]/20">
                         {count} orang
                       </span>
-                      <span className="text-outline text-[11px] w-8 text-right">{pct}%</span>
+                      <span className="text-stone-400 text-[11px] w-8 text-right tabular-nums">{pct}%</span>
                     </div>
                   </div>
                 );
@@ -335,56 +335,56 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
         </div>
 
         {/* Marital & Lifestyle Attributes */}
-        <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/20 shadow-xs flex flex-col justify-between">
+        <div className="bg-white p-5 rounded-2xl border border-stone-200/80 shadow-xs flex flex-col justify-between">
           <div>
-            <h3 className="font-serif font-bold text-sm sm:text-base text-on-surface mb-3 flex items-center gap-2">
-              <span className="material-symbols-outlined text-amber-500 text-lg">favorite</span>
+            <h3 className="font-serif font-bold text-sm sm:text-base text-stone-900 mb-3 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#b48246] text-lg">favorite</span>
               <span>Status Perkahwinan & Merokok</span>
             </h3>
 
             {/* Marital */}
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-xs font-semibold">
-                <span>Bujang:</span>
-                <span className="text-primary font-bold">{metrics.maritalCounts['Single'] || 0} calon</span>
+                <span className="text-stone-600">Bujang:</span>
+                <span className="text-stone-900 font-bold">{metrics.maritalCounts['Single'] || 0} calon</span>
               </div>
               <div className="flex justify-between text-xs font-semibold">
-                <span>Duda / Janda:</span>
-                <span className="text-secondary font-bold">{(metrics.maritalCounts['Divorced'] || 0) + (metrics.maritalCounts['Widowed'] || 0)} calon</span>
+                <span className="text-stone-600">Duda / Janda:</span>
+                <span className="text-stone-900 font-bold">{(metrics.maritalCounts['Divorced'] || 0) + (metrics.maritalCounts['Widowed'] || 0)} calon</span>
               </div>
             </div>
 
-            <div className="border-t border-outline-variant/20 pt-3">
+            <div className="border-t border-stone-100 pt-3">
               <div className="flex justify-between text-xs font-semibold mb-1.5">
-                <span>Bukan Perokok:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">{metrics.nonSmokers} orang ({metrics.total > 0 ? Math.round((metrics.nonSmokers / metrics.total) * 100) : 0}%)</span>
+                <span className="text-stone-600">Bukan Perokok:</span>
+                <span className="text-emerald-700 font-bold">{metrics.nonSmokers} orang ({metrics.total > 0 ? Math.round((metrics.nonSmokers / metrics.total) * 100) : 0}%)</span>
               </div>
               <div className="flex justify-between text-xs font-semibold">
-                <span>Perokok:</span>
-                <span className="text-rose-500 font-bold">{metrics.smokers} orang</span>
+                <span className="text-stone-600">Perokok:</span>
+                <span className="text-rose-600 font-bold">{metrics.smokers} orang</span>
               </div>
             </div>
           </div>
 
-          <div className="mt-4 p-2.5 rounded-xl bg-primary/5 border border-primary/20 text-[11px] text-outline">
-            💡 <strong className="text-on-surface font-semibold">Tip AI:</strong> Majoriti peserta mencari pasangan bukan perokok dan bersedia untuk ta'aruf berteraskan nilai Islam.
+          <div className="mt-4 p-3 rounded-xl bg-[#fbf6ee] border border-[#b48246]/25 text-[11px] text-[#7c5820]">
+            💡 <strong className="text-stone-900 font-semibold">Tip AI:</strong> Majoriti calon mencari pasangan bukan perokok dan bersedia untuk ta'aruf berasaskan nilai murni.
           </div>
         </div>
       </div>
 
       {/* SECTION: AI UNMATCHED GAP ANALYSIS */}
-      <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-5 sm:p-6 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-outline-variant/20 pb-4">
+      <div className="bg-white rounded-2xl border border-stone-200/80 p-5 sm:p-6 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-stone-100 pb-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">
-              <span className="material-symbols-outlined text-sm">troubleshoot</span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fbf6ee] text-[#7c5820] text-xs font-bold uppercase tracking-wider mb-2 border border-[#b48246]/25">
+              <span className="material-symbols-outlined text-sm text-[#b48246]">troubleshoot</span>
               <span>AI Unmatched Gap Analysis</span>
             </div>
-            <h2 className="text-lg sm:text-xl font-serif font-bold text-on-surface">
-              Analisis Jurang & Halangan Calon Belum Berpadanan ({metrics.unmatchedParticipants.length} Calon)
+            <h2 className="text-lg sm:text-xl font-serif font-bold text-stone-900">
+              Analisis Jurang Calon Belum Berpadanan ({metrics.unmatchedParticipants.length} Calon)
             </h2>
-            <p className="text-xs text-outline mt-0.5">
-              Sistem AI menganalisis punca mengapa calon-calon ini belum mendapat padanan optimum dalam pusingan automatik, serta mencadangkan langkah intervensi buat penganjur.
+            <p className="text-xs text-stone-500 mt-0.5">
+              Sistem AI menganalisis kekangan calon yang belum mendapat padanan optimum automatik serta mencadangkan langkah susulan penganjur.
             </p>
           </div>
 
@@ -392,21 +392,21 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
             <button
               type="button"
               onClick={() => onOpenManualMatchmaker(metrics.unmatchedParticipants[0]?.id)}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-primary bg-primary/10 hover:bg-primary/20 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+              className="px-4 py-2.5 rounded-xl text-xs font-bold text-stone-900 bg-stone-100 hover:bg-stone-200 transition-all flex items-center gap-1.5 cursor-pointer shrink-0 border border-stone-200 active:scale-95"
             >
-              <span className="material-symbols-outlined text-base">psychology</span>
+              <span className="material-symbols-outlined text-base text-[#b48246]">psychology</span>
               <span>Bantu Padankan Manual</span>
             </button>
           )}
         </div>
 
         {metrics.unmatchedParticipants.length === 0 ? (
-          <div className="text-center py-10 bg-surface-container-low rounded-xl border border-dashed border-outline-variant/40">
-            <span className="material-symbols-outlined text-4xl text-emerald-500 mb-2">celebration</span>
-            <p className="font-serif font-bold text-base text-on-surface">
+          <div className="text-center py-10 bg-stone-50 rounded-2xl border border-dashed border-stone-200">
+            <span className="material-symbols-outlined text-4xl text-emerald-600 mb-2">celebration</span>
+            <p className="font-serif font-bold text-base text-stone-900">
               Hebat! 100% Calon Berjaya Dipadankan
             </p>
-            <p className="text-xs text-outline max-w-md mx-auto mt-1">
+            <p className="text-xs text-stone-500 max-w-md mx-auto mt-1">
               Semua calon dalam direktori telah mempunyai pasangan aktif dalam pusingan padanan terkini.
             </p>
           </div>
@@ -419,12 +419,12 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
               return (
                 <div 
                   key={participant.id}
-                  className="bg-surface-container-low rounded-2xl border border-outline-variant/30 p-4 sm:p-5 flex flex-col justify-between hover:border-primary/40 transition-all shadow-xs"
+                  className="bg-white rounded-2xl border border-stone-200/80 p-5 flex flex-col justify-between hover:border-[#b48246]/40 transition-all shadow-xs"
                 >
                   <div>
                     {/* Header: Photo + Info */}
                     <div className="flex items-start gap-3.5 mb-3.5">
-                      <div className="relative w-14 h-14 rounded-2xl overflow-hidden bg-surface-container-high shrink-0 border border-outline-variant/40">
+                      <div className="relative w-14 h-14 rounded-2xl overflow-hidden bg-stone-100 shrink-0 border border-stone-200">
                         {participant.photo ? (
                           <img 
                             src={participant.photo} 
@@ -432,51 +432,51 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center font-serif font-bold text-lg text-primary">
+                          <div className="w-full h-full flex items-center justify-center font-serif font-bold text-lg text-stone-700">
                             {participant.name[0]}
                           </div>
                         )}
-                        <span className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white ${isMale ? 'bg-blue-500' : 'bg-pink-500'}`} />
+                        <span className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white ${isMale ? 'bg-slate-700' : 'bg-[#b48246]'}`} />
                       </div>
 
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <h4 className="font-serif font-bold text-sm sm:text-base text-on-surface truncate">
+                          <h4 className="font-serif font-bold text-sm sm:text-base text-stone-900 truncate">
                             {participant.name}
                           </h4>
-                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold shrink-0 ${
-                            isMale ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300' : 'bg-pink-100 text-pink-800 dark:bg-pink-950/60 dark:text-pink-300'
+                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold shrink-0 border ${
+                            isMale ? 'bg-slate-100 text-slate-700 border-slate-200' : 'bg-[#fbf6ee] text-[#7c5820] border-[#b48246]/20'
                           }`}>
                             {participant.age} thn • {participant.gender === 'Male' ? 'Lelaki' : 'Wanita'}
                           </span>
                         </div>
-                        <p className="text-xs text-outline mt-0.5 truncate">
+                        <p className="text-xs text-stone-500 mt-0.5 truncate">
                           {participant.occupation} • {participant.location}
                         </p>
-                        <p className="text-[11px] text-outline font-medium mt-0.5">
-                          Status: <strong className="text-on-surface">{participant.marital}</strong> | <strong className="text-on-surface">{participant.smoking}</strong>
+                        <p className="text-[11px] text-stone-500 font-medium mt-0.5">
+                          Status: <strong className="text-stone-800">{participant.marital}</strong> | <strong className="text-stone-800">{participant.smoking}</strong>
                         </p>
                       </div>
                     </div>
 
                     {/* AI Diagnosis List */}
-                    <div className="space-y-2 mb-4 bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/20">
-                      <p className="text-[11px] font-bold text-outline uppercase tracking-wider flex items-center gap-1">
-                        <span className="material-symbols-outlined text-sm text-amber-500">warning</span>
+                    <div className="space-y-2 mb-4 bg-stone-50 p-3.5 rounded-xl border border-stone-200/70">
+                      <p className="text-[11px] font-bold text-stone-600 uppercase tracking-wider flex items-center gap-1">
+                        <span className="material-symbols-outlined text-sm text-[#b48246]">warning</span>
                         <span>Analisis Halangan Padanan AI:</span>
                       </p>
 
                       {diagnostics.map((diag, idx) => (
                         <div key={idx} className="text-xs space-y-1">
-                          <p className="font-bold text-on-surface flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                          <p className="font-bold text-stone-800 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#b48246] shrink-0" />
                             <span>{diag.title}</span>
                           </p>
-                          <p className="text-[11px] text-outline leading-relaxed pl-2.5">
+                          <p className="text-[11px] text-stone-500 leading-relaxed pl-2.5">
                             {diag.desc}
                           </p>
                           <div className="pl-2.5 pt-0.5">
-                            <span className="inline-block text-[11px] bg-primary/10 text-primary font-medium px-2 py-0.5 rounded-md">
+                            <span className="inline-block text-[11px] bg-white border border-stone-200 text-stone-700 font-medium px-2 py-0.5 rounded-md">
                               👉 Tindakan: {diag.action}
                             </span>
                           </div>
@@ -486,23 +486,23 @@ export const AdminInsightsView: React.FC<AdminInsightsViewProps> = ({
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex items-center gap-2 pt-2 border-t border-outline-variant/20">
+                  <div className="flex items-center gap-2 pt-3 border-t border-stone-100">
                     <button
                       type="button"
                       onClick={() => onOpenManualMatchmaker(participant.id)}
-                      className="flex-1 py-2 px-3 rounded-xl text-xs font-bold text-on-primary bg-primary hover:bg-primary/90 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                      className="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-stone-900 hover:bg-stone-800 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-95 border border-stone-900"
                     >
-                      <span className="material-symbols-outlined text-base">handshake</span>
+                      <span className="material-symbols-outlined text-base text-[#b48246]">handshake</span>
                       <span>Cuba Padankan Manual</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => onOpenWhatsAppDispatch(participant)}
-                      className="py-2 px-3 rounded-xl text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-950/60 border border-emerald-500/30 transition-all flex items-center gap-1 cursor-pointer"
+                      className="py-2.5 px-3 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 transition-all flex items-center gap-1 cursor-pointer active:scale-95"
                       title="Hubungi calon di WhatsApp"
                     >
-                      <span className="material-symbols-outlined text-base text-emerald-600 dark:text-emerald-400">chat</span>
+                      <span className="material-symbols-outlined text-base text-emerald-600">chat</span>
                       <span>WhatsApp</span>
                     </button>
                   </div>

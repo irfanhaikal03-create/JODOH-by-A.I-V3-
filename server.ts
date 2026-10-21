@@ -51,7 +51,21 @@ interface MatchResult {
 }
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
+function getPort(): number {
+  const portArgIndex = process.argv.findIndex(arg => arg === '--port' || arg === '-p');
+  if (portArgIndex !== -1 && process.argv[portArgIndex + 1]) {
+    const parsed = parseInt(process.argv[portArgIndex + 1], 10);
+    if (!isNaN(parsed) && parsed > 0) return parsed;
+  }
+  if (process.env.NODE_ENV === 'production' && process.env.PORT) {
+    const parsed = parseInt(process.env.PORT, 10);
+    if (!isNaN(parsed) && parsed > 0) return parsed;
+  }
+  return 3000;
+}
+
+const PORT = getPort();
 
 app.use(express.json({ limit: '10mb' }));
 

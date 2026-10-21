@@ -929,11 +929,11 @@ export default function App() {
               localStorage.setItem('jodoh_sidebar_open', 'true');
             } catch (e) {}
           }}
-          className="hidden lg:flex fixed left-0 top-24 z-30 items-center gap-1.5 px-3 py-2 bg-surface-container-highest/95 hover:bg-primary hover:text-on-primary text-on-surface border border-l-0 border-outline-variant/30 rounded-r-xl shadow-md transition-all cursor-pointer font-semibold text-xs group backdrop-blur-xs"
+          className="hidden lg:flex fixed left-0 top-24 z-30 items-center gap-1.5 px-3.5 py-2.5 bg-stone-900/95 hover:bg-stone-800 text-white border border-l-0 border-stone-700 rounded-r-xl shadow-lg transition-all cursor-pointer font-semibold text-xs group backdrop-blur-md active:scale-95"
           title="Buka semula Menu Sidebar"
           aria-label="Buka semula sidebar menu"
         >
-          <span className="material-symbols-outlined text-lg">dock_to_right</span>
+          <span className="material-symbols-outlined text-base text-[#b48246]">dock_to_right</span>
           <span className="text-[11px] font-bold">Buka Menu</span>
         </button>
       )}
