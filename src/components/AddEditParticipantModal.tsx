@@ -190,7 +190,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
             <div>
               <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold mb-1">
-                Full Name <span className="text-error">*</span>
+                Full Name <span className="text-rose-500 font-semibold text-[10px] ml-1 normal-case">(Wajib)</span>
               </label>
               <input
                 type="text"
@@ -213,7 +213,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
 
             <div>
               <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold mb-1">
-                Gender <span className="text-error">*</span>
+                Gender <span className="text-rose-500 font-semibold text-[10px] ml-1 normal-case">(Wajib)</span>
               </label>
               <div className="grid grid-cols-2 gap-space-xs">
                 <button
@@ -248,7 +248,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-space-md">
             <div>
               <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold mb-1">
-                Age <span className="text-error">*</span>
+                Age <span className="text-rose-500 font-semibold text-[10px] ml-1 normal-case">(Wajib)</span>
               </label>
               <input
                 type="number"
@@ -274,7 +274,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
 
             <div>
               <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold mb-1">
-                Marital Status <span className="text-error">*</span>
+                Marital Status <span className="text-rose-500 font-semibold text-[10px] ml-1 normal-case">(Wajib)</span>
               </label>
               <select
                 value={marital}
@@ -289,7 +289,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
 
             <div>
               <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold mb-1">
-                Smoking Status <span className="text-error">*</span>
+                Smoking Status <span className="text-rose-500 font-semibold text-[10px] ml-1 normal-case">(Wajib)</span>
               </label>
               <select
                 value={smoking}
@@ -306,7 +306,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
             <div>
               <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold mb-1">
-                Occupation <span className="text-error">*</span>
+                Occupation <span className="text-rose-500 font-semibold text-[10px] ml-1 normal-case">(Wajib)</span>
               </label>
               <input
                 type="text"
@@ -329,7 +329,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
 
             <div>
               <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold mb-1">
-                Location / State <span className="text-error">*</span>
+                Location / State <span className="text-rose-500 font-semibold text-[10px] ml-1 normal-case">(Wajib)</span>
               </label>
               <select
                 value={location}
@@ -494,7 +494,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
           {/* Hobbies & Interests */}
           <div>
             <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold mb-1">
-              Hobbies & Interests <span className="text-error">*</span>{' '}
+              Hobbies & Interests <span className="text-rose-500 font-semibold text-[10px] ml-1 normal-case">(Wajib)</span>{' '}
               <span className="text-outline text-xs lowercase font-normal">(comma-separated)</span>
             </label>
             <input
@@ -519,7 +519,7 @@ export const AddEditParticipantModal: React.FC<AddEditParticipantModalProps> = (
           {/* Ideal Partner Criteria */}
           <div>
             <label className="block font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold mb-1">
-              Target / Ideal Partner Dynamics <span className="text-error">*</span>
+              Target / Ideal Partner Dynamics <span className="text-rose-500 font-semibold text-[10px] ml-1 normal-case">(Wajib)</span>
             </label>
             <textarea
               rows={3}

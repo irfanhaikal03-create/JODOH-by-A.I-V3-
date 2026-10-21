@@ -492,18 +492,22 @@ app.post('/api/chat', async (req, res) => {
 
     if (role === 'admin') {
       systemInstruction = `You are the Executive Matchmaking AI Concierge for JODOH by AI with FULL administrative privileges.
-You have complete visibility over the entire event cohort and all algorithmic pairings.
-Assist the administrator with:
-- Reviewing compatibility metrics across all couples.
-- Designing engaging icebreakers, dating schedule recommendations, and event venue strategies.
-- Analyzing interpersonal friction risks and conflict mitigation.
-- Providing bespoke dating coach advice for any participant or couple in the cohort.
+Assist the administrator with cohort compatibility, icebreakers, event strategies, and dating advice.
 
 Cohort Context:
 Total Attendees: ${cohortContext?.totalCandidates || 12}
 ${cohortContext?.summaryList ? `Candidates Overview:\n${cohortContext.summaryList.join('\n')}` : ''}
 
-Always respond in ${language}. Maintain a professional, executive, sophisticated, and insightful tone.`;
+SPEED & CONCISENESS (CRITICAL):
+Provide a swift, high-impact, direct answer in 2-3 short, focused paragraphs or 3 concise points (maximum 100-130 words). Never write long essays or filler.
+
+ABSOLUTE CHARACTER RESTRICTION (CRITICAL):
+NEVER output any hash characters (#) or asterisk characters (*) anywhere in your output.
+- Do NOT use # for headings or rankings (write "Pasangan 1" or "Meja 1", never "#1").
+- Do NOT use ** for bold text.
+- Do NOT use * for italics or bullets.
+- For lists, use "1.", "2.", "3." or "• ".
+Always respond in ${language}. Maintain a professional, executive, sophisticated tone.`;
     } else {
       // Participant Mode: STRICTLY bounded to their official partner
       if (!partnerInfo || !partnerInfo.partnerName) {
@@ -524,49 +528,68 @@ OFFICIAL PARTNER DOSSIER:
 - Location: ${partnerInfo.partnerLocation || 'N/A'}
 - Smoking Habit: ${partnerInfo.partnerSmoking || 'N/A'}
 - Passions & Hobbies: ${Array.isArray(partnerInfo.partnerHobbies) ? partnerInfo.partnerHobbies.join(', ') : 'N/A'}
-- Partner's Vision of an Ideal Companion: "${partnerInfo.partnerIdeal || 'Values mutual respect, emotional maturity and growth.'}"
+- Partner's Vision: "${partnerInfo.partnerIdeal || 'Values mutual respect, emotional maturity and growth.'}"
 - Compatibility Score: ${partnerInfo.matchScore || 85}%
-- Core Alignment Rationale: "${partnerInfo.whyTheyMatch || 'Harmonious lifestyle values and shared life vision.'}"
-- Potential Friction Points: "${partnerInfo.potentialChallenges || 'Navigating busy work-life schedules.'}"
-- Recommended Tailored Dates: ${Array.isArray(partnerInfo.recommendedActivities) ? partnerInfo.recommendedActivities.join('; ') : 'Artisanal coffee, art gallery visit, tranquil nature walk'}
+- Alignment Rationale: "${partnerInfo.whyTheyMatch || 'Harmonious lifestyle values and shared life vision.'}"
+- Recommended Tailored Dates: ${Array.isArray(partnerInfo.recommendedActivities) ? partnerInfo.recommendedActivities.join('; ') : 'Artisanal coffee, art gallery visit, nature walk'}
 
-STRICT ROLE CONSTRAINTS FOR PARTICIPANT MODE:
-1. You assist ${userName || 'the user'} EXCLUSIVELY with regards to their relationship and dating journey with ${partnerInfo.partnerName}.
-2. If the user asks about other participants or seeks to browse other candidates, politely decline and refocus them on their official partner ${partnerInfo.partnerName}.
-3. Provide:
-   - Thoughtful recaps of why they match and what makes their pairing special.
-   - 2-3 creative, concrete date activities tailored directly to ${partnerInfo.partnerName}'s actual hobbies (${Array.isArray(partnerInfo.partnerHobbies) ? partnerInfo.partnerHobbies.join(', ') : 'their interests'}).
-   - Engaging conversation starters for their initial dates.
-   - Practical advice on navigating dating phases, pacing, and handling professional schedules.
-4. Tone: Warm, emotionally intelligent, encouraging, respectful, and sophisticated.
-5. Always answer in ${language}.`;
+ROLE RULES:
+1. You assist ${userName || 'the user'} EXCLUSIVELY with regards to their relationship with ${partnerInfo.partnerName}.
+2. Provide concrete date ideas, icebreakers, and empathetic dating advice.
+
+SPEED & CONCISENESS (CRITICAL):
+Answer swiftly and concisely in 2-3 short, friendly paragraphs or 3 direct points (maximum 100-130 words). Never write long essays or filler.
+
+ABSOLUTE CHARACTER RESTRICTION (CRITICAL):
+NEVER output any hash characters (#) or asterisk characters (*) anywhere in your output.
+- Do NOT use # for headings or rankings (write "Pasangan 1" or "Meja 1", never "#1").
+- Do NOT use ** for bold text.
+- Do NOT use * for italics or bullets.
+- For lists, use "1.", "2.", "3." or "• ".
+Always answer in ${language}. Tone: Warm, encouraging, and sophisticated.`;
     }
 
-    // Call Gemini API if key is configured
+    // Call Gemini API if key is configured (Ultra-low latency model for conversational chat)
     if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'MY_GEMINI_API_KEY') {
       try {
-        // Construct conversation contents for Gemini
-        const formattedContents = messages.map(m => ({
+        // Construct conversation contents for Gemini - take last 6 messages for maximum speed
+        const recentMessages = messages.slice(-6);
+        const formattedContents = recentMessages.map(m => ({
           role: m.role === 'model' ? 'model' : 'user',
           parts: [{ text: m.content }],
         }));
 
-        const response = await ai.models.generateContent({
-          model: 'gemini-3.8-flash',
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('AI response timeout')), 5000)
+        );
+
+        const geminiPromise = ai.models.generateContent({
+          model: 'gemini-3.1-flash-lite',
           contents: formattedContents,
           config: {
             systemInstruction,
-            temperature: 0.7,
-            topP: 0.95,
+            temperature: 0.4,
+            maxOutputTokens: 260,
           },
         });
 
+        const response = await Promise.race([geminiPromise, timeoutPromise]);
         const reply = response.text ? response.text.trim() : '';
         if (reply) {
-          return res.json({ reply, source: 'gemini' });
+          // Thoroughly sanitize any accidental markdown hashes or asterisks from the AI output
+          const cleanedReply = reply
+            .replace(/^#+\s*/gm, '')
+            .replace(/#(\d+)/g, 'Pasangan $1')
+            .replace(/\*\*(.*?)\*\*/g, '$1')
+            .replace(/\*(.*?)\*/g, '$1')
+            .replace(/^\s*[\*\-]\s+/gm, '• ')
+            .replace(/[#*]/g, '')
+            .trim();
+
+          return res.json({ reply: cleanedReply, source: 'gemini' });
         }
-      } catch (geminiError) {
-        console.warn('Gemini chat call error, using intelligent fallback:', geminiError);
+      } catch (geminiError: any) {
+        console.warn('Gemini chat latency mitigation triggered fallback:', geminiError?.message || geminiError);
       }
     }
 
@@ -579,47 +602,47 @@ STRICT ROLE CONSTRAINTS FOR PARTICIPANT MODE:
     if (role === 'admin') {
       fallbackReply = isEn
         ? `As the Matchmaking Administrator, you have full oversight across the cohort. Based on our algorithmic analysis:
-1. **Compatibility Overview**: Median affinity is strong with high alignment in lifestyle habits.
-2. **Recommended Cohort Activity**: Host an interactive coffee cupping or collaborative trivia session to break the ice naturally without high-pressure speed-dating anxiety.
-3. **Friction Advisory**: Ensure attendees with demanding corporate schedules establish transparent communication cadences early.`
+1. Compatibility Overview: Median affinity is strong with high alignment in lifestyle habits.
+2. Recommended Cohort Activity: Host an interactive coffee cupping or collaborative trivia session to break the ice naturally without high-pressure speed-dating anxiety.
+3. Friction Advisory: Ensure attendees with demanding corporate schedules establish transparent communication cadences early.`
         : `Sebagai Administrator Acara, anda mempunyai akses penuh ke seluruh direktori calon. Berdasarkan analisis algoritma:
-1. **Gambaran Keseluruhan**: Tahap keserasian kohort mencatatkan purata tinggi dengan penjajaran kukuh dalam tabiat hidup & zon geografi.
-2. **Cadangan Acara Suai Kenal**: Anjurkan sesi santai seperti 'Coffee Cupping' atau bengkel kraf berkumpulan bagi membolehkan interaksi spontan tanpa tekanan.
-3. **Peringatan Penganjur**: Pasangan berkerjaya profesional memerlukan fleksibiliti masa dalam fasa permulaan temu janji.`;
+1. Gambaran Keseluruhan: Tahap keserasian kohort mencatatkan purata tinggi dengan penjajaran kukuh dalam tabiat hidup dan zon geografi.
+2. Cadangan Acara Suai Kenal: Anjurkan sesi santai seperti sesi minum kopi santai atau bengkel kraf berkumpulan bagi membolehkan interaksi spontan tanpa tekanan.
+3. Peringatan Penganjur: Pasangan berkerjaya profesional memerlukan fleksibiliti masa dalam fasa permulaan temu janji.`;
     } else {
       const qLower = lastMessage.toLowerCase();
       if (qLower.includes('recap') || qLower.includes('mengapa') || qLower.includes('why') || qLower.includes('serasi')) {
         fallbackReply = isEn
-          ? `### Compatibility Recap with ${partnerName}
-- **Score**: ${partnerInfo?.matchScore || 88}% Compatibility Rating
-- **Why You Match**: ${partnerInfo?.whyTheyMatch || 'You both share strong core values, work-life intentionality, and complementary communication styles.'}
-- **Shared Affinity**: ${partnerName} enjoys ${hobbies}, which aligns beautifully with your profile.
-- **Advice for Phase 1**: Start with open curiosity about their day-to-day passions!`
-          : `### Ringkasan Keserasian Anda & ${partnerName}
-- **Skor**: ${partnerInfo?.matchScore || 88}% Tahap Keserasian Algoritma
-- **Sebab Padanan**: ${partnerInfo?.whyTheyMatch || 'Anda berdua berkongsi nilai kehidupan yang kukuh, persefahaman matang, dan gaya komunikasi yang saling melengkapi.'}
-- **Minat Bersama**: ${partnerName} gemar ${hobbies}, yang memberikan banyak titik perbualan menarik.
-- **Tip Fasa Pertama**: Luangkan masa bersembang mengenai impian masa depan dan minat santai mereka!`;
+          ? `Ringkasan Keserasian Anda & ${partnerName}
+• Skor: ${partnerInfo?.matchScore || 88}% Tahap Keserasian Algoritma
+• Sebab Padanan: ${partnerInfo?.whyTheyMatch || 'Anda berdua berkongsi nilai kehidupan yang kukuh, persefahaman matang, dan gaya komunikasi yang saling melengkapi.'}
+• Minat Bersama: ${partnerName} gemar ${hobbies}, yang memberikan banyak titik perbualan menarik.
+• Tip Fasa Pertama: Luangkan masa bersembang mengenai impian masa depan dan minat santai mereka!`
+          : `Ringkasan Keserasian Anda & ${partnerName}
+• Skor: ${partnerInfo?.matchScore || 88}% Tahap Keserasian Algoritma
+• Sebab Padanan: ${partnerInfo?.whyTheyMatch || 'Anda berdua berkongsi nilai kehidupan yang kukuh, persefahaman matang, dan gaya komunikasi yang saling melengkapi.'}
+• Minat Bersama: ${partnerName} gemar ${hobbies}, yang memberikan banyak titik perbualan menarik.
+• Tip Fasa Pertama: Luangkan masa bersembang mengenai impian masa depan dan minat santai mereka!`;
       } else if (qLower.includes('date') || qLower.includes('aktiviti') || qLower.includes('temu janji') || qLower.includes('activity')) {
         fallbackReply = isEn
-          ? `### 3 Tailored Date Ideas for You & ${partnerName}
-1. **Curated Coffee & Book Browsing**: A quiet afternoon at an artisanal cafe in ${partnerInfo?.partnerLocation || 'the city'} followed by a stroll through an independent bookstore.
-2. **Weekend Nature Walk**: A peaceful morning trail walk, giving you uninterrupted time for genuine conversation without dinner awkwardness.
-3. **Interactive Workshop**: A hands-on ceramics or culinary tasting experience inspired by ${partnerName}'s passion for ${hobbies}.`
-          : `### 3 Cadangan Temu Janji Khusus untuk Anda & ${partnerName}
-1. **Sesi Kopi Santai & Kedai Buku**: Nikmati kopi artisan di kafe yang tenang sekitar ${partnerInfo?.partnerLocation || 'pusat bandar'}, sesuai untuk berbual panjang tanpa gangguan.
-2. **Riadah Pagi di Taman Botani**: Berjalan santai sambil menikmati udara segar—cara terbaik memecah kebuntuan tanpa rasa kekok.
-3. **Bengkel Kreatif Bersama**: Terokai bengkel seni atau kraf hujung minggu yang selari dengan minat ${partnerName} dalam ${hobbies}.`;
+          ? `Tiga Cadangan Temu Janji Khusus untuk Anda & ${partnerName}
+1. Sesi Kopi Santai & Kedai Buku: Nikmati kopi artisan di kafe yang tenang sekitar ${partnerInfo?.partnerLocation || 'pusat bandar'}, sesuai untuk berbual panjang tanpa gangguan.
+2. Riadah Pagi di Taman Botani: Berjalan santai sambil menikmati udara segar sebagai cara terbaik memecah kebuntuan tanpa rasa kekok.
+3. Bengkel Kreatif Bersama: Terokai bengkel seni atau kraf hujung minggu yang selari dengan minat ${partnerName} dalam ${hobbies}.`
+          : `Tiga Cadangan Temu Janji Khusus untuk Anda & ${partnerName}
+1. Sesi Kopi Santai & Kedai Buku: Nikmati kopi artisan di kafe yang tenang sekitar ${partnerInfo?.partnerLocation || 'pusat bandar'}, sesuai untuk berbual panjang tanpa gangguan.
+2. Riadah Pagi di Taman Botani: Berjalan santai sambil menikmati udara segar sebagai cara terbaik memecah kebuntuan tanpa rasa kekok.
+3. Bengkel Kreatif Bersama: Terokai bengkel seni atau kraf hujung minggu yang selari dengan minat ${partnerName} dalam ${hobbies}.`;
       } else {
         fallbackReply = isEn
-          ? `Hello! As your personal relationship concierge for **${partnerName}**, I am here to help you navigate your dating journey:
-- **Partner Insight**: ${partnerName} works as a ${partnerInfo?.partnerOccupation || 'professional'} and values "${partnerInfo?.partnerIdeal || 'genuine connection and mutual growth'}".
-- **Recommended Next Step**: Invite ${partnerName} to a low-pressure coffee catch-up. Ask them about their interest in ${hobbies}.
-- **Dating Tip**: Focus on active listening during the first 30 minutes—curiosity is the highest form of romantic attraction!`
-          : `Salam! Sebagai penasihat hubungan peribadi anda bersama **${partnerName}**, saya sedia membantu:
-- **Maklumat Pasangan**: ${partnerName} bertugas sebagai ${partnerInfo?.partnerOccupation || 'profesional'} dan mendambakan "${partnerInfo?.partnerIdeal || 'hubungan yang ikhlas dan saling menyokong'}".
-- **Langkah Disyorkan**: Mulakan dengan jemputan minum kopi santai dan tanyakan tentang minat mereka dalam ${hobbies}.
-- **Tip Temu Janji**: Berikan tumpuan sepenuhnya dan dengar dengan empati—minat yang tulus adalah daya tarikan terhebat!`;
+          ? `Hello! Sebagai penasihat hubungan peribadi anda bersama ${partnerName}, saya sedia membantu:
+• Maklumat Pasangan: ${partnerName} bertugas sebagai ${partnerInfo?.partnerOccupation || 'profesional'} dan mendambakan "${partnerInfo?.partnerIdeal || 'hubungan yang ikhlas dan saling menyokong'}".
+• Langkah Disyorkan: Mulakan dengan jemputan minum kopi santai dan tanyakan tentang minat mereka dalam ${hobbies}.
+• Tip Temu Janji: Berikan tumpuan sepenuhnya dan dengar dengan empati kerana minat yang tulus adalah daya tarikan terhebat!`
+          : `Salam! Sebagai penasihat hubungan peribadi anda bersama ${partnerName}, saya sedia membantu:
+• Maklumat Pasangan: ${partnerName} bertugas sebagai ${partnerInfo?.partnerOccupation || 'profesional'} dan mendambakan "${partnerInfo?.partnerIdeal || 'hubungan yang ikhlas dan saling menyokong'}".
+• Langkah Disyorkan: Mulakan dengan jemputan minum kopi santai dan tanyakan tentang minat mereka dalam ${hobbies}.
+• Tip Temu Janji: Berikan tumpuan sepenuhnya dan dengar dengan empati kerana minat yang tulus adalah daya tarikan terhebat!`;
       }
     }
 

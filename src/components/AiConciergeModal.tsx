@@ -3,6 +3,7 @@ import { Participant, MatchResult, UserRole, AppUser, AiChatSession } from '../t
 import { useLanguage } from '../context/LanguageContext';
 import { db } from '../firebase';
 import { collection, doc, setDoc, onSnapshot } from 'firebase/firestore';
+import { CleanMessageContent } from './CleanMessageContent';
 
 interface AiConciergeModalProps {
   isOpen: boolean;
@@ -185,13 +186,13 @@ export const AiConciergeModal: React.FC<AiConciergeModalProps> = ({
           {
             id: `welcome-admin-${activeAdminCouple.rank}`,
             role: 'model',
-            content: `Salam Administrator. Anda kini berada dalam dossier analisis khusus bagi **Pasangan #${activeAdminCouple.rank}: ${activeAdminCouple.maleName} (${activeAdminCouple.maleAge}) & ${activeAdminCouple.femaleName} (${activeAdminCouple.femaleAge})** dengan tahap keserasian **${activeAdminCouple.score}%**.
+            content: `Salam Administrator. Anda kini berada dalam dossier analisis khusus bagi Pasangan ${activeAdminCouple.rank}: ${activeAdminCouple.maleName} (${activeAdminCouple.maleAge}) & ${activeAdminCouple.femaleName} (${activeAdminCouple.femaleAge}) dengan tahap keserasian ${activeAdminCouple.score}%.
             
 Bagaimanakah saya boleh membantu anda menguruskan pemadanan ini?
-- 💡 **Ringkasan Keserasian**: Analisis mendalam kekuatan nilai dan personaliti mereka
-- ☕ **Aktiviti Temu Janji**: Cadangan aktiviti bersesuaian dengan minat mereka (${activeAdminCouple.maleHobbies.slice(0, 2).concat(activeAdminCouple.femaleHobbies.slice(0, 2)).join(', ')})
-- ⚠️ **Audit Geseran**: Risiko percanggahan jadual atau gaya hidup
-- 💬 **Panduan Perbualan**: Topik pemecah kebuntuan untuk temu janji pertama mereka`,
+• Ringkasan Keserasian: Analisis mendalam kekuatan nilai dan personaliti mereka
+• Aktiviti Temu Janji: Cadangan aktiviti bersesuaian dengan minat mereka (${activeAdminCouple.maleHobbies.slice(0, 2).concat(activeAdminCouple.femaleHobbies.slice(0, 2)).join(', ')})
+• Audit Geseran: Risiko percanggahan jadual atau gaya hidup
+• Panduan Perbualan: Topik pemecah kebuntuan untuk temu janji pertama mereka`,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           },
         ]);
@@ -200,13 +201,13 @@ Bagaimanakah saya boleh membantu anda menguruskan pemadanan ini?
           {
             id: 'welcome-admin-global',
             role: 'model',
-            content: `Salam & Selamat Datang, Administrator. Saya ialah **AI Matchmaking Concierge** anda dengan akses penuh kepada seluruh kohort acara (${participants.length} peserta berdaftar, ${matches.length} padanan terhasil).
+            content: `Salam & Selamat Datang, Administrator. Saya ialah AI Matchmaking Concierge anda dengan akses penuh kepada seluruh kohort acara (${participants.length} peserta berdaftar, ${matches.length} padanan terhasil).
 
 Saya sedia membantu anda dalam:
-- 📊 **Analisis Keserasian Kohort**: Metrik purata, persefahaman nilai & tabiat hidup
-- 🎪 **Aktiviti & Icebreakers Acara**: Rangka aktiviti interaktif tanpa tekanan bagi memeriahkan sesi suai kenal
-- ⚠️ **Audit Titik Geseran**: Kenal pasti cabaran jadual dan cara mitigasi
-- 👥 **Nasihat Setiap Pasangan**: Dapatkan nasihat dan panduan terperinci untuk mana-mana pasangan`,
+• Analisis Keserasian Kohort: Metrik purata, persefahaman nilai dan tabiat hidup
+• Aktiviti & Icebreakers Acara: Rangka aktiviti interaktif tanpa tekanan bagi memeriahkan sesi suai kenal
+• Audit Titik Geseran: Kenal pasti cabaran jadual dan cara mitigasi
+• Nasihat Setiap Pasangan: Dapatkan nasihat dan panduan terperinci untuk mana-mana pasangan`,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           },
         ]);
@@ -216,14 +217,14 @@ Saya sedia membantu anda dalam:
         {
           id: 'welcome-partner',
           role: 'model',
-          content: `Salam ${currentParticipantProfile?.name || 'anda'}! Saya ialah **AI Dating Advisor & Concierge Peribadi** anda khusus bersama pasangan rasmi anda, **${partnerInfo.partnerName}** (Skor Keserasian: **${partnerInfo.matchScore}%**).
+          content: `Salam ${currentParticipantProfile?.name || 'anda'}! Saya ialah AI Dating Advisor & Concierge Peribadi anda khusus bersama pasangan rasmi anda, ${partnerInfo.partnerName} (Skor Keserasian: ${partnerInfo.matchScore}%).
 
 Sebagai pembantu hubungan anda, saya sedia membantu dalam fasa perkenalan ini:
-- 💡 **Ringkasan Padanan**: Mengapa anda dan ${partnerInfo.partnerName} dipadankan oleh AI serta kekuatan bersama anda
-- ☕ **Cadangan Temu Janji**: 3 idea aktiviti kreatif berdasarkan minat ${partnerInfo.partnerName} dalam *${Array.isArray(partnerInfo.partnerHobbies) ? partnerInfo.partnerHobbies.join(', ') : 'gaya hidup'}*
-- 💬 **Topik Perbualan**: Soalan menarik dan bermakna untuk mengelakkan kekok semasa berbual
-- 🧭 **Nasihat Fasa Temu Janji**: Langkah bijak mengukuhkan ikatan emosi dan persefahaman
-- ℹ️ **Maklumat Pasangan**: Butiran kerjaya, impian dan visi pasangan idaman ${partnerInfo.partnerName}
+• Ringkasan Padanan: Mengapa anda dan ${partnerInfo.partnerName} dipadankan oleh AI serta kekuatan bersama anda
+• Cadangan Temu Janji: 3 idea aktiviti kreatif berdasarkan minat ${partnerInfo.partnerName} dalam ${Array.isArray(partnerInfo.partnerHobbies) ? partnerInfo.partnerHobbies.join(', ') : 'gaya hidup'}
+• Topik Perbualan: Soalan menarik dan bermakna untuk mengelakkan kekok semasa berbual
+• Nasihat Fasa Temu Janji: Langkah bijak mengukuhkan ikatan emosi dan persefahaman
+• Maklumat Pasangan: Butiran kerjaya, impian dan visi pasangan idaman ${partnerInfo.partnerName}
 
 Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -262,7 +263,7 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
     if (isAdmin) {
       if (activeAdminCouple) {
         return [
-          { label: '💡 Ringkasan Padanan', query: `Buat ringkasan mengapa Pasangan #${activeAdminCouple.rank} (${activeAdminCouple.maleName} & ${activeAdminCouple.femaleName}) serasi dan apa kekuatan nilai mereka.` },
+          { label: '💡 Ringkasan Padanan', query: `Buat ringkasan mengapa Pasangan ${activeAdminCouple.rank} (${activeAdminCouple.maleName} & ${activeAdminCouple.femaleName}) serasi dan apa kekuatan nilai mereka.` },
           { label: '☕ 3 Cadangan Temu Janji', query: `Cadangkan 3 aktiviti temu janji khusus untuk ${activeAdminCouple.maleName} & ${activeAdminCouple.femaleName} berdasarkan minat mereka.` },
           { label: '⚠️ Audit Titik Geseran', query: `Apakah cabaran atau titik geseran utama bagi pasangan ini dan apakah nasihat mitigasi untuk penganjur?` },
           { label: '💬 Panduan Perbualan', query: `Berikan 4 soalan perbualan menarik untuk ${activeAdminCouple.maleName} dan ${activeAdminCouple.femaleName} semasa temu janji pertama.` },
@@ -272,7 +273,7 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
         { label: '📊 Analisis Keserasian Kohort', query: 'Analisis trend keserasian keseluruhan kohort dan tabiat gaya hidup para peserta.' },
         { label: '🎪 3 Aktiviti & Icebreaker Acara', query: 'Cadangkan 3 aktiviti suai kenal atau game icebreaker menarik untuk acara ini yang santai dan tidak kekok.' },
         { label: '⚠️ Audit Cabaran Utama', query: 'Audit titik geseran paling kerap di kalangan 10 pasangan teratas dan cara penganjur membimbing mereka.' },
-        { label: '⭐ Mengapa Pasangan #1 Terbaik?', query: 'Terangkan mengapa Pasangan #1 menduduki tempat teratas dari sudut nilai hidup dan personaliti.' },
+        { label: '⭐ Mengapa Pasangan 1 Terbaik?', query: 'Terangkan mengapa Pasangan 1 menduduki tempat teratas dari sudut nilai hidup dan personaliti.' },
       ];
     } else if (partnerInfo && matchesPublished) {
       return [
@@ -337,6 +338,9 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
           }
         : undefined;
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 7000);
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -348,7 +352,10 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
           messages: historyPayload,
           language: languageInfo.name || 'Malay',
         }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error('Failed to fetch AI response');
@@ -404,8 +411,8 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
         role: 'model',
         content:
           languageInfo.code === 'en'
-            ? `I am currently operating in advisory mode. For your journey with **${partnerInfo?.partnerName || 'your partner'}**, focus on active curiosity, exploring shared interests like *${Array.isArray(partnerInfo?.partnerHobbies) ? partnerInfo?.partnerHobbies.join(', ') : 'lifestyle hobbies'}*, and open-ended conversation!`
-            : `Saya kini dalam mod panduan perhubungan. Untuk temu janji anda bersama **${partnerInfo?.partnerName || 'pasangan anda'}**, utamakan mendengar dengan empati, terokai minat bersama seperti *${Array.isArray(partnerInfo?.partnerHobbies) ? partnerInfo?.partnerHobbies.join(', ') : 'hobi santai'}*, dan mulakan dengan perbualan yang santai!`,
+            ? `I am currently operating in advisory mode. For your journey with ${partnerInfo?.partnerName || 'your partner'}, focus on active curiosity, exploring shared interests like ${Array.isArray(partnerInfo?.partnerHobbies) ? partnerInfo?.partnerHobbies.join(', ') : 'lifestyle hobbies'}, and open-ended conversation!`
+            : `Saya kini dalam mod panduan perhubungan. Untuk temu janji anda bersama ${partnerInfo?.partnerName || 'pasangan anda'}, utamakan mendengar dengan empati, terokai minat bersama seperti ${Array.isArray(partnerInfo?.partnerHobbies) ? partnerInfo?.partnerHobbies.join(', ') : 'hobi santai'}, dan mulakan dengan perbualan yang santai!`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages(prev => [...prev, errorMsg]);
@@ -507,7 +514,7 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
                   </span>
                 ) : partnerInfo && matchesPublished ? (
                   <span className="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold shrink-0 border border-secondary/20">
-                    {partnerInfo.matchScore}% Keserasian #{partnerInfo.matchRank}
+                    {partnerInfo.matchScore}% Keserasian · Pasangan {partnerInfo.matchRank}
                   </span>
                 ) : (
                   <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant text-[10px] font-bold shrink-0">
@@ -521,7 +528,7 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
                   ? adminViewMode === 'audit-logs'
                     ? `Audit Langsung: Memantau perbualan & pertanyaan setiap peserta bersama pasangan rasmi mereka.`
                     : activeAdminCouple
-                    ? `Fokus Pasangan #${activeAdminCouple.rank}: ${activeAdminCouple.maleName} & ${activeAdminCouple.femaleName} (${activeAdminCouple.score}%)`
+                    ? `Fokus Pasangan ${activeAdminCouple.rank}: ${activeAdminCouple.maleName} & ${activeAdminCouple.femaleName} (${activeAdminCouple.score}%)`
                     : 'Akses analitik penuh seluruh direktori acara, audit keserasian & aktiviti.'
                   : partnerInfo && matchesPublished
                   ? `Pasangan Rasmi: ${partnerInfo.partnerOccupation} • ${partnerInfo.partnerLocation} • Hobi: ${Array.isArray(partnerInfo.partnerHobbies) ? partnerInfo.partnerHobbies.slice(0, 2).join(', ') : 'Gaya Hidup'}`
@@ -627,10 +634,10 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
                     onChange={e => setAuditCoupleFilter(e.target.value === 'ALL' ? 'ALL' : Number(e.target.value))}
                     className="w-full px-2.5 py-1.5 rounded-lg bg-surface-container-lowest border border-outline-variant/30 text-[11px] font-semibold text-on-surface"
                   >
-                    <option value="ALL">Semua Pasangan (#{1} - #{matches.length})</option>
+                    <option value="ALL">Semua Pasangan (1 - {matches.length})</option>
                     {matches.map(m => (
                       <option key={m.rank} value={m.rank}>
-                        Pasangan #{m.rank}: {m.maleName} & {m.femaleName}
+                        Pasangan {m.rank}: {m.maleName} & {m.femaleName}
                       </option>
                     ))}
                   </select>
@@ -678,7 +685,7 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
                           </div>
 
                           <span className="text-[10px] text-outline shrink-0 font-medium">
-                            {session.coupleRank ? `#${session.coupleRank}` : ''}
+                            {session.coupleRank ? `Pasangan ${session.coupleRank}` : ''}
                           </span>
                         </div>
 
@@ -729,7 +736,7 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
                           </span>
                         </div>
                         <p className="text-[11px] text-on-surface-variant truncate mt-0.5">
-                          Pasangan #{selectedAuditSession.coupleRank || 1} • Skor Keserasian: {selectedAuditSession.matchScore || 85}% • {selectedAuditSession.messages?.length || 0} Pertukaran Mesej
+                          Pasangan {selectedAuditSession.coupleRank || 1} • Skor Keserasian: {selectedAuditSession.matchScore || 85}% • {selectedAuditSession.messages?.length || 0} Pertukaran Mesej
                         </p>
                       </div>
                     </div>
@@ -784,7 +791,7 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
                               </span>
                               <span>{msg.timestamp}</span>
                             </div>
-                            <div className="whitespace-pre-wrap font-sans">{msg.content}</div>
+                            <CleanMessageContent content={msg.content} isBot={isBot} />
                           </div>
                         </div>
                       );
@@ -837,7 +844,7 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
                   <option value="ALL">🌐 Seluruh Kohort (Global Matchmaking Insights & Icebreakers)</option>
                   {matches.map(m => (
                     <option key={m.rank} value={m.rank}>
-                      Pasangan #{m.rank}: {m.maleName} ({m.maleAge}) & {m.femaleName} ({m.femaleAge}) — {m.score}%
+                      Pasangan {m.rank}: {m.maleName} ({m.maleAge}) & {m.femaleName} ({m.femaleAge}) — {m.score}%
                     </option>
                   ))}
                 </select>
@@ -889,7 +896,7 @@ Apakah yang ingin anda ketahui mengenai ${partnerInfo.partnerName} hari ini?`,
                         <span>{msg.timestamp}</span>
                       </div>
 
-                      <div className="whitespace-pre-wrap font-sans">{msg.content}</div>
+                      <CleanMessageContent content={msg.content} isBot={isBot} />
 
                       {/* Copy Action button on hover */}
                       <button

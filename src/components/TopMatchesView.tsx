@@ -11,7 +11,7 @@ function cleanPdfText(text: string | undefined | null): string {
     .replace(/[\u2018\u2019]/g, "'") // smart single quotes
     .replace(/[\u201C\u201D]/g, '"') // smart double quotes
     .replace(/[\u2013\u2014]/g, '-') // en-dash, em-dash
-    .replace(/[\u2022\u2023\u25E6\u2043\u2219]/g, '*') // bullet characters
+    .replace(/[\u2022\u2023\u25E6\u2043\u2219]/g, '-') // bullet characters
     .replace(/…/g, '...')
     .replace(/[^\x00-\x7F]/g, ' ') // convert any remaining multi-byte chars to space
     .trim();
@@ -287,7 +287,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
         const acts = Array.isArray(m.recommendedActivities) ? m.recommendedActivities : [];
         const datesText = acts
           .map((act, i) => `${i + 1}. ${cleanPdfText(act)}`)
-          .join('   *   ');
+          .join('   •   ');
         const datesLines = doc.splitTextToSize(datesText, contentWidth - 4);
         doc.text(datesLines, margin + 2, y + 3.5);
         y += 5 + datesLines.length * 3.4;
@@ -420,7 +420,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                 {t('matchedWith', 'Anda Dipadankan Bersama')} {myMatch.maleName.includes(currentUserName || '') ? myMatch.femaleName : myMatch.maleName}
               </h2>
               <p className="text-xs text-stone-300 mt-1">
-                {t('matchRank', 'Padanan #')}{myMatch.rank} <span className="text-[#b48246]">·</span> {t('compatibilityScore', 'Skor Keserasian')}: <strong className="text-white font-mono">{myMatch.score}%</strong> <span className="text-[#b48246]">·</span> {myMatch.whyTheyMatch.slice(0, 110)}...
+                {t('matchRank', 'Padanan ')}{myMatch.rank} <span className="text-[#b48246]">·</span> {t('compatibilityScore', 'Skor Keserasian')}: <strong className="text-white font-mono">{myMatch.score}%</strong> <span className="text-[#b48246]">·</span> {myMatch.whyTheyMatch.slice(0, 110)}...
               </p>
             </div>
           </div>
@@ -775,8 +775,8 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
           {/* High Affinity Ambient Header Bar */}
           <div className="px-4 sm:px-6 py-3.5 bg-[#fbf6ee] border-b border-[#b48246]/20 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#b48246] text-white text-xs font-bold shadow-xs">
-                #1
+              <span className="flex items-center justify-center px-2.5 h-8 rounded-full bg-[#b48246] text-white text-xs font-bold shadow-xs">
+                Meja 1
               </span>
               <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white text-[#7c5820] text-xs font-bold tracking-wider uppercase border border-[#b48246]/30 shadow-2xs">
                 <span className="material-symbols-outlined text-sm text-[#b48246]">
@@ -1018,7 +1018,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   <span className="material-symbols-outlined text-base text-[#b48246]">verified</span>
                   <span>
                     {isAdmin
-                      ? 'AI Concierge: Analisis mendalam kekuatan nilai & cadangan aktiviti Pasangan #1'
+                      ? 'AI Concierge: Analisis mendalam kekuatan nilai & cadangan aktiviti Pasangan 1'
                       : 'AI Dating Advisor: Bincang idea temu janji & pengukuhan hubungan'}
                   </span>
                 </div>
@@ -1031,10 +1031,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                       setIsDossierPreviewOpen(true);
                     }}
                     className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 text-xs font-semibold transition-all cursor-pointer active:scale-95 shadow-2xs"
-                    title="Cetak Kad Meja Ta'aruf & Dossier untuk Pasangan #1"
+                    title="Cetak Kad Meja Ta'aruf & Dossier untuk Pasangan 1"
                   >
                     <span className="material-symbols-outlined text-sm text-[#b48246]">print</span>
-                    <span>Cetak Kad Meja #1</span>
+                    <span>Cetak Kad Meja 1</span>
                   </button>
 
                   {onOpenWhatsAppDispatch && isAdmin && (
@@ -1056,7 +1056,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                       className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-stone-900 text-white text-xs font-semibold shadow-xs hover:bg-stone-800 transition-all cursor-pointer active:scale-95"
                     >
                       <span className="material-symbols-outlined text-sm text-[#b48246]">auto_awesome</span>
-                      <span>{isAdmin ? 'Analisis Pasangan #1 dengan AI' : 'Tanya AI Mengenai Pasangan Ini'}</span>
+                      <span>{isAdmin ? 'Analisis Pasangan 1 dengan AI' : 'Tanya AI Mengenai Pasangan Ini'}</span>
                     </button>
                   )}
                 </div>
@@ -1075,7 +1075,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                 Padanan Keserasian Seterusnya
               </span>
               <span className="px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-700 font-semibold text-xs border border-stone-200">
-                #2 - #{matches.length}
+                Pasangan 2 hingga {matches.length}
               </span>
             </div>
             <button
@@ -1102,8 +1102,8 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                   className="p-4 sm:p-5 cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-stone-50/50 transition-colors select-none"
                 >
                   <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-                    <span className="w-8 h-8 rounded-full bg-stone-100 text-stone-800 text-xs font-bold flex items-center justify-center shrink-0 border border-stone-200/60 font-mono">
-                      #{match.rank}
+                    <span className="px-2.5 py-1 rounded-full bg-stone-100 text-stone-800 text-xs font-bold flex items-center justify-center shrink-0 border border-stone-200/60 font-mono">
+                      Meja {match.rank}
                     </span>
 
                     <div className="flex items-center gap-3 min-w-0">
@@ -1234,7 +1234,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                       <div className="col-span-1 md:col-span-3 mt-2 pt-3 border-t border-stone-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                         <div className="flex items-center gap-1.5 text-xs text-stone-500 font-medium">
                           <span className="material-symbols-outlined text-base text-[#b48246]">psychology</span>
-                          <span>{isAdmin ? `Tindakan Penganjur untuk Pasangan #${match.rank}` : 'Personal AI Dating Advisor'}</span>
+                          <span>{isAdmin ? `Tindakan Penganjur untuk Pasangan ${match.rank}` : 'Personal AI Dating Advisor'}</span>
                         </div>
                         <div className="flex items-center gap-2 flex-wrap">
                           <button
@@ -1244,10 +1244,10 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                               setIsDossierPreviewOpen(true);
                             }}
                             className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 text-xs font-semibold transition-all cursor-pointer active:scale-95 shadow-2xs"
-                            title={`Cetak Kad Meja Ta'aruf untuk Meja #${match.rank}`}
+                            title={`Cetak Kad Meja Ta'aruf untuk Meja ${match.rank}`}
                           >
                             <span className="material-symbols-outlined text-sm text-[#b48246]">print</span>
-                            <span>Cetak Meja #{match.rank}</span>
+                            <span>Cetak Meja {match.rank}</span>
                           </button>
 
                           {onOpenWhatsAppDispatch && isAdmin && (
@@ -1269,7 +1269,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                               className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold transition-all cursor-pointer active:scale-95 shadow-xs"
                             >
                               <span className="material-symbols-outlined text-sm text-[#b48246]">auto_awesome</span>
-                              <span>{isAdmin ? `Bincang Pasangan #${match.rank}` : 'Tanya AI'}</span>
+                              <span>{isAdmin ? `Bincang Pasangan ${match.rank}` : 'Tanya AI'}</span>
                             </button>
                           )}
                         </div>

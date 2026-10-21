@@ -96,7 +96,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
               </h2>
               <p className="text-stone-300 text-xs sm:text-sm mt-1 max-w-2xl">
                 {myMatch
-                  ? `${t('congratsMatchFound', 'Tahniah! Anda telah tersenarai dalam')} ${t('matchRank', 'Padanan #')}${myMatch.rank} (${myMatch.score}%)`
+                  ? `${t('congratsMatchFound', 'Tahniah! Anda telah tersenarai dalam')} ${t('matchRank', 'Padanan ')}${myMatch.rank} (${myMatch.score}%)`
                   : t('notPublishedDesc', 'Pihak penganjur telah memuktamadkan senarai pasangan serasi bagi kohort acara ini.')}
               </p>
             </div>
@@ -251,7 +251,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                 <div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-[10px] uppercase font-bold text-[#7c5820] tracking-wider">
-                      {t('matchedWith', 'Pasangan Rasmi Anda')} • {t('matchRank', 'Padanan #')}{myMatch.rank}
+                      {t('matchedWith', 'Pasangan Rasmi Anda')} • {t('matchRank', 'Padanan ')}{myMatch.rank}
                     </span>
                     <span className="px-2 py-0.5 rounded-full bg-white text-[#7c5820] border border-[#b48246]/30 text-[10px] font-bold tabular-nums">
                       {myMatch.score}% {t('compatibilityScore', 'Keserasian')}

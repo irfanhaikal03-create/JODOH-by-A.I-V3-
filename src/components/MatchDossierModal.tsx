@@ -553,7 +553,7 @@ Disediakan oleh Fasilitator: ${facilitatorName}`;
               >
                 {matches.map(m => (
                   <option key={m.rank} value={m.rank}>
-                    Meja #{m.rank} — {m.maleName.split(' ')[0]} & {m.femaleName.split(' ')[0]} ({m.score}%)
+                    Meja {m.rank} — {m.maleName.split(' ')[0]} & {m.femaleName.split(' ')[0]} ({m.score}%)
                   </option>
                 ))}
               </select>
@@ -663,8 +663,8 @@ Disediakan oleh Fasilitator: ${facilitatorName}`;
                 {/* MATCH PROFILE OVERVIEW CARD */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200/90 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-white border border-[#b48246]/50 flex items-center justify-center text-[#b48246] font-serif font-bold text-lg shadow-2xs">
-                      #{activeMatch.rank}
+                    <div className="px-3 h-12 rounded-xl bg-white border border-[#b48246]/50 flex items-center justify-center text-[#b48246] font-serif font-bold text-sm shadow-2xs">
+                      Meja {activeMatch.rank}
                     </div>
                     <div>
                       <div className="text-xs text-stone-500 font-medium">Pasangan Rasmi Meja</div>
@@ -926,7 +926,7 @@ Disediakan oleh Fasilitator: ${facilitatorName}`;
                       <div className="flex items-center justify-between pb-2 border-b border-stone-100">
                         <div className="flex items-center gap-2">
                           <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-stone-900 text-white">
-                            MEJA #{m.rank}
+                            MEJA {m.rank}
                           </span>
                           <span className="font-serif font-bold text-sm text-stone-900">
                             {isAnonymized ? `CALON M0${m.rank}` : m.maleName} & {isAnonymized ? `CALON F0${m.rank}` : m.femaleName}

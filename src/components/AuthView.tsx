@@ -796,7 +796,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
               {selectedRole === 'admin' && (
                 <div className="p-3.5 rounded-xl bg-primary/5 border border-primary/20 space-y-1.5">
                   <label className="block text-xs font-bold text-primary uppercase tracking-wider">
-                    {t('adminPasscode', 'Kod Pengesahan Administrator')} *
+                    {t('adminPasscode', 'Kod Pengesahan Administrator')}
                   </label>
                   <input
                     type="password"
