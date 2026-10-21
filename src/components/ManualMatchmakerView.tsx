@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Participant, MatchResult } from '../types';
 import { useLanguage } from '../context/LanguageContext';
+import { MatchDossierModal } from './MatchDossierModal';
 
 interface ManualMatchmakerViewProps {
   participants: Participant[];
@@ -46,6 +47,7 @@ export const ManualMatchmakerView: React.FC<ManualMatchmakerViewProps> = ({
   const [maleSearch, setMaleSearch] = useState('');
   const [femaleSearch, setFemaleSearch] = useState('');
   const [isSavedSuccessfully, setIsSavedSuccessfully] = useState(false);
+  const [isDossierModalOpen, setIsDossierModalOpen] = useState(false);
 
   const selectedMale = males.find(m => m.id === selectedMaleId) || null;
   const selectedFemale = females.find(f => f.id === selectedFemaleId) || null;
@@ -469,6 +471,15 @@ export const ManualMatchmakerView: React.FC<ManualMatchmakerViewProps> = ({
                   <span className="material-symbols-outlined text-base text-emerald-600">chat</span>
                   <span>Hantar Notifikasi WhatsApp Pasangan</span>
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsDossierModalOpen(true)}
+                  className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-stone-800 bg-stone-100 hover:bg-stone-200 border border-stone-300 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 shadow-2xs"
+                >
+                  <span className="material-symbols-outlined text-base text-[#b48246]">print</span>
+                  <span>Cetak Kad Meja & Dossier Pasangan Ini</span>
+                </button>
               </div>
             </div>
           ) : (
@@ -581,6 +592,38 @@ export const ManualMatchmakerView: React.FC<ManualMatchmakerViewProps> = ({
           )}
         </div>
       </div>
+
+      {/* Match Dossier & Physical Ta'aruf Print Suite Modal */}
+      {selectedMale && selectedFemale && matchAnalysis && (
+        <MatchDossierModal
+          isOpen={isDossierModalOpen}
+          onClose={() => setIsDossierModalOpen(false)}
+          matches={currentMatches}
+          customMatch={{
+            rank: 1,
+            maleId: selectedMale.id,
+            femaleId: selectedFemale.id,
+            maleName: selectedMale.name,
+            femaleName: selectedFemale.name,
+            maleAge: selectedMale.age,
+            femaleAge: selectedFemale.age,
+            maleOccupation: selectedMale.occupation,
+            femaleOccupation: selectedFemale.occupation,
+            maleLocation: selectedMale.location,
+            femaleLocation: selectedFemale.location,
+            maleSmoking: selectedMale.smoking,
+            femaleSmoking: selectedFemale.smoking,
+            maleHobbies: matchAnalysis.mHobbies,
+            femaleHobbies: matchAnalysis.fHobbies,
+            score: matchAnalysis.overallScore,
+            whyTheyMatch: matchAnalysis.whyTheyMatch,
+            potentialChallenges: matchAnalysis.potentialChallenges,
+            recommendedActivities: matchAnalysis.icebreakers,
+          }}
+          initialMatchRank={1}
+          participantsCount={participants.length}
+        />
+      )}
     </div>
   );
 };

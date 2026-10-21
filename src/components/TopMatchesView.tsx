@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { jsPDF } from 'jspdf';
 import { MatchResult, Participant } from '../types';
-import { DossierPreviewModal } from './DossierPreviewModal';
+import { MatchDossierModal } from './MatchDossierModal';
 import { useLanguage } from '../context/LanguageContext';
 
 // Clean Unicode and non-WinAnsi characters to prevent jsPDF encoding errors
@@ -64,6 +64,7 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
   const isAdmin = userRole === 'admin';
   const [expandedCards, setExpandedCards] = useState<Record<number, boolean>>({});
   const [isDossierPreviewOpen, setIsDossierPreviewOpen] = useState(false);
+  const [selectedDossierMatch, setSelectedDossierMatch] = useState<MatchResult | undefined>(undefined);
 
   // Check if current participant user is in any match
   const myMatch = useMemo(() => {
@@ -509,30 +510,36 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
             <div className="relative group">
               <button
                 type="button"
-                onClick={handleExportPDF}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-50 text-stone-800 hover:bg-stone-100 transition-colors text-xs font-semibold border border-stone-200 shadow-2xs cursor-pointer"
-                title="Muat turun Laporan PDF Dossier atau CSV"
+                onClick={() => {
+                  setSelectedDossierMatch(undefined);
+                  setIsDossierPreviewOpen(true);
+                }}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-900 text-white hover:bg-stone-800 transition-colors text-xs font-semibold shadow-2xs cursor-pointer"
+                title="Buka Cetakan Dossier Meja Ta'aruf & Laporan Eksekutif PDF"
               >
-                <span className="material-symbols-outlined text-base text-[#b48246]">download</span>
-                <span>{t('exportPdf', 'Export PDF')}</span>
+                <span className="material-symbols-outlined text-base text-[#b48246]">print</span>
+                <span>Cetak Dossier & Kad Meja</span>
                 <span className="material-symbols-outlined text-sm text-stone-400 -mr-0.5">arrow_drop_down</span>
               </button>
-              <div className="absolute right-0 top-full mt-1 bg-white rounded-xl shadow-xl border border-stone-200 p-1.5 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-20 flex flex-col min-w-[200px]">
+              <div className="absolute right-0 top-full mt-1 bg-white rounded-xl shadow-xl border border-stone-200 p-1.5 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-20 flex flex-col min-w-[220px]">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedDossierMatch(undefined);
+                    setIsDossierPreviewOpen(true);
+                  }}
+                  className="px-3 py-2 text-left text-xs font-semibold text-stone-800 hover:bg-stone-100 rounded-lg flex items-center gap-2 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-sm text-[#b48246]">description</span>
+                  <span>Dossier & Kad Meja Ta'aruf</span>
+                </button>
                 <button
                   type="button"
                   onClick={handleExportPDF}
                   className="px-3 py-2 text-left text-xs font-semibold text-stone-800 hover:bg-stone-100 rounded-lg flex items-center gap-2 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-sm text-[#b48246]">download</span>
-                  <span>{t('exportPdf', 'Muat Turun PDF')}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsDossierPreviewOpen(true)}
-                  className="px-3 py-2 text-left text-xs font-semibold text-stone-800 hover:bg-stone-100 rounded-lg flex items-center gap-2 cursor-pointer"
-                >
-                  <span className="material-symbols-outlined text-sm text-stone-600">visibility</span>
-                  <span>{t('candidateDossier', 'Pratonton Dossier')}</span>
+                  <span className="material-symbols-outlined text-sm text-stone-600">download</span>
+                  <span>Muat Turun PDF Laporan</span>
                 </button>
                 <button
                   type="button"
@@ -1017,6 +1024,19 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedDossierMatch(match1);
+                      setIsDossierPreviewOpen(true);
+                    }}
+                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 text-xs font-semibold transition-all cursor-pointer active:scale-95 shadow-2xs"
+                    title="Cetak Kad Meja Ta'aruf & Dossier untuk Pasangan #1"
+                  >
+                    <span className="material-symbols-outlined text-sm text-[#b48246]">print</span>
+                    <span>Cetak Kad Meja #1</span>
+                  </button>
+
                   {onOpenWhatsAppDispatch && isAdmin && (
                     <button
                       type="button"
@@ -1217,6 +1237,19 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
                           <span>{isAdmin ? `Tindakan Penganjur untuk Pasangan #${match.rank}` : 'Personal AI Dating Advisor'}</span>
                         </div>
                         <div className="flex items-center gap-2 flex-wrap">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedDossierMatch(match);
+                              setIsDossierPreviewOpen(true);
+                            }}
+                            className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 text-xs font-semibold transition-all cursor-pointer active:scale-95 shadow-2xs"
+                            title={`Cetak Kad Meja Ta'aruf untuk Meja #${match.rank}`}
+                          >
+                            <span className="material-symbols-outlined text-sm text-[#b48246]">print</span>
+                            <span>Cetak Meja #{match.rank}</span>
+                          </button>
+
                           {onOpenWhatsAppDispatch && isAdmin && (
                             <button
                               type="button"
@@ -1281,17 +1314,20 @@ export const TopMatchesView: React.FC<TopMatchesViewProps> = ({
         </div>
       </section>
 
-      {/* Dossier Preview Modal */}
-      <DossierPreviewModal
+      {/* Match Dossier & Physical Ta'aruf Print Suite Modal */}
+      <MatchDossierModal
         isOpen={isDossierPreviewOpen}
-        onClose={() => setIsDossierPreviewOpen(false)}
+        onClose={() => {
+          setIsDossierPreviewOpen(false);
+          setSelectedDossierMatch(undefined);
+        }}
         matches={matches}
+        customMatch={selectedDossierMatch}
+        initialMatchRank={selectedDossierMatch?.rank || 1}
         participantsCount={participantsCount}
         medianAffinity={medianAffinity}
         geographicOverlapPercent={geographicOverlapPercent}
         smokingConcordance={smokingConcordance}
-        onDownloadPDF={handleExportPDF}
-        onDownloadCSV={handleExportCSV}
       />
     </div>
   );
