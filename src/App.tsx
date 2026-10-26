@@ -984,7 +984,26 @@ export default function App() {
                   participants={participants}
                   currentUserParticipantId={currentParticipantProfile?.id}
                   onEditMyProfile={() => {
-                    setParticipantToEdit(currentParticipantProfile);
+                    if (currentParticipantProfile) {
+                      setParticipantToEdit(currentParticipantProfile);
+                    } else {
+                      const newPart: Participant = {
+                        id: userProfile?.participantId || `part-${Date.now()}`,
+                        name: userProfile?.displayName || '',
+                        gender: 'Female',
+                        age: 0,
+                        occupation: '',
+                        location: '',
+                        marital: 'Single',
+                        smoking: 'Non-Smoker',
+                        hobbies: [],
+                        ideal: '',
+                        userEmail: userProfile?.email || '',
+                        userId: userProfile?.uid,
+                        ownerId: userProfile?.uid,
+                      };
+                      setParticipantToEdit(newPart);
+                    }
                     setIsMyProfileModalOpen(true);
                   }}
                   matches={matches}

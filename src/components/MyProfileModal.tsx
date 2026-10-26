@@ -16,9 +16,9 @@ export const MyProfileModal: React.FC<MyProfileModalProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [gender, setGender] = useState<'Male' | 'Female'>('Female');
-  const [age, setAge] = useState<number>(26);
+  const [age, setAge] = useState<number | ''>('');
   const [occupation, setOccupation] = useState('');
-  const [location, setLocation] = useState('Kuala Lumpur');
+  const [location, setLocation] = useState('');
   const [phone, setPhone] = useState('');
   const [marital, setMarital] = useState<'Single' | 'Divorced' | 'Widowed'>('Single');
   const [smoking, setSmoking] = useState<'Non-Smoker' | 'Smoker'>('Non-Smoker');
@@ -77,9 +77,9 @@ export const MyProfileModal: React.FC<MyProfileModalProps> = ({
     if (participant) {
       setName(participant.name || '');
       setGender(participant.gender || 'Female');
-      setAge(participant.age || 26);
+      setAge(participant.age && participant.age > 0 ? participant.age : '');
       setOccupation(participant.occupation || '');
-      setLocation(participant.location || 'Kuala Lumpur');
+      setLocation(participant.location || '');
       setPhone(participant.phone || '');
       setMarital(participant.marital || 'Single');
       setSmoking(participant.smoking || 'Non-Smoker');
@@ -106,14 +106,14 @@ export const MyProfileModal: React.FC<MyProfileModalProps> = ({
       ...participant,
       name: name.trim(),
       gender,
-      age: Number(age) || 25,
-      occupation: occupation.trim() || 'Profesional',
-      location: location.trim() || 'Kuala Lumpur',
+      age: age ? Number(age) : (participant.age || 0),
+      occupation: occupation.trim(),
+      location: location.trim(),
       phone: phone.trim() || undefined,
       marital,
       smoking,
-      hobbies: hobbiesArr.length > 0 ? hobbiesArr : ['Membaca', 'Kopi', 'Melancong'],
-      ideal: ideal.trim() || 'Pasangan yang memahami dan bertanggungjawab.',
+      hobbies: hobbiesArr,
+      ideal: ideal.trim(),
       photo: photo.trim() || undefined,
       updatedAt: new Date().toISOString(),
     };
@@ -169,9 +169,9 @@ export const MyProfileModal: React.FC<MyProfileModalProps> = ({
                 type="number"
                 min={18}
                 max={90}
-                required
                 value={age}
-                onChange={e => setAge(Number(e.target.value))}
+                placeholder="cth: 26"
+                onChange={e => setAge(e.target.value === '' ? '' : Number(e.target.value))}
                 className="w-full px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
@@ -201,6 +201,7 @@ export const MyProfileModal: React.FC<MyProfileModalProps> = ({
                 onChange={e => setLocation(e.target.value)}
                 className="w-full px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               >
+                <option value="">-- Pilih Lokasi / Negeri --</option>
                 <option value="Kuala Lumpur">Kuala Lumpur</option>
                 <option value="Selangor">Selangor</option>
                 <option value="Putrajaya">Putrajaya</option>

@@ -170,7 +170,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
       )}
 
       {/* MY PROFILE SPOTLIGHT CARD (If participant has a profile) */}
-      {myProfile && (
+      {myProfile ? (
         <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-xs border border-stone-200/80">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-100">
             <div className="flex items-center gap-3.5">
@@ -191,7 +191,7 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   myProfile.photo ? 'hidden' : ''
                 }`}
               >
-                {myProfile.name.slice(0, 2).toUpperCase()}
+                {(myProfile.name || 'P').slice(0, 2).toUpperCase()}
               </div>
               <div>
                 <div className="flex items-center gap-2">
@@ -202,10 +202,10 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   <span className="text-xs text-emerald-800 font-semibold">{t('eligibleForMatching', 'Aktif dalam Kohort')}</span>
                 </div>
                 <h2 className="text-xl font-serif font-bold text-stone-900">
-                  {myProfile.name}, {myProfile.age}
+                  {myProfile.name || 'Peserta'}{myProfile.age && myProfile.age > 0 ? `, ${myProfile.age}` : ''}
                 </h2>
                 <p className="text-xs text-stone-500">
-                  {myProfile.occupation} • {myProfile.location}
+                  {myProfile.occupation || 'Pekerjaan belum dinyatakan'} • {myProfile.location || 'Lokasi belum dinyatakan'}
                 </p>
               </div>
             </div>
@@ -230,13 +230,13 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
             <div className="bg-stone-50 p-3.5 rounded-xl border border-stone-100">
               <span className="text-stone-400 uppercase font-bold text-[10px] block mb-1">{t('hobbies', 'Hobi & Minat')}</span>
               <p className="font-semibold text-stone-800 truncate">
-                {Array.isArray(myProfile.hobbies) ? myProfile.hobbies.join(', ') : myProfile.hobbies}
+                {Array.isArray(myProfile.hobbies) && myProfile.hobbies.length > 0 ? myProfile.hobbies.join(', ') : (myProfile.hobbies || 'Belum dinyatakan')}
               </p>
             </div>
             <div className="bg-stone-50 p-3.5 rounded-xl border border-stone-100">
               <span className="text-stone-400 uppercase font-bold text-[10px] block mb-1">{t('myIdealCriteria', 'Ciri Pasangan Idaman')}</span>
               <p className="font-semibold text-stone-800 truncate">
-                "{myProfile.ideal}"
+                {myProfile.ideal ? `"${myProfile.ideal}"` : 'Belum dinyatakan'}
               </p>
             </div>
           </div>
@@ -278,6 +278,38 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
               )}
             </div>
           )}
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl p-5 sm:p-6 shadow-xs border border-stone-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="w-14 h-14 rounded-2xl bg-amber-50 text-[#b48246] border border-[#b48246]/30 flex items-center justify-center font-bold text-2xl shadow-2xs shrink-0">
+              <span className="material-symbols-outlined text-2xl">person_add</span>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs uppercase font-bold text-[#b48246] tracking-wider">
+                  {t('myProfileSpotlight', 'Profil Peserta Saya')}
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
+                  Belum Diisi
+                </span>
+              </div>
+              <h2 className="text-lg sm:text-xl font-serif font-bold text-stone-900">
+                Lengkapkan Profil Suai Kenal Anda
+              </h2>
+              <p className="text-xs text-stone-500">
+                Isi maklumat diri, minat, dan kriteria pasangan idaman anda untuk memudahkan pemadanan algoritma AI.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onEditMyProfile}
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
+          >
+            <span className="material-symbols-outlined text-base text-[#b48246]">edit_note</span>
+            <span>Isi Profil Saya Sekarang</span>
+          </button>
         </div>
       )}
 

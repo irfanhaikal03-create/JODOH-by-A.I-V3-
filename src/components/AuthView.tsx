@@ -46,15 +46,15 @@ export const AuthView: React.FC<AuthViewProps> = ({
   const [adminCode, setAdminCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Participant Specific Profile Fields (during Sign Up)
+  // Participant Specific Profile Fields (during Sign Up - blank so user fills themselves)
   const [gender, setGender] = useState<'Male' | 'Female'>('Female');
-  const [age, setAge] = useState<number>(26);
+  const [age, setAge] = useState<number | ''>('');
   const [occupation, setOccupation] = useState('');
-  const [location, setLocation] = useState('Kuala Lumpur');
+  const [location, setLocation] = useState('');
   const [marital, setMarital] = useState<'Single' | 'Divorced' | 'Widowed'>('Single');
   const [smoking, setSmoking] = useState<'Non-Smoker' | 'Smoker'>('Non-Smoker');
-  const [hobbies, setHobbies] = useState('Cafe hopping, membaca, melancong');
-  const [ideal, setIdeal] = useState('Seorang yang bertanggungjawab, penyayang, matang, dan berpegang pada nilai kekeluargaan.');
+  const [hobbies, setHobbies] = useState('');
+  const [ideal, setIdeal] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [photoUploadMode, setPhotoUploadMode] = useState<'upload' | 'url'>('upload');
   const [isDraggingPhoto, setIsDraggingPhoto] = useState(false);
@@ -143,15 +143,15 @@ export const AuthView: React.FC<AuthViewProps> = ({
         participantId = `part-${Date.now()}`;
         const newPart: Participant = {
           id: participantId,
-          name: user.displayName || 'Peserta Baru',
+          name: user.displayName || 'Peserta',
           gender: 'Female',
-          age: 26,
-          occupation: 'Profesional',
-          location: 'Kuala Lumpur',
+          age: 0,
+          occupation: '',
+          location: '',
           marital: 'Single',
           smoking: 'Non-Smoker',
-          hobbies: ['Melancong', 'Muzik', 'Kopi'],
-          ideal: 'Pasangan yang memahami, menghormati nilai keluarga dan berkerjaya kukuh.',
+          hobbies: [],
+          ideal: '',
           photo: user.photoURL || '',
           ownerId: user.uid,
           userId: user.uid,
@@ -344,18 +344,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
     }
   };
 
-  // Direct 1-tap participant login for attendees
-  const handleQuickParticipantSignIn = (part: Participant) => {
-    onAuthSuccess({
-      uid: part.userId || part.ownerId || `part-${part.id}`,
-      email: part.userEmail || `${part.id}@jodoh.my`,
-      displayName: part.name,
-      role: 'participant',
-      photoURL: part.photo,
-      participantId: part.id,
-    });
-    showToast(`Log masuk berjaya sebagai ${part.name}!`);
-  };
+
 
   // Direct 1-tap admin login with verification code
   const handleDirectAdminLogin = () => {
@@ -424,16 +413,14 @@ export const AuthView: React.FC<AuthViewProps> = ({
           id: participantId,
           name: fullName.trim(),
           gender,
-          age: Number(age) || 25,
-          occupation: occupation.trim() || 'Profesional Eksekutif',
-          location: location.trim() || 'Kuala Lumpur',
+          age: age ? Number(age) : 0,
+          occupation: occupation.trim(),
+          location: location.trim(),
           marital,
           smoking,
-          hobbies: hobbiesList.length > 0 ? hobbiesList : ['Kembara', 'Muzik', 'Kulinari'],
-          ideal: ideal.trim() || 'Mencari pasangan yang serasi, penyayang dan berprinsip hidup yang selari.',
-          photo: photoUrl.trim() || (gender === 'Male'
-            ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80'
-            : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80'),
+          hobbies: hobbiesList,
+          ideal: ideal.trim(),
+          photo: photoUrl.trim() || undefined,
           ownerId: uid,
           userId: uid,
           userEmail: cleanEmail,
@@ -486,17 +473,15 @@ export const AuthView: React.FC<AuthViewProps> = ({
 
       {/* Brand Header */}
       <div className="w-full max-w-xl text-center mb-6">
-        <div className="inline-flex items-center justify-center gap-2 mb-3">
-          <img
-            alt="JODOH by A.I Brandmark"
-            className="h-10 sm:h-12 w-auto object-contain"
-            src="https://lh3.googleusercontent.com/aida/AEtjO1VoFLL6PMuoTOKgVSCpLzUMnlZyTQA4E_UYhGM9U8V8FpBdFxu0BzwDFStd-XbBcC8sSE0xn1hIo_mg1mmR22sjvveERNM-rb9AlOtCyZ68-4GwaVELEHouNtRtVhCjV_47Da6rOkBc9sq1z_ppc-K_x4dHn2eI2Ny1m56p3c93pPVPVwP4-J2JaHJqkSNZp353ig9gtoeYUjACf1ghaeQ1aOJOGgXojHKL2ErYCxJv6hyGRVDdKmWWXh4"
-          />
+        <div className="inline-flex items-center justify-center mb-3">
+          <div className="w-12 h-12 rounded-2xl bg-stone-900 text-[#b48246] border border-[#b48246]/40 flex items-center justify-center font-serif font-bold text-2xl shadow-md">
+            J
+          </div>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-primary tracking-tight">
-          JODOH by A.I
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
+          JODOH <span className="text-[#b48246] font-sans text-xl sm:text-2xl font-bold uppercase tracking-widest ml-1">by A.I</span>
         </h1>
-        <p className="text-sm sm:text-base text-on-surface-variant font-medium mt-1">
+        <p className="text-sm sm:text-base text-stone-600 font-medium mt-1">
           {t('appTagline', 'Executive Matchmaking Suite • Portal Peserta & Administrator')}
         </p>
       </div>
@@ -624,51 +609,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                 )}
               </button>
 
-              {/* Quick Participant Sign In Option */}
-              {existingParticipants.length > 0 && (
-                <div className="pt-3 border-t border-outline-variant/20">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-xs font-bold text-on-surface flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-base text-primary">groups</span>
-                      <span>{t('quickParticipantSignIn', 'Log Masuk Pantas Peserta Berdaftar')}</span>
-                    </span>
-                    <span className="text-[10px] text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-full">
-                      {existingParticipants.length} {t('registeredCount', 'Peserta')}
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-on-surface-variant mb-2 leading-snug">
-                    {t('quickParticipantDesc', 'Pilih profil anda untuk log masuk serta-merta 1-klik:')}
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-44 overflow-y-auto pr-1">
-                    {existingParticipants.map(part => (
-                      <button
-                        key={part.id}
-                        type="button"
-                        onClick={() => handleQuickParticipantSignIn(part)}
-                        className="p-2 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 text-left flex items-center gap-2 transition-all cursor-pointer hover:border-primary/50 group"
-                      >
-                        <div className="w-8 h-8 rounded-lg overflow-hidden bg-surface-container shrink-0">
-                          {part.photo ? (
-                            <img src={part.photo} alt={part.name} className="w-full h-full object-cover" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-xs font-bold text-primary">
-                              {part.name.charAt(0)}
-                            </div>
-                          )}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-xs font-semibold text-on-surface truncate group-hover:text-primary">
-                            {part.name}
-                          </p>
-                          <p className="text-[10px] text-outline truncate">
-                            {part.gender === 'Male' ? t('male', 'Lelaki') : t('female', 'Perempuan')}, {part.age} {t('yearsOld', 'thn')} • {part.occupation}
-                          </p>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+
 
               {/* Quick Admin Passcode Access */}
               <div className="pt-2 text-center border-t border-outline-variant/15">
@@ -844,7 +785,8 @@ export const AuthView: React.FC<AuthViewProps> = ({
                         min={18}
                         max={80}
                         value={age}
-                        onChange={e => setAge(Number(e.target.value))}
+                        placeholder="cth: 26"
+                        onChange={e => setAge(e.target.value === '' ? '' : Number(e.target.value))}
                         className="w-full px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface text-sm"
                       />
                     </div>
@@ -873,6 +815,7 @@ export const AuthView: React.FC<AuthViewProps> = ({
                         onChange={e => setLocation(e.target.value)}
                         className="w-full px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface text-sm"
                       >
+                        <option value="">-- Pilih Lokasi / Negeri --</option>
                         <option value="Kuala Lumpur">Kuala Lumpur</option>
                         <option value="Selangor">Selangor</option>
                         <option value="Putrajaya">Putrajaya</option>
