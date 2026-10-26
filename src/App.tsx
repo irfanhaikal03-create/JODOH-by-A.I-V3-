@@ -700,6 +700,9 @@ export default function App() {
         hobbies: participant.hobbies || [],
         ideal: participant.ideal || '',
         photo: participant.photo || '',
+        valuesArchetype: participant.valuesArchetype || null,
+        valuesAnswers: participant.valuesAnswers || null,
+        valuesQuizCompletedAt: participant.valuesQuizCompletedAt || null,
         createdAt: participant.createdAt || new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         ownerId: participant.ownerId || currentUser?.uid || userProfile?.uid || 'user',
@@ -1012,6 +1015,18 @@ export default function App() {
                   onOpenSavedSessions={() => setIsSavedSessionsModalOpen(true)}
                   savedSessionsCount={savedSessions.filter(s => s.isPublished).length}
                   onOpenConcierge={() => handleOpenConcierge()}
+                  onSaveQuizResult={(participantId, archetype, answers) => {
+                    const target = participants.find(p => p.id === participantId);
+                    if (!target) return;
+                    const updated: Participant = {
+                      ...target,
+                      valuesArchetype: archetype,
+                      valuesAnswers: answers,
+                      valuesQuizCompletedAt: new Date().toISOString(),
+                    };
+                    handleSaveParticipant(updated);
+                    showToast(`Arketaip personaliti nilai anda: "${archetype}". Keputusan kuiz disimpan.`);
+                  }}
                 />
               )
             ) : activeTab === 'top-10-ai-matches' ? (

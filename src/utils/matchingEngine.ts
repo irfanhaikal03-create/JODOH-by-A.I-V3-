@@ -77,6 +77,27 @@ export function generateClientMatches(participants: Participant[]): MatchResult[
 
       traits.push('Keseimbangan Kerjaya & Nilai Rumahtangga');
 
+      // 5. Core Values Quiz Concordance
+      if (m.valuesAnswers && f.valuesAnswers) {
+        let matchingDimensions = 0;
+        const keys = ['finance', 'conflict', 'career', 'living', 'lifestyle', 'roles'] as const;
+        keys.forEach(k => {
+          if (m.valuesAnswers![k] && f.valuesAnswers![k] && m.valuesAnswers![k] === f.valuesAnswers![k]) {
+            matchingDimensions++;
+          }
+        });
+        if (matchingDimensions >= 4) {
+          score += 5;
+          traits.push(`Keserasian Nilai Teras ${Math.round((matchingDimensions / 6) * 100)}%`);
+        } else if (matchingDimensions <= 1) {
+          score -= 3;
+          traits.push('Perbezaan Arketaip Nilai');
+        }
+      } else if (m.valuesArchetype && f.valuesArchetype && m.valuesArchetype === f.valuesArchetype) {
+        score += 4;
+        traits.push(`Arketaip Sepadan: ${m.valuesArchetype}`);
+      }
+
       // Score bounds
       score = Math.min(98, Math.max(70, score));
 

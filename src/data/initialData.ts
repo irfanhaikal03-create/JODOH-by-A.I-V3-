@@ -12,6 +12,8 @@ export const DEFAULT_PARTICIPANTS: Participant[] = [
     smoking: 'Non-Smoker',
     hobbies: ['Classical Cello', 'Equestrian Endurance', 'History Non-Fiction'],
     ideal: 'Emotionally mature partner with an independent mind, high empathy, and appreciation for intellectual solitude.',
+    valuesArchetype: 'Arkitek Keluarga Terancang',
+    valuesAnswers: { finance: 'A', conflict: 'A', career: 'B', living: 'A', lifestyle: 'A', roles: 'A' },
     photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAwOqlCtrC7wUSP62ZrSTKwVCa18SwrN7yEN_VPoHM2eSuDPcJfp2ajgyFTZGe8jYhs-pjTpYDHoVr9EmRpV5SWHTzwr86XN9LWOjKGAaW8Y645slcvdlLU6XHML39LTJ2GE6h_tHpGUdI9uAWjj2Nmd8jBqgASdPQb5tSDd6nrQ-1epJ-tTyAbMOq82GyTIGsKQ2wIt9wARh3wzv9slVcX1Bs1EeV4X_FSDBgFacd4Awfg2SNqGg84'
   },
   {
@@ -25,6 +27,8 @@ export const DEFAULT_PARTICIPANTS: Participant[] = [
     smoking: 'Non-Smoker',
     hobbies: ['Heritage Restoration', 'Filter Coffee', 'Fine Art Ceramics'],
     ideal: 'A grounded partner who values heritage, has quiet confidence, and cherishes unhurried weekend mornings.',
+    valuesArchetype: 'Penyayang Tradisional Harmoni',
+    valuesAnswers: { finance: 'C', conflict: 'B', career: 'A', living: 'B', lifestyle: 'A', roles: 'B' },
     photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCp1BmPGSgNACd1BwdSsDGuK8rQxAaOz5t25wpW1BqBkW9TnZ_QtoohTDlTVCpouDuwjmu5xGPINw3NTlE3DBtuftEKtoauCSnDhEnO2tmhjf_NXC6Ni2qsDluZSrPv-CN7dylHdf2jfdWKTFwzUPJjnxi3Xh9mFhJpLB0oanJe2B-d4H_a1FIuo5yopzHZ2i5XuEmx6Vm3EeYGhJN0lgJG17vO7Ftv_NzR3r502Zv3331PKcLuGPlE'
   },
   {
@@ -38,6 +42,8 @@ export const DEFAULT_PARTICIPANTS: Participant[] = [
     smoking: 'Non-Smoker',
     hobbies: ['Road Biking', 'Culinary Science', 'Contemporary Art'],
     ideal: 'Someone with emotional clarity, transparent communication, and an appetite for curiosity and international travel.',
+    valuesArchetype: 'Rakan Kongsi Progresif Simbiotik',
+    valuesAnswers: { finance: 'B', conflict: 'A', career: 'B', living: 'A', lifestyle: 'B', roles: 'A' },
     photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZFYzcjdndvV2pnnbtV2a7XPskPtoYmXw8ApAdDUuzvI8u37Wi486zHdWcw8v5SANjK2XIxfh4qEQBR1eVlYZ8PUXDthRy-J6BjPmhiT6M8qxWaz1xh6EGYKL095D7Jmej75fT-mFVOgV8o2zIiFcZl0kodx2oO0wuB4-L4j-a3LOZpop9x2en-mnv3aCNTMYBv0EOdXLDg5JVnaJM9iy4oWaOpMcKgB9hZv0XIfGKQ927v8SuBLqU'
   },
   {
@@ -51,6 +57,8 @@ export const DEFAULT_PARTICIPANTS: Participant[] = [
     smoking: 'Non-Smoker',
     hobbies: ['Pilates', 'Botanical Gardening', 'Behavioral Economics'],
     ideal: 'Reflective, intellectually curious man who practices conscious communication and honors mutual personal boundaries.',
+    valuesArchetype: 'Arkitek Keluarga Terancang',
+    valuesAnswers: { finance: 'A', conflict: 'A', career: 'B', living: 'A', lifestyle: 'A', roles: 'A' },
     photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBnSwa8m2QElUYk3cXu4-FBt_8BOb2uaCzu0RaP20Z8W8f9OyyFFt-M8Ddcrjlbz9ZWLIBS9S1-S8l5kwB63LxCDVKYKXvnIQMm04_EtdQNvScW8NXkWUG7eU4kHrqW6BXdCj5qZraQVlIWGf1UMJkgP2t2g-S3BKHRRvuEECoRtGipu0KtT_DV859ZTflCMruAR-kJpFFIHeLYNQH88pCAuN6DEi-i9oUCgua6mK2ONxwVzqS7PV3i'
   },
   {

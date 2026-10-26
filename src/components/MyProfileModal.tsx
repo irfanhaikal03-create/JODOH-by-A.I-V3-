@@ -312,6 +312,22 @@ export const MyProfileModal: React.FC<MyProfileModalProps> = ({
             />
           </div>
 
+          {/* Values Archetype summary */}
+          {participant.valuesArchetype ? (
+            <div className="p-3.5 rounded-xl bg-amber-50/80 border border-[#b48246]/30 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <span className="material-symbols-outlined text-xl text-[#b48246]">psychology</span>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-[#7c5820] tracking-wider block">Arketaip Nilai Perkahwinan</span>
+                  <span className="text-xs font-bold text-stone-900">{participant.valuesArchetype}</span>
+                </div>
+              </div>
+              <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                Kuiz Selesai
+              </span>
+            </div>
+          ) : null}
+
           {/* Photo Section with Multi-format File Upload & URL */}
           <div>
             <div className="flex items-center justify-between mb-1.5">

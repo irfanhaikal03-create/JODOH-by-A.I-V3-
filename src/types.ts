@@ -9,6 +9,15 @@ export interface AppUser {
   participantId?: string;
 }
 
+export interface ValuesQuizAnswers {
+  finance: string;
+  conflict: string;
+  career: string;
+  living: string;
+  lifestyle: string;
+  roles: string;
+}
+
 export interface Participant {
   id: string;
   name: string;
@@ -22,6 +31,9 @@ export interface Participant {
   ideal: string;
   photo?: string;
   phone?: string;
+  valuesArchetype?: string;
+  valuesAnswers?: ValuesQuizAnswers;
+  valuesQuizCompletedAt?: string;
   ownerId?: string;
   userId?: string;
   userEmail?: string;

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { Participant, MatchResult } from '../types';
+import { Participant, MatchResult, ValuesQuizAnswers } from '../types';
 import { useLanguage } from '../context/LanguageContext';
+import { ValuesQuizModal, calculateArchetype } from './ValuesQuizModal';
 
 interface ParticipantGlimpseViewProps {
   participants: Participant[];
@@ -12,6 +13,7 @@ interface ParticipantGlimpseViewProps {
   onOpenSavedSessions?: () => void;
   savedSessionsCount?: number;
   onOpenConcierge?: () => void;
+  onSaveQuizResult?: (participantId: string, archetype: string, answers: ValuesQuizAnswers) => void;
 }
 
 export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
@@ -24,11 +26,13 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
   onOpenSavedSessions,
   savedSessionsCount = 0,
   onOpenConcierge,
+  onSaveQuizResult,
 }) => {
   const { t, translateGender, translateMarital, translateSmoking } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [genderFilter, setGenderFilter] = useState<'ALL' | 'MALE' | 'FEMALE'>('ALL');
   const [locationFilter, setLocationFilter] = useState('ALL');
+  const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
 
   const maleCount = useMemo(() => participants.filter(p => p.gender === 'Male').length, [participants]);
   const femaleCount = useMemo(() => participants.filter(p => p.gender === 'Female').length, [participants]);
@@ -52,6 +56,41 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
         (m.femaleId && m.femaleId === myProfile.id)
     );
   }, [myProfile, matches, matchesPublished]);
+
+  // Compute matched partner profile from directory
+  const partnerProfile = useMemo(() => {
+    if (!myMatch || !myProfile) return null;
+    const isMale = myProfile.gender === 'Male';
+    const partnerId = isMale ? myMatch.femaleId : myMatch.maleId;
+    const partnerName = (isMale ? myMatch.femaleName : myMatch.maleName).toLowerCase();
+    return (
+      participants.find(
+        p => (p.id && p.id === partnerId) || (p.name && p.name.toLowerCase() === partnerName)
+      ) || null
+    );
+  }, [myMatch, myProfile, participants]);
+
+  // Compute shared values alignment score
+  const valuesMatchScore = useMemo(() => {
+    if (!myProfile?.valuesAnswers || !partnerProfile?.valuesAnswers) return null;
+    const keys: (keyof ValuesQuizAnswers)[] = ['finance', 'conflict', 'career', 'living', 'lifestyle', 'roles'];
+    let shared = 0;
+    keys.forEach(k => {
+      if (
+        myProfile.valuesAnswers &&
+        partnerProfile.valuesAnswers &&
+        myProfile.valuesAnswers[k] &&
+        myProfile.valuesAnswers[k] === partnerProfile.valuesAnswers[k]
+      ) {
+        shared++;
+      }
+    });
+    return {
+      percentage: Math.round((shared / keys.length) * 100),
+      sharedCount: shared,
+      totalCount: keys.length,
+    };
+  }, [myProfile, partnerProfile]);
 
   // Unique locations for filter
   const locations = useMemo(() => {
@@ -241,6 +280,48 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
             </div>
           </div>
 
+          {/* VALUES & PERSONALITY COMPATIBILITY QUIZ BANNER */}
+          <div className="mt-4 p-4 rounded-2xl bg-gradient-to-r from-[#fcf9f2] to-[#f6efe4] border border-[#b48246]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-xl bg-white text-[#b48246] border border-[#b48246]/30 flex items-center justify-center text-xl shrink-0 shadow-2xs">
+                <span className="material-symbols-outlined text-xl">psychology</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#7c5820]">
+                    Kuiz Nilai Hidup & Arketaip
+                  </span>
+                  {myProfile.valuesArchetype ? (
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                      Kuiz Selesai
+                    </span>
+                  ) : (
+                    <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
+                      Disyorkan
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-sm sm:text-base font-serif font-bold text-stone-900">
+                  {myProfile.valuesArchetype ? myProfile.valuesArchetype : 'Ketahui Arketaip Nilai Perkahwinan Anda'}
+                </h3>
+                <p className="text-xs text-stone-600">
+                  {myProfile.valuesArchetype
+                    ? 'Berdasarkan 6 dimensi teras (kewangan, konflik, kerjaya, kediaman, gaya hidup, dan tugas domestik).'
+                    : 'Jawab 6 soalan senario pantas untuk membolehkan sistem mengira keserasian nilai teras bersama pasangan.'}
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsQuizModalOpen(true)}
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0 border border-stone-900"
+            >
+              <span className="material-symbols-outlined text-base text-[#d4af37]">quiz</span>
+              <span>{myProfile.valuesArchetype ? 'Semak / Ulangi Kuiz' : 'Mula Kuiz (6 Soalan)'}</span>
+            </button>
+          </div>
+
           {/* OFFICIAL PARTNER SPOTLIGHT BOX */}
           {myMatch && (
             <div className="mt-4 p-4 rounded-xl bg-[#fbf6ee] border border-[#b48246]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
@@ -263,6 +344,22 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                   <p className="text-xs text-stone-600">
                     {myProfile.gender === 'Male' ? myMatch.femaleOccupation : myMatch.maleOccupation} • {myProfile.gender === 'Male' ? myMatch.femaleLocation : myMatch.maleLocation}
                   </p>
+
+                  {/* Shared values alignment */}
+                  {valuesMatchScore ? (
+                    <div className="mt-2 flex items-center gap-2 text-xs">
+                      <span className="px-2 py-0.5 rounded-md bg-[#f2e7d3] text-[#7c5820] font-bold">
+                        {valuesMatchScore.percentage}% Keserasian Nilai Teras
+                      </span>
+                      <span className="text-stone-600 text-[11px]">
+                        ({valuesMatchScore.sharedCount} daripada {valuesMatchScore.totalCount} dimensi nilai sepadan)
+                      </span>
+                    </div>
+                  ) : partnerProfile?.valuesArchetype ? (
+                    <div className="mt-2 flex items-center gap-2 text-xs text-stone-600">
+                      <span className="text-[11px]">Arketaip Pasangan: <strong>{partnerProfile.valuesArchetype}</strong></span>
+                    </div>
+                  ) : null}
                 </div>
               </div>
 
@@ -527,23 +624,32 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
                     </div>
                   )}
 
-                  {/* Ideal Partner snippet */}
-                  {part.ideal && (
-                    <div className="p-3 rounded-xl bg-[#fbfbf9] border border-stone-200/70 text-[11px] text-stone-600 italic leading-relaxed">
-                      "{part.ideal.length > 90 ? part.ideal.slice(0, 90) + '...' : part.ideal}"
+                  {/* Values Archetype Tag */}
+                  {part.valuesArchetype && (
+                    <div className="mt-2.5 flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#f8f4ec] border border-[#b48246]/25 text-[11px] text-[#7c5820] font-semibold">
+                      <span className="material-symbols-outlined text-sm text-[#b48246]">psychology</span>
+                      <span className="truncate">{part.valuesArchetype}</span>
                     </div>
                   )}
                 </div>
 
                 {isSelf && (
-                  <div className="mt-3 pt-3 border-t border-stone-100 flex justify-end">
+                  <div className="mt-3 pt-3 border-t border-stone-100 flex items-center justify-between gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsQuizModalOpen(true)}
+                      className="text-xs text-[#8f6430] hover:text-[#6a481c] font-bold inline-flex items-center gap-1 cursor-pointer"
+                    >
+                      <span className="material-symbols-outlined text-sm text-[#b48246]">quiz</span>
+                      <span>{part.valuesArchetype ? 'Kuiz Nilai' : 'Ambil Kuiz Nilai'}</span>
+                    </button>
                     <button
                       type="button"
                       onClick={onEditMyProfile}
                       className="text-xs text-[#b48246] hover:text-[#8f6430] font-bold hover:underline inline-flex items-center gap-1 cursor-pointer"
                     >
                       <span className="material-symbols-outlined text-sm">edit</span>
-                      <span>Sunting Maklumat Saya</span>
+                      <span>Sunting Maklumat</span>
                     </button>
                   </div>
                 )}
@@ -551,6 +657,20 @@ export const ParticipantGlimpseView: React.FC<ParticipantGlimpseViewProps> = ({
             );
           })}
         </div>
+      )}
+
+      {/* VALUES QUIZ MODAL */}
+      {isQuizModalOpen && myProfile && (
+        <ValuesQuizModal
+          participant={myProfile}
+          isOpen={isQuizModalOpen}
+          onClose={() => setIsQuizModalOpen(false)}
+          onSaveQuizResult={(archetype, answers) => {
+            if (onSaveQuizResult) {
+              onSaveQuizResult(myProfile.id, archetype, answers);
+            }
+          }}
+        />
       )}
     </div>
   );
